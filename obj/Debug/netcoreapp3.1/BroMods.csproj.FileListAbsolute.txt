@@ -5,8 +5,6 @@ D:\BroMods\bin\Debug\netcoreapp3.1\BroMods.runtimeconfig.dev.json
 D:\BroMods\bin\Debug\netcoreapp3.1\BroMods.dll
 D:\BroMods\bin\Debug\netcoreapp3.1\BroMods.pdb
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.csprojAssemblyReference.cache
-D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.AssemblyInfoInputs.cache
-D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.AssemblyInfo.cs
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.csproj.CoreCompileInputs.cache
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.dll
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.pdb

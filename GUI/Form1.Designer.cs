@@ -1,7 +1,5 @@
-﻿namespace BroMods
-{
-    partial class Form1
-    {
+﻿namespace BROMODS {
+    partial class Form1 {
         /// <summary>
         ///  Required designer variable.
         /// </summary>

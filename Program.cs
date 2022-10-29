@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // .Net needs to be 3.5
+// Taskkill /IM BroMods.exe /F 
 
-namespace BroMods{
+namespace BROMODS {
     static class Program{
         // A test to check HarmonyX is working
         static void PerformTest(){
