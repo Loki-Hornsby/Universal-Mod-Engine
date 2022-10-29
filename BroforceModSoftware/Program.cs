@@ -23,7 +23,7 @@ namespace BROMODS {
         // The main entry point for the application.
         [STAThread]
         static void Main(){
-            PerformTest();
+            //PerformTest();
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();

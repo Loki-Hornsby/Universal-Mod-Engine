@@ -21,14 +21,6 @@ namespace BROMODS {
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public void OpenFileExplorerAsAdmin(){
-            Process proc = new Process();
-            proc.StartInfo.FileName = "Explorer.exe";
-            proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.Verb = "runas";
-            proc.Start();
-        }
-
         public void InitializeUI(){
             // Text
             Label Text = new Label();
@@ -40,36 +32,27 @@ namespace BROMODS {
            
             if (!IsAdministrator()){
                 // Text
-                Text.Text = "Drop Broforce.exe here bro!";
+                Text.Text = "DROP BROFORCE.EXE HERE BRO!";
 
                 // Drag and Drop functionality
                 Text.AllowDrop = true;
-                Text.DragEnter += new DragEventHandler(GUI_Helpers.Form_DragEnter);
-                Text.DragDrop += new DragEventHandler(GUI_Helpers.Form_DragDrop);
+                Text.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
+                Text.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
 
-                // Effects
-                string path = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                SoundPlayer simpleSound = new SoundPlayer(@"DragDropSound.wav"); // The "." is vital
-                simpleSound.Play();
-
-                Text.DragDrop += (sender, e) => ThreadHandling.QueueTask(GUI_Helpers.Shake(this, 100, 10));
-                Text.DragDrop += (sender, e) => simpleSound.Play();
-                Text.DragDrop += (send, e) => ThreadHandling.ExecuteTasks();
-
-                // This has to be admin to match drag and drop permissions
-                OpenFileExplorerAsAdmin();
+                // Open File Browser
+                GUI_Helpers.OpenFileExplorerAsAdmin();
             } else {
                 // Text
-                Text.Text = "Please run this application without administrator bro!";
+                Text.Text = "PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!";
             }
 
             // Add text to form
-            this.Controls.Add (Text);
+            this.Controls.Add(Text);
 
             // Form Sizing
             this.MinimumSize = new System.Drawing.Size(
-                Screen.PrimaryScreen.Bounds.Width / 4, 
-                Screen.PrimaryScreen.Bounds.Height / 4
+                1, 
+                1
             );
 
             this.MaximumSize = new System.Drawing.Size(
@@ -77,8 +60,13 @@ namespace BROMODS {
                 Screen.PrimaryScreen.Bounds.Height / 4
             );
 
-            this.AutoSize = true;
+            this.AutoSize = false;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Width = Screen.PrimaryScreen.Bounds.Width / 4;
+            this.Height = Screen.PrimaryScreen.Bounds.Height / 4;
+
+            // Show form
+            this.Shown += (sender, e) => GUI_Helpers.ForceShow(sender, e);
         }
 
         public Form1(){
