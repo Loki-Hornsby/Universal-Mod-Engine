@@ -76,11 +76,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Loader.cs" />
+    <Compile Include="Loggers\GlobalLogger.cs" />
+    <Compile Include="Loggers\ScreenLogger.cs" />
+    <Compile Include="ModEngine.cs" />
+    <Compile Include="Mods\BroforceMod.cs" />
+    <Compile Include="Mods\ModInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName).dll*"</PostBuildEvent>

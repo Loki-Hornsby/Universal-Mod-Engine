@@ -1,28 +1,16 @@
 ﻿using System;
 using System.IO;
+using HarmonyLib;
 
 namespace BroforceModEngine
 {
     public static class Loader
     {
-        public static string EngineDirectoryPath
-        {
-            get 
-            {
-                return Path.Combine(Directory.GetCurrentDirectory(), "BroforceModEngine");
-            }
-        }
-
         public static void Main()
         {
-            if(Directory.Exists(EngineDirectoryPath))
-            {
-                //
-            }
-            else
-            {
-                Directory.CreateDirectory(EngineDirectoryPath);
-            }
+            ModEngine.harmony = new Harmony("BroforceModEngine");
+            ModEngine.harmony.PatchAll();
+            //ModEngine.Load();
         }
     }
 }
