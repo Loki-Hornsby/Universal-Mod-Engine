@@ -1,0 +1,67 @@
+using System;
+using UnityEngine;
+
+// Token: 0x0200024C RID: 588
+public class BloodParticle
+{
+	// Token: 0x0600162A RID: 5674 RVA: 0x00075CB0 File Offset: 0x000740B0
+	public BloodParticle(Vector3 position, Vector3 velocity)
+	{
+		this.x = position.x;
+		this.y = position.y;
+		this.z = position.z;
+		this.xI = velocity.x;
+		this.yI = velocity.y;
+		this.zI = velocity.z;
+		this.life = 2f;
+	}
+
+	// Token: 0x0600162B RID: 5675 RVA: 0x00075D30 File Offset: 0x00074130
+	public void Run(float t)
+	{
+		if (this.life > -0.2f)
+		{
+			this.x += this.xI * t;
+			this.y += this.yI * t;
+			this.z += this.zI * t;
+			this.yI += -700f * t;
+			this.life -= t;
+		}
+	}
+
+	// Token: 0x0600162C RID: 5676 RVA: 0x00075DAE File Offset: 0x000741AE
+	public Vector3 GetPos()
+	{
+		return new Vector3(this.x, this.y, this.z);
+	}
+
+	// Token: 0x0600162D RID: 5677 RVA: 0x00075DC7 File Offset: 0x000741C7
+	public Vector3 GetVelocity()
+	{
+		return new Vector3(this.xI, this.yI, this.zI);
+	}
+
+	// Token: 0x04001268 RID: 4712
+	private float x;
+
+	// Token: 0x04001269 RID: 4713
+	public float y;
+
+	// Token: 0x0400126A RID: 4714
+	private float z;
+
+	// Token: 0x0400126B RID: 4715
+	private float xI;
+
+	// Token: 0x0400126C RID: 4716
+	private float yI;
+
+	// Token: 0x0400126D RID: 4717
+	private float zI;
+
+	// Token: 0x0400126E RID: 4718
+	public float life = 1f;
+
+	// Token: 0x0400126F RID: 4719
+	public bool alive = true;
+}
