@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 // .Net needs to be 3.5
 
 class Program {
-    static void Main(string[] args){
+    static void PerformTest(){
         TestingClass x = new TestingClass();
 
         Console.WriteLine("Started!");
@@ -15,5 +15,9 @@ class Program {
         x.DoSomething();
         MyPatcher.DoPatching();
         x.DoSomething();
+    }
+
+    static void Main(string[] args){
+        PerformTest();
     }
 }
