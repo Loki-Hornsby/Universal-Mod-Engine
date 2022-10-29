@@ -11,3 +11,11 @@ D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.csproj.CoreCompileInputs.cache
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.dll
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.pdb
 D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.genruntimeconfig.cache
+D:\BroMods\bin\Debug\netcoreapp3.1\0Harmony.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\Mono.Cecil.Mdb.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\Mono.Cecil.Pdb.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\Mono.Cecil.Rocks.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\Mono.Cecil.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\MonoMod.RuntimeDetour.dll
+D:\BroMods\bin\Debug\netcoreapp3.1\MonoMod.Utils.dll
+D:\BroMods\obj\Debug\netcoreapp3.1\BroMods.csproj.CopyComplete
