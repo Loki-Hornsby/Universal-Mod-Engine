@@ -22,48 +22,67 @@ namespace BROMODS {
         }
 
         public void InitializeUI(){
+            int x = Screen.PrimaryScreen.Bounds.Width / 4;
+            int y = Screen.PrimaryScreen.Bounds.Height / 4;
+
             // Text
-            Label Text = new Label();
+            Label TextLeft = new Label();
+            Label TextRight = new Label();
 
             // Text Properties
-            Text.AutoSize = false;
-            Text.TextAlign = ContentAlignment.MiddleCenter;
-            Text.Dock = DockStyle.Fill;
+            TextLeft.AutoSize = false; // false
+            TextLeft.TextAlign = ContentAlignment.MiddleCenter;
+            TextLeft.Anchor = AnchorStyles.None;
+            TextLeft.Dock = DockStyle.Left;
+            TextLeft.Width = x / 2;
+            TextLeft.Height = y;
+
+            TextRight.AutoSize = false; // false
+            TextRight.TextAlign = ContentAlignment.MiddleCenter;
+            TextRight.Anchor = AnchorStyles.None;
+            TextRight.Dock = DockStyle.Right;
+            TextRight.Width = x / 2;
+            TextRight.Height = y;
            
             if (!IsAdministrator()){
                 // Text
-                Text.Text = "DROP BROFORCE.EXE HERE BRO!";
+                TextLeft.Text =  "DRAG AND DROP BROFORCE.EXE HERE BRO!";
+                TextRight.Text = "DELETE MODS HERE BRO!";
 
                 // Drag and Drop functionality
-                Text.AllowDrop = true;
-                Text.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
-                Text.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
+                TextLeft.AllowDrop = true;
+                TextLeft.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
+                TextLeft.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
+
+                //TextRight.AllowDrop = true;
+                //TextRight.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
+                //TextRight.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
 
                 // Open File Browser
-                GUI_Helpers.OpenFileExplorerAsAdmin();
+                //GUI_Helpers.OpenFileExplorerAsAdmin();
             } else {
                 // Text
-                Text.Text = "PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!";
+                TextLeft.Text = "PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!";
+                TextRight.Text = "OTHERWISE STUFF BREAKS BRO!";
             }
 
             // Add text to form
-            this.Controls.Add(Text);
+            this.Controls.Add(TextLeft);
+            this.Controls.Add(TextRight);
 
             // Form Sizing
             this.MinimumSize = new System.Drawing.Size(
-                1, 
-                1
+                x,
+                y
             );
 
             this.MaximumSize = new System.Drawing.Size(
-                Screen.PrimaryScreen.Bounds.Width / 4,
-                Screen.PrimaryScreen.Bounds.Height / 4
+                x,
+                y
             );
 
             this.AutoSize = false;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Width = Screen.PrimaryScreen.Bounds.Width / 4;
-            this.Height = Screen.PrimaryScreen.Bounds.Height / 4;
 
             // Show form
             this.Shown += (sender, e) => GUI_Helpers.ForceShow(sender, e);

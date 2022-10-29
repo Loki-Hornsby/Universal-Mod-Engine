@@ -60,7 +60,7 @@ namespace BROMODS {
                 Mods[i] = Path.GetFileName(Mods[i]);
             }
 
-            debug = ""; //Mods[0] + LastFile + " ";
+            //debug = ""; //Mods[0] + LastFile + " ";
         }
 
         public static FileStates AddMod(){
