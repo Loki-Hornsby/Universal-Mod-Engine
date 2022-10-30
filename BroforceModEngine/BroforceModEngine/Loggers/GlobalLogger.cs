@@ -1,26 +1,27 @@
-﻿using RocketLib.Loggers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using static ScreenDebug;
 
 namespace BroforceModEngine.Loggers
 {
+    /// <summary>
+    /// Logger
+    /// </summary>
     public static class GlobalLogger
     {
-        internal static List<string> allLogs = new List<string>();
-
+        /// <summary>
+        /// 
+        /// </summary>
         internal const string ENGINE_PREFIX = "[BroforceModEngine]";
 
-        private static string LogFilePath
-        {
-            get
-            {
-                return Path.Combine(Directory.GetCurrentDirectory(), "Log.txt");
-            }
-        }
+        /// <summary>
+        /// Path of the log file
+        /// </summary>
+        internal static string LogFilePath { get; private set; }
+
+        private static bool _loaded;
 
         /// <summary>
         /// Logger
@@ -41,17 +42,56 @@ namespace BroforceModEngine.Loggers
         {
             try
             {
-                //string newMessage = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + prefix + (logType == BroforceModEngine.Loggers.LogType.Log ? " " : "[" + logType.ToString() + "]") + message;
-                string newMessage = message;
-                allLogs.Add(newMessage);
-                WriteLogFile(newMessage);
-                //ScreenLogger.Instance?.AddLogOnScreen(message);
-            }
-            catch
-            {
+                if(!_loaded)
+                {
+                    Load();
+                }
 
+                string newMessage = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + prefix + (logType == BroforceModEngine.Loggers.LogType.Log ? " " : "[" + logType.ToString() + "]") + message;
+                WriteLogFile(newMessage);
+                ScreenLogger.Instance?.AddLogOnScreen(message);
             }
-            
+            catch(Exception ex)
+            {
+                NoEchecLog(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Load the logger
+        /// </summary>
+        internal static void Load()
+        {
+            try
+            {
+                LogFilePath = Path.Combine(Directory.GetCurrentDirectory(), "BroforceModsEngine\\BroforceModsEngine_Log.txt");
+
+
+                // Delete Log file
+                /*if (File.Exists(GlobalLogger.LogFilePath))
+                {
+                    File.Delete(GlobalLogger.LogFilePath);
+                }*/
+
+                _loaded = true;
+            }
+            catch(Exception ex)
+            {
+                NoEchecLog(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// In case the other log methods don't work.
+        /// </summary>
+        /// <param name="msg"></param>
+        internal static void NoEchecLog(string msg)
+        {
+            if (!_loaded)
+            {
+                Load();
+            }
+            WriteLogFile(msg);
         }
 
         /// <summary>
@@ -59,21 +99,13 @@ namespace BroforceModEngine.Loggers
         /// </summary>
         private static void WriteLogFile(string message)
         {
-            try
+            if (!File.Exists(LogFilePath))
             {
-                if (!File.Exists(LogFilePath))
-                {
-                    File.Create(LogFilePath);
-                }
-                //File.write(LogFilePath, allLogs.ToArray());
-                using (StreamWriter writer = File.AppendText(LogFilePath))
-                {
-                    writer.WriteLine(message);
-                }
+                File.Create(LogFilePath);
             }
-            catch (Exception ex)
+            using (StreamWriter writer = File.AppendText(LogFilePath))
             {
-
+                writer.WriteLine(message);
             }
         }
     }

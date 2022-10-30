@@ -5,6 +5,9 @@ using System.Text;
 
 namespace BroforceModEngine.Mods
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BroforceMod
     {
     }

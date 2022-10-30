@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace RocketLib.Loggers
+namespace BroforceModEngine.Loggers
 {
     /// <summary>
     /// On screen logger.
@@ -119,7 +119,7 @@ namespace RocketLib.Loggers
         /// <summary>
         /// Which color will be shown for the log.
         /// </summary>
-        /// <param name="LogMsg"></param>
+        /// <param name="logMsg"></param>
         /// <returns></returns>
         private static Color WhichColor(string logMsg)
         {

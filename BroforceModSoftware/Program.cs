@@ -7,10 +7,13 @@ using System.Windows.Forms;
 // .Net needs to be 3.5
 // Taskkill /IM BroMods.exe /F 
 
-namespace BROMODS {
-    static class Program{
+namespace BROMODS 
+{
+    static class Program
+    {
         // A test to check HarmonyX is working
-        static void PerformTest(){
+        static void PerformTest()
+        {
             TestingClass x = new TestingClass();
 
             Console.WriteLine("Started!");
@@ -22,7 +25,8 @@ namespace BROMODS {
    
         // The main entry point for the application.
         [STAThread]
-        static void Main(){
+        static void Main()
+        {
             //PerformTest();
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
