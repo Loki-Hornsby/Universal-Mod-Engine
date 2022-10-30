@@ -1,6 +1,5 @@
 # BROMODS
-**RAD MOD LOADER FOR BROFORCE.** \
-Includes: (WIP section)
+**RAD MOD LOADER FOR BROFORCE WHICH Includes: (WIP section)** \
 - GUI for adding and removing mods aswell as hooking broforce.exe at startup
 - Built in GUI for toggling mods when playing broforce
 - Entire mod loader built from scratch (WIP - Some dependencies are used as placeholders for now)
