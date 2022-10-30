@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using HarmonyLib;
 
 namespace BroforceModEngine.Loggers
 {
@@ -51,7 +52,8 @@ namespace BroforceModEngine.Loggers
                 string newMessage = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + prefix + (logType == BroforceModEngine.Loggers.LogType.Log ? " " : "[" + logType.ToString() + "]") + message;
                 logs.Add(newMessage);
                 WriteLogFile(newMessage);
-                ScreenLogger.Instance?.AddLogOnScreen(message);
+                // ScreenLogger.Instance?.AddLogOnScreen(message);
+                if (ScreenLogger.Instance != null) ScreenLogger.Instance.AddLogOnScreen(message); // Changed due to errors on my side (no clue why!) - Bobby
             }
             catch(Exception ex)
             {

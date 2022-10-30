@@ -1,6 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  
+  <!-- Debug Config -->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Any CPU</Platform>
@@ -13,6 +15,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
+
+  <!-- Debug Config 2? -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -24,6 +28,8 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
+
+  <!-- Release Config -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -32,15 +38,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+
   <ItemGroup>
+    <!-- Todo: need to update GUI to require this harmony version instead of having 2 seperate harmony instances - although this isn't really needed -->
     <Reference Include="0Harmony, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\BroforceModEngine\0Harmony.dll</HintPath>
+      <!-- Bug: path needs to be local to user -->
+
+      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\BroforceModEngine\0Harmony.dll</HintPath> <!-- Gorzon Path -->
+      <!-- <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Broforce\BroforceModEngine\0Harmony.dll</HintPath> --> <!-- Bobby Path -->
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
+
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,19 +71,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
+
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Loader.cs" />
-    <Compile Include="Loggers\GlobalLogger.cs" />
-    <Compile Include="Loggers\ScreenLogger.cs" />
-    <Compile Include="ModEngine.cs" />
-    <Compile Include="Mods\BroforceMod.cs" />
-    <Compile Include="Mods\ModInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
+    <ItemGroup>
+      <Compile Include="Loader.cs" />
+      <Compile Include="Loggers\GlobalLogger.cs" />
+      <Compile Include="Loggers\ScreenLogger.cs" />
+      <Compile Include="ModEngine.cs" />
+      <Compile Include="Mods\BroforceMod.cs" />
+      <Compile Include="Mods\ModInfo.cs" />
+      <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
   <ItemGroup />
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent>
+    <!-- Bug: path needs to be local to user -->
+    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> --> <!-- Bobby Path -->
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> <!-- Gorzon Path -->
   </PropertyGroup>
+
 </Project>
