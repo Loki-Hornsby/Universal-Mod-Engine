@@ -1,11 +1,13 @@
 # BROMODS
-TOTALLY RAD MOD LOADER FOR BROFORCE!!!!!!!!!!!!!!!!!!!!!!
-
-** EXPLOSION **
+**RAD MOD LOAD FOR BROFORCE.**
+Includes:
+- GUI for adding and removing mods aswell as hooking broforce.exe at startup
+- Built in GUI for toggling mods when playing broforce
+- Entire mod loader built from scratch (WIP - Some dependencies are used as placeholders for now)
 
 # Dependencies
-~ https://github.com/BepInEx/HarmonyX \
-~ https://github.com/NeighTools/UnityDoorstop
+- https://github.com/BepInEx/HarmonyX
+- https://github.com/NeighTools/UnityDoorstop
 
 # Developer
 - Use Vscode or Visual Studio
