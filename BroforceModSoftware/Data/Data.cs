@@ -24,10 +24,16 @@ namespace BROMODS {
 
         SuccessOnMod, // YES! MORE SUCCESS!
         FailOnMod, // NO! MORE FAILURE!
+
+        SuccessOnDelete, // YES! AWESOME!
+        FailOnDelete, // NO! TERRIBLE!
     }
 
     public static class Data {
         public static string debug; // Testing purposes only
+
+        public const string ModPath = @"..\..\..\..\Mods"; // ..\ resembles 1 folder back
+        public const string SoundsPath = @"..\..\..\Sounds";
 
         // LAST UPLOAD
         public static FileStates FileState;
@@ -40,27 +46,35 @@ namespace BROMODS {
         // MODS
         public static string[] Mods = null;
 
-        public static FileStates RemoveMod(){
-            /*bool fail = true;
-
-            if (!fail){
-                GUI_Helpers.ModState = DroppedModStates.Success;
-            } else {
-                GUI_Helpers.ModState = DroppedModStates.Corrupted;
-            }*/
-
-            return FileState;
-        }
-
         public static void RefreshModList(){
-            string path = @"..\..\..\..\BroforceModEngine\BroforceModEngine\Mods"; // "..\" resembles 1 folder back
-
-            Mods = Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories);
+            Mods = Directory.GetFiles(ModPath, "*.dll", SearchOption.AllDirectories);
             for (int i = 0; i < Mods.Length; i++){
                 Mods[i] = Path.GetFileName(Mods[i]);
             }
 
             //debug = ""; //Mods[0] + LastFile + " ";
+        }
+
+        public static FileStates RemoveMod(){
+            if (LastFile.Contains(".dll")) {
+                RefreshModList();
+
+                if (!Mods.Contains(LastFile)){
+                    FileState = FileStates.SuccessOnDelete;
+                } else {
+                    FileState = FileStates.Exists;
+                }
+
+                /*if (!failAfterLoad){
+                    FileState = FileStates.SuccessOnMod;
+                } else {
+                    FileState = FileStates.FailOnMod;
+                }*/
+            } else {
+                FileState = FileStates.Invalid;
+            }
+            
+            return FileState;
         }
 
         public static FileStates AddMod(){
@@ -104,16 +118,20 @@ namespace BROMODS {
             return FileState;
         }
 
-        public static FileStates SendFiles(string[] files){
+        public static FileStates SendFiles(string[] files, bool delete){
             LastFiles = files;
             LastFile = Path.GetFileName(LastFiles[0]);
 
             if (LastFiles.Length > 0){ // Empty?
                 if (LastFiles.Length == 1){ // Only 1 file?
-                    if (BroforceExe == null){ // Exe or Mod stage?
-                        return AddExe();
+                    if (!delete){ // Delete mode?
+                        if (BroforceExe == null){ // Exe or Mod stage?
+                            return AddExe();
+                        } else {
+                            return AddMod();
+                        }
                     } else {
-                        return AddMod();
+                        return RemoveMod();
                     }
                 } else {
                     FileState = FileStates.Excess;

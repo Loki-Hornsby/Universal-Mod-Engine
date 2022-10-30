@@ -26,19 +26,47 @@ namespace BROMODS {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
-        public static void PlaySuccessSound(){
-            SoundPlayer Success = new SoundPlayer(@"Success.wav");
-            Success.Play();
+        public static void PlayBroforceFoundSound(){
+            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\BroforceExeFound" + ".wav");
+            sound.Play();
         }
 
-        private static Action Shake(Form form, int x, int y, int shake_amplitude = 10){
+        public static void PlaySuccessSound(){
+            Random rnd = new Random();
+            int num = rnd.Next(4);
+
+            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Success" + (num + 1).ToString() + ".wav");
+            sound.Play();
+        }
+
+        public static void PlayFailSound(){
+            Random rnd = new Random();
+            int num = rnd.Next(2);
+
+            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Fail" + (num + 1).ToString() + ".wav");
+            sound.Play();
+        }
+
+        public static void PlayDeleteModSound(){
+            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\DeleteMod.wav");
+            sound.Play();
+        }
+
+        public static void PlayModSound(string PathToMod){
+            SoundPlayer sound = new SoundPlayer(PathToMod + @"\ModSound.wav");
+            sound.Play();
+        }
+
+        private static Action Shake(Form form, int length, int sleep, int shake_amplitude = 10){
             return () => {
                 var original = form.Location;
                 var rnd = new Random(1337);
+                float divisor = shake_amplitude / length;
 
-                for (int i = 0; i < x; i++){
+                for (int i = 0; i < length; i++){
                     form.Location = new Point(original.X + rnd.Next(-shake_amplitude, shake_amplitude), original.Y + rnd.Next(-shake_amplitude, shake_amplitude));
-                    System.Threading.Thread.Sleep(y);
+                    shake_amplitude = (int)Math.Ceiling(shake_amplitude - divisor);
+                    System.Threading.Thread.Sleep(sleep);
                 }
 
                 form.Location = original;
@@ -50,51 +78,83 @@ namespace BROMODS {
             //ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 50, 1));
 
             string text = "";
+
+            const int multiply_divide_fail = 50;
+            const int fail_avgtime = 2;
+
+            const int multiply_divide_success = 25;
+            const int success_avgtime = 2;
        
             switch (e){
+                // Exists
                 case FileStates.Exists:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
                     text = "THAT MOD ALREADY EXISTS BRO!";
                     break;
 
+                // Too little or too much
                 case FileStates.Dearth:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
                     text = "NO FILES HERE BRO! I THINK SOMETHINGS GONE SERIOUSLY WRONG BRO!";
                     break;
                 case FileStates.Excess:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
                     text = "THAT'S TOO MANY FILES BRO!";
                     break;
 
+                // Invalid
                 case FileStates.Invalid:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
                     text = "INVALID INPUT BRO!";
                     break;
 
+                // Exe
                 case FileStates.SuccessOnExe:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
-                    PlaySuccessSound();
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50));
+                    PlayBroforceFoundSound();
 
-                    text = "NOW UPLOAD YOUR MODS BRO OR DON'T SEE WHAT I CARE!";
+                    text = "UPLOAD MODS HERE BRO!";
                     break;
-                case FileStates.SuccessOnMod:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
-                    PlaySuccessSound();
-
-                    text = "WOOOOOOOOOOOOOOOOOOO! YEH BRO! NOTHING WENT WRONG!";
-                    break;
-
                 case FileStates.FailOnExe:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
+                    text = "COULDN'T ADD EXE BRO!";
+                    break;
+
+                // Mod
+                case FileStates.SuccessOnMod:
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50));
                     PlaySuccessSound();
 
-                    text = "REUPLOAD YOUR EXE BRO OR DON'T SEE WHAT I CARE!";
+                    text = "UPLOAD MODS HERE BRO!";
                     break;
                 case FileStates.FailOnMod:
-                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10, 15));
-                    PlaySuccessSound();
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
 
-                    text = "NOOOOOOOOOOOOOOOOOOO! NO BRO! SOMETHING WENT WRONG!";
+                    text = "COULDN'T ADD MOD BRO!";
+                    break;
+
+                // Delete
+                case FileStates.FailOnDelete:
+                    ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                    PlayFailSound();
+
+                    text = "COULDN'T DELETE FILE BRO!";
+                    break;
+                case FileStates.SuccessOnDelete:
+                    PlayDeleteModSound();
+
+                    text = "DELETE MODS HERE BRO!";
                     break;
             }
 
@@ -103,8 +163,8 @@ namespace BROMODS {
             return text;
         }
 
-        public static void DragDrop(object sender, DragEventArgs e, Form form) {
-            FileStates state = Data.SendFiles((string[])e.Data.GetData(DataFormats.FileDrop));
+        public static void DragDrop(object sender, DragEventArgs e, Form form, bool delete) {
+            FileStates state = Data.SendFiles((string[])e.Data.GetData(DataFormats.FileDrop), delete);
 
             Label lbl = sender as Label;
             lbl.Text = Data.debug + PerformEffect(form, state);

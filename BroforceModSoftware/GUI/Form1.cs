@@ -52,14 +52,14 @@ namespace BROMODS {
                 // Drag and Drop functionality
                 TextLeft.AllowDrop = true;
                 TextLeft.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
-                TextLeft.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
+                TextLeft.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this, false);
 
-                //TextRight.AllowDrop = true;
-                //TextRight.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
-                //TextRight.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this);
+                TextRight.AllowDrop = true;
+                TextRight.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
+                TextRight.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this, true);
 
                 // Open File Browser
-                //GUI_Helpers.OpenFileExplorerAsAdmin();
+                GUI_Helpers.OpenFileExplorerAsAdmin();
             } else {
                 // Text
                 TextLeft.Text = "PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!";
