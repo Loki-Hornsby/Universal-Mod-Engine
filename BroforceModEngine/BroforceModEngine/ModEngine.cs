@@ -26,7 +26,7 @@ namespace BroforceModEngine
         /// </summary>
         public static string ModsDirectoryPath { get; private set; }
 
-        internal static Harmony harmony;
+        //internal static Harmony harmony;
 
         /// <summary>
         /// 
@@ -52,9 +52,9 @@ namespace BroforceModEngine
                     Assembly.LoadFile(file);
                 }*/
                 //ScreenLogger.Load();
-                HarmonyFileLog.Enabled = true; 
+               /* HarmonyFileLog.Enabled = true; 
                 ModEngine.harmony = new Harmony("BroforceModEngine");
-                ModEngine.harmony.PatchAll();
+                ModEngine.harmony.PatchAll();*/
 
                 EngineLog("ModEngine loaded");
             }
@@ -91,13 +91,13 @@ namespace BroforceModEngine
 
         }
 
-        [HarmonyPatch(typeof(MainMenu), "Awake")]
+       /* [HarmonyPatch(typeof(MainMenu), "Awake")]
         static class LoadEverything_Patch
         {
             static void Postfix()
             {
                 EngineLog("HARMONY!");
             }
-        }
+        }*/
     }
 }

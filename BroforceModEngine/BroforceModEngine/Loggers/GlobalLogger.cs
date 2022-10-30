@@ -16,6 +16,7 @@ namespace BroforceModEngine.Loggers
         /// </summary>
         internal const string ENGINE_PREFIX = "[BroforceModEngine]";
 
+        internal static List<string> logs = new List<string>();
         /// <summary>
         /// Path of the log file
         /// </summary>
@@ -48,6 +49,7 @@ namespace BroforceModEngine.Loggers
                 }
 
                 string newMessage = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + prefix + (logType == BroforceModEngine.Loggers.LogType.Log ? " " : "[" + logType.ToString() + "]") + message;
+                logs.Add(newMessage);
                 WriteLogFile(newMessage);
                 ScreenLogger.Instance?.AddLogOnScreen(message);
             }
@@ -64,14 +66,15 @@ namespace BroforceModEngine.Loggers
         {
             try
             {
-                LogFilePath = Path.Combine(Directory.GetCurrentDirectory(), "BroforceModsEngine\\BroforceModsEngine_Log.txt");
+                LogFilePath = Path.Combine(ModEngine.EngineDirectoryPath, "BroforceModsEngine_Log.txt");
 
 
                 // Delete Log file
-                /*if (File.Exists(GlobalLogger.LogFilePath))
+                if (File.Exists(GlobalLogger.LogFilePath))
                 {
                     File.Delete(GlobalLogger.LogFilePath);
-                }*/
+                    File.Create(LogFilePath);
+                }
 
                 _loaded = true;
             }
@@ -85,12 +88,14 @@ namespace BroforceModEngine.Loggers
         /// In case the other log methods don't work.
         /// </summary>
         /// <param name="msg"></param>
+        /// 
         internal static void NoEchecLog(string msg)
         {
             if (!_loaded)
             {
                 Load();
             }
+            logs.Add(msg);
             WriteLogFile(msg);
         }
 
@@ -99,14 +104,16 @@ namespace BroforceModEngine.Loggers
         /// </summary>
         private static void WriteLogFile(string message)
         {
-            if (!File.Exists(LogFilePath))
+            /*if (!File.Exists(LogFilePath))
             {
                 File.Create(LogFilePath);
-            }
-            using (StreamWriter writer = File.AppendText(LogFilePath))
-            {
-                writer.WriteLine(message);
-            }
+            }*/
+             /*using (StreamWriter writer = File.AppendText(LogFilePath))
+             {
+                 writer.WriteLine(message);
+                writer.Close();
+             }*/
+            File.WriteAllText(LogFilePath, message);
         }
     }
 
