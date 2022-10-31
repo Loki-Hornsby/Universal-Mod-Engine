@@ -5,7 +5,7 @@
 - Entire mod loader built from scratch (WIP - Some dependencies are used as placeholders for now)
 
 # Dependencies
-- https://github.com/BepInEx/HarmonyX
+- [https://github.com/BepInEx/HarmonyX](https://github.com/pardeike/Harmony)
 - https://github.com/NeighTools/UnityDoorstop
 
 # Developer (Wip section)
@@ -13,4 +13,5 @@
 - When using vscode a global.json file will be required with the sdk version set to "3.5.0"
 - dotnet run ~ runs application in current working directory
 - dotnet build ~ builds application in current working directory
+- MSBuild /p:Configuration=Release /p:Platform="AnyCPU" - Builds to bin/release where contents can then be copied into broforce/BroforceModEngine folder
 - cd {path} ~ changes working directory
