@@ -3,13 +3,25 @@ using System.IO;
 using System.Reflection;
 using BroforceModEngine.Loggers;
 using HarmonyLib;
+using System.Runtime.InteropServices;
+
+// i'll try my best to maintain your code style throughout your files 
+    // Gorzon but if you don't mind more comments will popup because it helps me to understand what's going on here - Bobby :)
 
 namespace BroforceModEngine
 {
     static class Loader
     {
+        [DllImport("kernel32")]
+        static extern bool AllocConsole();
+
         public static void Main()
-        {
+        {   
+            // A console is displayed for debugging purposes
+            AllocConsole();
+            SimpleLogger.Log("", "Hello! - Console was started!");
+
+            // Begin execution of mod engine
             try
             {
                 //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -21,6 +33,7 @@ namespace BroforceModEngine
                 GlobalLogger.NoEchecLog(ex.ToString());
             }
         }
+
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             try

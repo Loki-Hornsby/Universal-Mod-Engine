@@ -2,7 +2,6 @@
 using System.IO;
 using BroforceModEngine.Loggers;
 using HarmonyLib;
-using HarmonyLib.Tools;
 using System.Reflection;
 using System.Text;
 
@@ -13,57 +12,60 @@ namespace BroforceModEngine
     /// </summary>
     public static class ModEngine
     {
-        /// <summary>
         /// BroforceModEngine main directory
-        /// </summary>
         public static string EngineDirectoryPath { get; private set; }
-       /* /// <summary>
+
         /// BroforceModEngine dependencies directory
-        /// </summary>
-        public static string DependenciesDirectoryPath { get; private set; }*/
-        /// <summary>
+        public static string DependenciesDirectoryPath { get; private set; }
+
         /// BroforceModEngine mods directory
-        /// </summary>
         public static string ModsDirectoryPath { get; private set; }
 
-        //internal static Harmony harmony;
+        internal static Harmony harmony;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="logType"></param>
-        internal static void EngineLog(object message, LogType logType = LogType.Log)
+        internal static void EngineLog(object message, BroforceModEngine.Loggers.LogType logType = BroforceModEngine.Loggers.LogType.Log)
         {
             GlobalLogger.Log(GlobalLogger.ENGINE_PREFIX, message.ToString(), logType);
         }
 
         /// <summary>
-        /// Load everything
+        /// Load Engine
         /// </summary>
         internal static void Load()
         {
             try
             {
+                // Directories
                 CheckDirectories();
-                EngineLog("ModEngine loaded");
-                /*foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll"))
+
+                // Load all assemblies
+                foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll"))
                 {
                     Assembly.LoadFile(file);
-                }*/
-                //ScreenLogger.Load();
-               /* HarmonyFileLog.Enabled = true; 
-                ModEngine.harmony = new Harmony("BroforceModEngine");
-                ModEngine.harmony.PatchAll();*/
+                }
 
+                // Enable Harmony and logging
+                Harmony.DEBUG = true;
+
+                harmony = new Harmony("com.example.patch");
+                var assembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(assembly);
+
+                // Finished Loading
                 EngineLog("ModEngine loaded");
             }
             catch(Exception ex)
             {
-                EngineLog(ex.ToString(), LogType.Error);
+                string s = SimpleLogger.GetAllFootprints(ex);
+                EngineLog("Footprints: \n" + s, BroforceModEngine.Loggers.LogType.Error);
+                EngineLog("Exception: \n" + ex.ToString(), BroforceModEngine.Loggers.LogType.Error);
             }
         }
-        
 
         /// <summary>
         /// Check if directories are present, otherwise create the directories.
@@ -71,7 +73,7 @@ namespace BroforceModEngine
         private static void CheckDirectories()
         {
             EngineDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "BroforceModEngine");
-            //DependenciesDirectoryPath = EngineDirectoryPath;
+            DependenciesDirectoryPath = EngineDirectoryPath;
             ModsDirectoryPath = Path.Combine(EngineDirectoryPath, "Mods");
 
             if (!Directory.Exists(EngineDirectoryPath))
@@ -79,10 +81,10 @@ namespace BroforceModEngine
                 Directory.CreateDirectory(EngineDirectoryPath);
             }
 
-           /* if (!Directory.Exists(DependenciesDirectoryPath))
+            if (!Directory.Exists(DependenciesDirectoryPath))
             {
                 Directory.CreateDirectory(DependenciesDirectoryPath);
-            }*/
+            }
 
             if (!Directory.Exists(ModsDirectoryPath))
             {
@@ -91,13 +93,19 @@ namespace BroforceModEngine
 
         }
 
-       /* [HarmonyPatch(typeof(MainMenu), "Awake")]
-        static class LoadEverything_Patch
+        /// <summary>
+        /// Load Mods
+        /// </summary>
+        /// https://github.com/Gorzon38/BF-CODE/blob/main/BF-1131/Assembly-CSharp/Menu.cs
+        [HarmonyPatch(typeof(Menu), "Awake")] // typeof(MainMenu), "Awake" or "Start"
+        class LoadEverything_Patch
         {
-            static void Postfix()
+            public static void Postfix()
             {
-                EngineLog("HARMONY!");
+                Console.WriteLine("Screenlogger post");
+                // Screen logger
+                ScreenLogger.Load();
             }
-        }*/
+        }
     }
 }

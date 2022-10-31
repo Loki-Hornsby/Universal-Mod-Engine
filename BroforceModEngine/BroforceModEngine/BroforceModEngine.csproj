@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   
+  <!-- If you can please try to avoid loss of comments from this file -->
+
   <!-- Debug Config -->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,26 +41,42 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
+  <!-- Release Config -->
   <ItemGroup>
-    <!-- Todo: need to update GUI to require this harmony version instead of having 2 seperate harmony instances - although this isn't really needed -->
-    <Reference Include="0Harmony, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <!-- Bug: path needs to be local to user -->
-
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\BroforceModEngine\0Harmony.dll</HintPath> <!-- Gorzon Path -->
-      <!-- <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Broforce\BroforceModEngine\0Harmony.dll</HintPath> --> <!-- Bobby Path -->
-    </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
-
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+
+    <!-- Assembly-CSharp -->
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <!-- Harmony 
+    <PackageReference Include="HarmonyX">
+      <Version>2.10.0</Version>
+    </PackageReference> -->
+
+    <Reference Include="0Harmony, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\0Harmony.dll</HintPath>
+    </Reference>
+
+    <!-- MonoMod Modules -->
+    <Reference Include="MonoMod.RuntimeDetour, Version=22.3.23.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <!--<HintPath>_</HintPath>-->
+    </Reference>
+    <Reference Include="MonoMod.Utils, Version=22.3.23.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <!--<HintPath>_</HintPath>-->
+    </Reference>
+
+    <!-- Unity Modules -->
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\UnityEngine.dll</HintPath>
@@ -77,19 +95,19 @@
       <Compile Include="Loader.cs" />
       <Compile Include="Loggers\GlobalLogger.cs" />
       <Compile Include="Loggers\ScreenLogger.cs" />
+      <Compile Include="Loggers\SimpleLogger.cs" />
       <Compile Include="ModEngine.cs" />
       <Compile Include="Mods\BroforceMod.cs" />
       <Compile Include="Mods\ModInfo.cs" />
       <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
-  <ItemGroup />
+  <ItemGroup/>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
   <PropertyGroup>
     <!-- Bug: path needs to be local to user -->
-    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> --> <!-- Bobby Path -->
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> <!-- Gorzon Path -->
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> <!-- Bobby Path -->
+    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> --> <!-- Gorzon Path -->
   </PropertyGroup>
-
 </Project>

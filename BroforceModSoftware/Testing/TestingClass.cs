@@ -8,6 +8,6 @@ public class TestingClass {
     string message = "HI!";
 
     public void DoSomething(){
-        Console.WriteLine(message);
+        System.Console.WriteLine(message);
     }
 }

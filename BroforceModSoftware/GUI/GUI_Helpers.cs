@@ -15,46 +15,60 @@ using System.IO;
 namespace BROMODS {
     public static class GUI_Helpers {
         public static void OpenFileExplorerAsAdmin(){
-            Process proc = new Process();
-            proc.StartInfo.FileName = "Explorer.exe";
-            proc.StartInfo.UseShellExecute = true;
-            proc.StartInfo.Verb = "runas";
-            proc.Start();
+            try{
+                Process proc = new Process();
+                proc.StartInfo.FileName = "Explorer.exe";
+                proc.StartInfo.UseShellExecute = true;
+                proc.StartInfo.Verb = "runas";
+                proc.Start();
+            } catch (Exception e){
+                System.Console.WriteLine(e.ToString());
+            }
         }
 
         public static void DragEnter(object sender, DragEventArgs e) {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
-        public static void PlayBroforceFoundSound(){
-            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\BroforceExeFound" + ".wav");
-            sound.Play();
+        public static Action PlayBroforceFoundSound(){
+            return () => {
+                SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\BroforceExeFound" + ".wav");
+                sound.Play();
+            };
         }
 
-        public static void PlaySuccessSound(){
-            Random rnd = new Random();
-            int num = rnd.Next(4);
+        public static Action PlaySuccessSound(){
+            return () => {
+                Random rnd = new Random();
+                int num = rnd.Next(4);
 
-            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Success" + (num + 1).ToString() + ".wav");
-            sound.Play();
+                SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Success" + (num + 1).ToString() + ".wav");
+                sound.Play();
+            };
         }
 
-        public static void PlayFailSound(){
-            Random rnd = new Random();
-            int num = rnd.Next(2);
+        public static Action PlayFailSound(){
+            return () => {
+                Random rnd = new Random();
+                int num = rnd.Next(2);
 
-            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Fail" + (num + 1).ToString() + ".wav");
-            sound.Play();
+                SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\Fail" + (num + 1).ToString() + ".wav");
+                sound.Play();
+            };
         }
 
-        public static void PlayDeleteModSound(){
-            SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\DeleteMod.wav");
-            sound.Play();
+        public static Action PlayDeleteModSound(){
+            return () => {
+                SoundPlayer sound = new SoundPlayer(Data.SoundsPath + @"\DeleteMod.wav");
+                sound.Play();
+            };
         }
 
-        public static void PlayModSound(string PathToMod){
-            SoundPlayer sound = new SoundPlayer(PathToMod + @"\ModSound.wav");
-            sound.Play();
+        public static Action PlayModSound(string PathToMod){
+            return () => {
+                SoundPlayer sound = new SoundPlayer(PathToMod + @"\ModSound.wav");
+                sound.Play();
+            };
         }
 
         private static Action Shake(Form form, int length, int sleep, int shake_amplitude = 10){
@@ -88,71 +102,81 @@ namespace BROMODS {
             switch (e){
                 // Exists
                 case FileStates.Exists:
+                    
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "THAT MOD ALREADY EXISTS BRO!";
                     break;
 
                 // Too little or too much
                 case FileStates.Dearth:
+                    
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "NO FILES HERE BRO! I THINK SOMETHINGS GONE SERIOUSLY WRONG BRO!";
                     break;
                 case FileStates.Excess:
+                    
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "THAT'S TOO MANY FILES BRO!";
                     break;
 
                 // Invalid
                 case FileStates.Invalid:
+                    
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "INVALID INPUT BRO!";
                     break;
 
                 // Exe
                 case FileStates.SuccessOnExe:
+                    
+                    ThreadHandling.QueueTask(PlayBroforceFoundSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50));
-                    PlayBroforceFoundSound();
 
                     text = "UPLOAD MODS HERE BRO!";
                     break;
                 case FileStates.FailOnExe:
+                    
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "COULDN'T ADD EXE BRO!";
                     break;
 
                 // Mod
                 case FileStates.SuccessOnMod:
+                    
+                    ThreadHandling.QueueTask(PlaySuccessSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50));
-                    PlaySuccessSound();
 
                     text = "UPLOAD MODS HERE BRO!";
                     break;
                 case FileStates.FailOnMod:
+
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "COULDN'T ADD MOD BRO!";
                     break;
 
                 // Delete
                 case FileStates.FailOnDelete:
+
+                    ThreadHandling.QueueTask(PlayFailSound());
                     ThreadHandling.QueueTask(GUI_Helpers.Shake(form, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
-                    PlayFailSound();
 
                     text = "COULDN'T DELETE FILE BRO!";
                     break;
                 case FileStates.SuccessOnDelete:
-                    PlayDeleteModSound();
+                
+                    ThreadHandling.QueueTask(PlayDeleteModSound());
 
                     text = "DELETE MODS HERE BRO!";
                     break;

@@ -28,7 +28,7 @@ namespace BROMODS {
 
             // Task creation
             var task = Task.Run(tasks.Dequeue());
-            await task.ContinueWith(t => Console.WriteLine("TASK DONE"));
+            await task.ContinueWith(t => System.Console.WriteLine("TASK DONE"));
 
             // Timeout
             if (await Task.WhenAny(task, Task.Delay(timeout)) == task) {

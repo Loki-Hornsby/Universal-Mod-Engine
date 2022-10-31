@@ -40,17 +40,15 @@ namespace BroforceModEngine.Loggers
         /// <summary>
         /// Create the GameObject
         /// </summary>
-        /// <returns></returns>
         internal static void Load()
         {
             try
             {
                 new GameObject(typeof(ScreenLogger).FullName, typeof(ScreenLogger));
-                GlobalLogger.Log(GlobalLogger.ENGINE_PREFIX, "ScreenLogger loaded");
             }
             catch (Exception ex)
             {
-                GlobalLogger.Log(GlobalLogger.ENGINE_PREFIX, ex.ToString());
+                GlobalLogger.Log(GlobalLogger.ENGINE_PREFIX, "ScreenLogger Failed: " + ex.ToString());
             }
         }
 
@@ -80,7 +78,7 @@ namespace BroforceModEngine.Loggers
                     GUILayout.Label(log, LogStyle);
                 }
                 GUILayout.EndVertical();
-            }
+            } 
         }
 
         private void Start()
@@ -96,6 +94,7 @@ namespace BroforceModEngine.Loggers
             if (Input.GetKeyDown(KeyCode.F7))
             {
                 ClearLog();
+                GlobalLogger.Log("", "Cleared Log", BroforceModEngine.Loggers.LogType.Log);
             }
 
             if (logsOnScreen.Count > 0)
@@ -114,6 +113,13 @@ namespace BroforceModEngine.Loggers
             {
                 logsOnScreen.Remove(logsOnScreen.First());
             }
+
+            GUILayout.BeginVertical("box");
+
+            GUILayout.Button("I'm the top button");
+            GUILayout.Button("I'm the bottom button");
+
+            GUILayout.EndVertical();
         }
 
         /// <summary>

@@ -54,6 +54,8 @@ namespace BroforceModEngine.Loggers
                 WriteLogFile(newMessage);
                 // ScreenLogger.Instance?.AddLogOnScreen(message);
                 if (ScreenLogger.Instance != null) ScreenLogger.Instance.AddLogOnScreen(message); // Changed due to errors on my side (no clue why!) - Bobby
+
+                SimpleLogger.Log(prefix, message);
             }
             catch(Exception ex)
             {
@@ -68,15 +70,14 @@ namespace BroforceModEngine.Loggers
         {
             try
             {
-                LogFilePath = Path.Combine(ModEngine.EngineDirectoryPath, "BroforceModsEngine_Log.txt");
-
+                //LogFilePath = Path.Combine(ModEngine.EngineDirectoryPath, "BroforceModsEngine_Log.txt");
 
                 // Delete Log file
-                if (File.Exists(GlobalLogger.LogFilePath))
-                {
-                    File.Delete(GlobalLogger.LogFilePath);
-                    File.Create(LogFilePath);
-                }
+                //if (File.Exists(GlobalLogger.LogFilePath))
+                //{
+                    //File.Delete(GlobalLogger.LogFilePath);
+                    //File.Create(LogFilePath);
+                //}
 
                 _loaded = true;
             }
@@ -109,13 +110,15 @@ namespace BroforceModEngine.Loggers
             /*if (!File.Exists(LogFilePath))
             {
                 File.Create(LogFilePath);
-            }*/
-             /*using (StreamWriter writer = File.AppendText(LogFilePath))
-             {
-                 writer.WriteLine(message);
+            }
+            
+            using (StreamWriter writer = File.AppendText(LogFilePath))
+            {
+                writer.WriteLine(message);
                 writer.Close();
-             }*/
-            File.WriteAllText(LogFilePath, message);
+            }
+
+            File.WriteAllText(LogFilePath, message);*/
         }
     }
 

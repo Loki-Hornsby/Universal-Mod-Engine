@@ -1,0 +1,3 @@
+- This is an example of how the broforce folder should look (includes working dll's)
+- man i'm aching to get rid of winhttps.dll and doorstop_config.ini
+	- defo gonna do that once we have a small base
