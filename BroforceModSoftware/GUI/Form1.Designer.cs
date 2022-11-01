@@ -1,4 +1,4 @@
-﻿namespace BROMODS {
+﻿namespace BroforceModSoftware.GUI {
     partial class Form1 {
         /// <summary>
         ///  Required designer variable.

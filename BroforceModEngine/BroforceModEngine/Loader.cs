@@ -15,7 +15,7 @@ namespace BroforceModEngine
         [DllImport("kernel32")]
         static extern bool AllocConsole();
 
-        public static void Main()
+        public static void Load()
         {   
             // A console is displayed for debugging purposes
             AllocConsole();

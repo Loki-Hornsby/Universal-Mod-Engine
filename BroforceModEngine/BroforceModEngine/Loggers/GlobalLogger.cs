@@ -112,7 +112,7 @@ namespace BroforceModEngine.Loggers
                 File.Create(LogFilePath);
             }
             
-            using (StreamWriter writer = File.AppendText(LogFilePath))
+            using (StreamWriter writer = Text.LogFilePath)
             {
                 writer.WriteLine(message);
                 writer.Close();

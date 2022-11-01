@@ -12,7 +12,10 @@ using System.Diagnostics;
 using System.Security.Principal;
 using System.IO;
 
-namespace BROMODS {
+using BroforceModSoftware.Helpers;
+using BroforceModEngine.Handling;
+
+namespace BroforceModSoftware.GUI {
     public partial class Form1 : Form {
         // Check if program is admin
         public static bool IsAdministrator(){
@@ -26,49 +29,48 @@ namespace BROMODS {
             int y = Screen.PrimaryScreen.Bounds.Height / 4;
 
             // Text
-            Label TextLeft = new Label();
-            Label TextRight = new Label();
+            TextBox Text = new TextBox();
 
             // Text Properties
-            TextLeft.AutoSize = false; // false
-            TextLeft.TextAlign = ContentAlignment.MiddleCenter;
-            TextLeft.Anchor = AnchorStyles.None;
-            TextLeft.Dock = DockStyle.Left;
-            TextLeft.Width = x / 2;
-            TextLeft.Height = y;
-
-            TextRight.AutoSize = false; // false
-            TextRight.TextAlign = ContentAlignment.MiddleCenter;
-            TextRight.Anchor = AnchorStyles.None;
-            TextRight.Dock = DockStyle.Right;
-            TextRight.Width = x / 2;
-            TextRight.Height = y;
+            Text.AcceptsReturn = true;
+            Text.Multiline = true;
+            Text.ScrollBars = ScrollBars.Vertical;
+            Text.AutoSize = false; 
+            Text.Anchor = AnchorStyles.None;
+            Text.Dock = DockStyle.Fill;
+            Text.Width = x;
+            Text.Height = y;
+            Text.ReadOnly = true;
+            Text.BackColor = Color.Green;
            
             if (!IsAdministrator()){
-                // Text
-                TextLeft.Text =  "DRAG AND DROP BROFORCE.EXE HERE BRO!";
-                TextRight.Text = "DELETE MODS HERE BRO!";
+                if (!Data.EXE.GetExeStorage()){
+                    // Text
+                    Text.AppendText("DRAG AND DROP BROFORCE.EXE HERE BRO!");
+
+                    // Drag and drop
+                    Text.AllowDrop = true;
+
+                    // Open File Browser
+                    GUI_Helpers.Visuals.OpenFileExplorerAsAdmin();
+                } else {
+                    // Text
+                    Text.AppendText(GUI_Helpers.Effects.GetEXEON());
+
+                    // Drag and drop
+                    Text.AllowDrop = false;
+                }
 
                 // Drag and Drop functionality
-                TextLeft.AllowDrop = true;
-                TextLeft.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
-                TextLeft.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this, false);
-
-                TextRight.AllowDrop = true;
-                TextRight.DragEnter += (sender, e) => GUI_Helpers.DragEnter(sender, e);
-                TextRight.DragDrop += (sender, e) => GUI_Helpers.DragDrop(sender, e, this, true);
-
-                // Open File Browser
-                GUI_Helpers.OpenFileExplorerAsAdmin();
+                Text.DragEnter += (sender, e) => GUI_Helpers.Files.DragEnter(sender, e);
+                Text.DragDrop += (sender, e) => GUI_Helpers.Files.DragDrop(sender, e, this);
             } else {
                 // Text
-                TextLeft.Text = "PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!";
-                TextRight.Text = "OTHERWISE STUFF BREAKS BRO!";
+                Text.AppendText("PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!");
             }
 
             // Add text to form
-            this.Controls.Add(TextLeft);
-            this.Controls.Add(TextRight);
+            this.Controls.Add(Text);
 
             // Form Sizing
             this.MinimumSize = new System.Drawing.Size(
@@ -85,7 +87,7 @@ namespace BROMODS {
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             // Show form
-            this.Shown += (sender, e) => GUI_Helpers.ForceShow(sender, e);
+            this.Shown += (sender, e) => GUI_Helpers.Visuals.ForceShow(sender, e);
         }
 
         public Form1(){

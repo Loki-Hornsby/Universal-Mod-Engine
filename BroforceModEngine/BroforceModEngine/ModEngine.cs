@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using BroforceModEngine.Loggers;
 using HarmonyLib;
 using System.Reflection;
 using System.Text;
+using UnityEngine;
+using BroforceModEngine.Loggers;
 
 namespace BroforceModEngine
 {
@@ -93,6 +94,7 @@ namespace BroforceModEngine
 
         }
 
+        /*
         /// <summary>
         /// Load Mods
         /// </summary>
@@ -102,9 +104,21 @@ namespace BroforceModEngine
         {
             public static void Postfix()
             {
-                Console.WriteLine("Screenlogger post");
                 // Screen logger
                 ScreenLogger.Load();
+            }
+        }*/
+
+        /// <summary>
+        /// Having some fun
+        /// </summary>
+        /// https://github.com/Gorzon38/BF-CODE/blob/main/BF-1131/Assembly-CSharp/Menu.cs
+        [HarmonyPatch(typeof(IntroAnim), "Start")] // typeof(MainMenu), "Awake" or "Start"
+        class LoadEverything_Patch
+        {
+            public static void Postfix()
+            {
+                System.Console.WriteLine("Do nothing");
             }
         }
     }

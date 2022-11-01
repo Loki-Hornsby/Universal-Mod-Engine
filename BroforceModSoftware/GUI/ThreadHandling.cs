@@ -4,7 +4,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 
-namespace BROMODS {
+namespace BroforceModSoftware.Threading {
     public static class ThreadHandling {
         public delegate void Threading();
         public static event Threading Finished;
