@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using BroforceModEngine.Loggers;
-using HarmonyLib;
 using System.Runtime.InteropServices;
+using System.Drawing;
+
+using HarmonyLib;
+using BroforceModSoftware;
 
 // i'll try my best to maintain your code style throughout your files 
     // Gorzon but if you don't mind more comments will popup because it helps me to understand what's going on here - Bobby :)
@@ -19,7 +21,7 @@ namespace BroforceModEngine
         {   
             // A console is displayed for debugging purposes
             AllocConsole();
-            SimpleLogger.Log("", "Hello! - Console was started!");
+            Logger.Log("Hello! - Console was started!", Logger.TxtBox.BackColor);
 
             // Begin execution of mod engine
             try
@@ -30,7 +32,7 @@ namespace BroforceModEngine
             }
             catch(Exception ex)
             {
-                GlobalLogger.NoEchecLog(ex.ToString());
+                Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
             }
         }
 
@@ -42,7 +44,7 @@ namespace BroforceModEngine
             }
             catch(Exception ex)
             {
-                ModEngine.EngineLog(ex.ToString(), LogType.Error);
+                Logger.Log(ex.ToString(), Color.Red);
             }
             return null;
         }

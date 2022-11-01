@@ -28,7 +28,7 @@ namespace BroforceModSoftware.Threading {
 
             // Task creation
             var task = Task.Run(tasks.Dequeue());
-            await task.ContinueWith(t => System.Console.WriteLine("TASK DONE"));
+            //await task.ContinueWith(t => );
 
             // Timeout
             if (await Task.WhenAny(task, Task.Delay(timeout)) == task) {
@@ -36,7 +36,7 @@ namespace BroforceModSoftware.Threading {
                 if (tasks.Count > 0){
                     RunNextTask();
                 } else {
-                    Finished?.Invoke(); 
+                    if (Finished != null) Finished.Invoke(); 
                 }
             }
         }

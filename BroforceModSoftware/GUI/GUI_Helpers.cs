@@ -14,6 +14,7 @@ using System.IO;
 
 using BroforceModEngine.Handling;
 using BroforceModSoftware.Threading;
+using BroforceModSoftware;
 
 namespace BroforceModSoftware.Helpers {
     public static class GUI_Helpers {
@@ -64,6 +65,22 @@ namespace BroforceModSoftware.Helpers {
         }
 
         public static class Effects {
+            // Some funky constants
+            const int multiply_divide_fail = 50;
+            const int fail_avgtime = 2;
+
+            const int multiply_divide_success = 25;
+            const int success_avgtime = 2;
+
+            const int lengthNormal = fail_avgtime * multiply_divide_fail;
+            const int sleepNormal = 1000 / multiply_divide_fail;
+            const int amplitudeNormal = 50;
+
+            const int lengthInsane = success_avgtime * multiply_divide_success;
+            const int sleepInsane = 1000 / multiply_divide_success;
+            const int amplitudeInsane = 50;
+        
+            // RAINBOW
             private static Color[] rainbow = new Color[] {
                 Color.Red,
                 Color.Orange,
@@ -79,27 +96,30 @@ namespace BroforceModSoftware.Helpers {
             public const string EXEOFF = "COULDN'T ADD EXE BRO, TRY AGAIN BRO!";
 
             public static string GetEXEON(){
-                return "ADDED " + Data.Files.GetId() + Environment.NewLine + Environment.NewLine + EXEON + Environment.NewLine;
+                return "ADDED " + Data.Files.GetId() + Environment.NewLine + Environment.NewLine + EXEON;
             }
 
             public static string GetEXEOFF(){
                 return "FAILED TO ADD " + Data.Files.GetId() + Environment.NewLine + EXEOFF;
             }
 
-            private static Action Shake(Form form, TextBox txtbox, int length, int sleep, int shake_amplitude = 10, bool RainbowOn = false){
+            /// <summary>
+            /// Shake Form
+            /// </summary>
+            private static Action Shake(Form form, TextBox txtbox, int length, int sleep, int shake_amplitude, bool RainbowOn = false){
                 return () => {
-                    var originalloc = form.Location;
-                    var originalcol = txtbox.BackColor;
-
-                    var rnd = new Random();
-                    float divisor = shake_amplitude / length;
+                    Point originalloc = form.Location;
+                    Color originalcol = txtbox.BackColor;
+                    Random rnd = new Random(1337);
+                    float divisoramp = shake_amplitude / length;
 
                     for (int i = 0; i < length; i++){
                         form.Location = new Point(
                             originalloc.X + rnd.Next(-shake_amplitude, shake_amplitude), 
                             originalloc.Y + rnd.Next(-shake_amplitude, shake_amplitude)
                         );
-                        shake_amplitude = (int)Math.Ceiling(shake_amplitude - divisor);
+
+                        shake_amplitude = (int)System.Math.Ceiling(shake_amplitude - divisoramp);
                         
                         if (RainbowOn) txtbox.BackColor = rainbow[rnd.Next(rainbow.Length)];
                         System.Threading.Thread.Sleep(sleep);
@@ -113,30 +133,19 @@ namespace BroforceModSoftware.Helpers {
             /// <summary>
             /// Perform an effect dependant on current state
             /// </summary>
-            /// <param name="form"></param>
-            /// <param name="txtbox"></param>
-            /// <param name="e"></param>
-            /// <param name="id"></param>
-            /// <returns></returns>
             public static string PerformEffect(Form form, TextBox txtbox, FileStates e, string id){
                 //ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 100, 10));
                 //ThreadHandling.QueueTask(GUI_Helpers.Shake(form, 50, 1));
 
                 string text = "";
 
-                const int multiply_divide_fail = 50;
-                const int fail_avgtime = 2;
-
-                const int multiply_divide_success = 25;
-                const int success_avgtime = 2;
-        
                 switch (e){
                     // Exists
                     case FileStates.Exists:
                         
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = "THAT MOD ALREADY EXISTS BRO!";
                         break;
@@ -146,7 +155,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = "NO FILES HERE BRO! I THINK SOMETHINGS GONE SERIOUSLY WRONG BRO!";
                         break;
@@ -154,7 +163,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = "THAT'S TOO MANY FILES BRO!";
                         break;
@@ -164,7 +173,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = "INVALID INPUT BRO!";
                         break;
@@ -174,7 +183,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlayBroforceFoundSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50, true));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthInsane, sleepInsane, amplitudeInsane, true));
 
                         text = GetEXEON();
                         break;
@@ -182,7 +191,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = GetEXEOFF();
                         break;
@@ -192,7 +201,7 @@ namespace BroforceModSoftware.Helpers {
                         
                         ThreadHandling.QueueTask(Sounds.PlaySuccessSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, success_avgtime * multiply_divide_success, 1000 / multiply_divide_success, 50, true));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthInsane, sleepInsane, amplitudeInsane, true));
 
                         text = id + Environment.NewLine + " WAS UPLOADED SUCCESSFULLY BRO!";
                         break;
@@ -200,7 +209,7 @@ namespace BroforceModSoftware.Helpers {
 
                         ThreadHandling.QueueTask(Sounds.PlayFailSound());
                         ThreadHandling.QueueTask(
-                            GUI_Helpers.Effects.Shake(form, txtbox, fail_avgtime * multiply_divide_fail, 1000 / multiply_divide_fail, 15));
+                            GUI_Helpers.Effects.Shake(form, txtbox, lengthNormal, sleepNormal, amplitudeNormal));
 
                         text = id + Environment.NewLine + " FAILED TO UPLOAD BRO!";
                         break;
@@ -229,7 +238,7 @@ namespace BroforceModSoftware.Helpers {
                 }
 
                 TextBox txtbox = sender as TextBox;
-                txtbox.AppendText(Environment.NewLine + Effects.PerformEffect(form, txtbox, state, id));
+                Logger.Log(Effects.PerformEffect(form, txtbox, state, id), Color.Green);
 
                 if (state == FileStates.SuccessOnExe) txtbox.AllowDrop = false;
 

@@ -3,8 +3,10 @@ using System.IO;
 using HarmonyLib;
 using System.Reflection;
 using System.Text;
-using UnityEngine;
-using BroforceModEngine.Loggers;
+using Unity = UnityEngine;
+
+using BroforceModSoftware;
+using BroforceModEngine;
 
 namespace BroforceModEngine
 {
@@ -23,16 +25,6 @@ namespace BroforceModEngine
         public static string ModsDirectoryPath { get; private set; }
 
         internal static Harmony harmony;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="logType"></param>
-        internal static void EngineLog(object message, BroforceModEngine.Loggers.LogType logType = BroforceModEngine.Loggers.LogType.Log)
-        {
-            GlobalLogger.Log(GlobalLogger.ENGINE_PREFIX, message.ToString(), logType);
-        }
 
         /// <summary>
         /// Load Engine
@@ -58,13 +50,9 @@ namespace BroforceModEngine
                 harmony.PatchAll(assembly);
 
                 // Finished Loading
-                EngineLog("ModEngine loaded");
-            }
-            catch(Exception ex)
-            {
-                string s = SimpleLogger.GetAllFootprints(ex);
-                EngineLog("Footprints: \n" + s, BroforceModEngine.Loggers.LogType.Error);
-                EngineLog("Exception: \n" + ex.ToString(), BroforceModEngine.Loggers.LogType.Error);
+                BroforceModSoftware.Logger.Log("ModEngine loaded", Logger.TxtBox.BackColor);
+            } catch(Exception ex){
+                BroforceModSoftware.Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
             }
         }
 
