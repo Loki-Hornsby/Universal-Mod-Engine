@@ -5,7 +5,7 @@
 - Entire mod loader built from scratch (WIP - Some dependencies are used as placeholders for now)
 
 # Dependencies
-- [https://github.com/BepInEx/HarmonyX](https://github.com/pardeike/Harmony)
+- https://github.com/pardeike/Harmony
 - https://github.com/NeighTools/UnityDoorstop
 
 # Developer (Wip section)
