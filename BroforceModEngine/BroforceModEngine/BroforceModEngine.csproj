@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  
   <!-- If you can please try to avoid loss of comments from this file -->
-
   <!-- Debug Config -->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -17,7 +15,6 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
-
   <!-- Debug Config 2? -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +27,6 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
-
   <!-- Release Config -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,15 +36,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
   <!-- Release Config -->
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+<<<<<<< Updated upstream
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Drawing" />               
     <Reference Include="System.Collections.Generic" />        
@@ -63,22 +62,21 @@
     <Reference Include="System.Security.Principal " />        
     <Reference Include="System.IO" />         
 
+=======
+>>>>>>> Stashed changes
     <!-- Assembly-CSharp -->
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Unity\Assembly-CSharp.dll</HintPath>
     </Reference>
-
     <!-- Harmony 
     <PackageReference Include="HarmonyX">
       <Version>2.10.0</Version>
     </PackageReference> -->
-
     <Reference Include="0Harmony, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Harmony\0Harmony.dll</HintPath>
     </Reference>
-
     <!-- MonoMod Modules -->
     <Reference Include="MonoMod.RuntimeDetour, Version=22.3.23.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
@@ -88,7 +86,6 @@
       <SpecificVersion>True</SpecificVersion>
       <!--<HintPath>_</HintPath>-->
     </Reference>
-
     <!-- Unity Modules -->
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -102,8 +99,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Unity\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
-
   </ItemGroup>
+<<<<<<< Updated upstream
     <ItemGroup>
       <Compile Include="Loader.cs" />
       <Compile Include="ModEngine.cs" />
@@ -120,11 +117,28 @@
     </ItemGroup>
   <ItemGroup/>
 
+=======
+  <ItemGroup>
+    <Compile Include="Loader.cs" />
+    <Compile Include="Loggers\GlobalLogger.cs" />
+    <Compile Include="Loggers\ScreenLogger.cs" />
+    <Compile Include="Loggers\SimpleLogger.cs" />
+    <Compile Include="ModEngine.cs" />
+    <Compile Include="Mods\BroforceMod.cs" />
+    <Compile Include="Mods\BroforceModLoader.cs" />
+    <Compile Include="Mods\ModInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+>>>>>>> Stashed changes
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <PropertyGroup>
     <!-- Bug: path needs to be local to user -->
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> <!-- Bobby Path -->
-    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> --> <!-- Gorzon Path -->
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent>
+    <!-- Bobby Path -->
+    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> -->
+    <!-- Gorzon Path -->
   </PropertyGroup>
 </Project>
