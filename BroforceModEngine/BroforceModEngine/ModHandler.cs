@@ -1,18 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Media;
 using System.Diagnostics;
-using System.Security.Principal;
 using System.IO;
-
-using BroforceModSoftware;
 
 namespace BroforceModEngine.Handling {
     public enum FileStates {
@@ -92,7 +83,7 @@ namespace BroforceModEngine.Handling {
                     string source = files[i][0];
                     string destination = files[i][1];
 
-                    Logger.Log("Directory Copying Is Failing", Color.Red);
+                    //Logger.Log("Directory Copying Is Failing", Color.Red);
 
                     DirectoryInfo dirInfo = new DirectoryInfo(source);
 
@@ -102,7 +93,7 @@ namespace BroforceModEngine.Handling {
                         //f.CopyTo(Path.Combine(destination, f.Name));
                         //Directory.CreateDirectory(Path.Combine(destination, dir.Name));
                         Console.WriteLine(Path.Combine(destination, dir.Name));
-                        Logger.Log("CHEESE", Color.Green);
+                        //Logger.Log("CHEESE", Color.Green);
                     }*/
                 }
             }  

@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using Unity = UnityEngine;
 
-using BroforceModSoftware;
 using BroforceModEngine;
 
 namespace BroforceModEngine
@@ -50,9 +49,9 @@ namespace BroforceModEngine
                 harmony.PatchAll(assembly);
 
                 // Finished Loading
-                BroforceModSoftware.Logger.Log("ModEngine loaded", Logger.TxtBox.BackColor);
+                //BroforceModSoftware.Logger.Log("ModEngine loaded", Logger.TxtBox.BackColor);
             } catch(Exception ex){
-                BroforceModSoftware.Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
+                //BroforceModSoftware.Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
             }
         }
 
@@ -97,16 +96,20 @@ namespace BroforceModEngine
             }
         }*/
 
+        static void CauseError(){
+            
+        }
+
         /// <summary>
         /// Having some fun
         /// </summary>
         /// https://github.com/Gorzon38/BF-CODE/blob/main/BF-1131/Assembly-CSharp/Menu.cs
-        [HarmonyPatch(typeof(IntroAnim), "Start")] // typeof(MainMenu), "Awake" or "Start"
+        [HarmonyPatch(typeof(Menu), "Awake")] // typeof(MainMenu), "Awake" or "Start"
         class LoadEverything_Patch
         {
             public static void Postfix()
             {
-                System.Console.WriteLine("Do nothing");
+                CauseError();
             }
         }
     }
