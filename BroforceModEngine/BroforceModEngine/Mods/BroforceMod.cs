@@ -10,5 +10,11 @@ namespace BroforceModEngine.Mods
     /// </summary>
     public class BroforceMod
     {
+        public ModInfo info;
+
+        internal void Init()
+        {
+            info = new ModInfo();
+        }
     }
 }
