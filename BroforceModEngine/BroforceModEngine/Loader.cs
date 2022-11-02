@@ -26,7 +26,7 @@ namespace BroforceModEngine
             // Begin execution of mod engine
             try
             {
-                //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                 ModEngine.Load();
             }

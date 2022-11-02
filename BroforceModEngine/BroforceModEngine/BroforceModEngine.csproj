@@ -48,7 +48,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />       
+    <Reference Include="System.Xml" />      
+    <Reference Include="System.Runtime.InteropServices" />  
 
     <!-- Assembly-CSharp -->
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -101,8 +102,10 @@
       <Compile Include="Loader.cs" />
       <Compile Include="ModEngine.cs" />
 
-      <!-- Mod Handler GUI built into broforce -->
+      <!-- Shared Access file between BroforceModSoftware and BroforceModEngine -->
       <Compile Include="ModHandler.cs" />
+
+      <!-- Mod Handler GUI built into broforce -->
       <Compile Include="GUI.cs" />
 
       <!-- Backend Mod Handling -->
