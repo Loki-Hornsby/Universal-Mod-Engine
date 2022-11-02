@@ -1,5 +1,9 @@
-﻿namespace BroforceModSoftware.GUI {
-    partial class Form1 {
+﻿/// <summary>
+/// Handles memory management of the software
+/// </summary>
+
+namespace BroforceModSoftware {
+    partial class GUI {
         /// <summary>
         ///  Required designer variable.
         /// </summary>

@@ -5,6 +5,11 @@ using System.Linq;
 using System.Diagnostics;
 using System.IO;
 
+/// <summary>
+/// Handles the Addition and Removal of mods as well as Hooking to Broforce.exe
+/// Referenced By: GUI.cs (BroforceModSoftware), GUI.cs (BroforceModEngine, GUI.cs)
+/// </summary>
+
 namespace BroforceModEngine.Handling {
     public enum FileStates {
         Exists, // Already exists
@@ -20,6 +25,21 @@ namespace BroforceModEngine.Handling {
 
         SuccessOnDelete, // YES! AWESOME!
         FailOnDelete, // NO! TERRIBLE!
+    }
+
+    public static class Processes {
+        public static bool IsRunning(this Process process){
+            if (process == null) 
+                throw new ArgumentNullException("process");
+
+            try {
+                Process.GetProcessById(process.Id);
+            } catch (ArgumentException) {
+                return false;
+            }
+
+            return true;
+        }
     }
 
     public static class Data { // Nicknamed data because it modifies data - namely files

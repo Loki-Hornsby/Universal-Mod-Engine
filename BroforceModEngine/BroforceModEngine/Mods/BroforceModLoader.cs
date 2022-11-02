@@ -4,6 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+/// <summary>
+/// A template for loading Broforce mods?
+/// </summary>
+
 namespace BroforceModEngine.Mods
 {
     internal static class BroforceModLoader

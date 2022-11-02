@@ -5,8 +5,9 @@ using System.Runtime.InteropServices;
 
 using HarmonyLib;
 
-// i'll try my best to maintain your code style throughout your files 
-    // Gorzon but if you don't mind more comments will popup because it helps me to understand what's going on here - Bobby :)
+/// <summary>
+/// The general loader for the engine
+/// </summary>
 
 namespace BroforceModEngine
 {
@@ -19,7 +20,7 @@ namespace BroforceModEngine
         {   
             // A console is displayed for debugging purposes
             AllocConsole();
-            Console.WriteLine("HI!");
+            System.Console.WriteLine("HI!");
             //Logger.Log("Hello! - Console was started!", Logger.TxtBox.BackColor);
 
             // Begin execution of mod engine

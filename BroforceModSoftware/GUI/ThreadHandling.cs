@@ -4,6 +4,10 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Handles threading for the GUI
+/// </summary>
+
 namespace BroforceModSoftware.Threading {
     public static class ThreadHandling {
         public delegate void Threading();

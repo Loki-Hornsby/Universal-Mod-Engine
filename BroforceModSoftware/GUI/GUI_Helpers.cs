@@ -16,6 +16,10 @@ using BroforceModEngine.Handling;
 using BroforceModSoftware.Threading;
 using BroforceModSoftware;
 
+/// <summary>
+/// Handles logic for the GUI
+/// </summary>
+
 namespace BroforceModSoftware.Helpers {
     public static class GUI_Helpers {
         public static class Sounds {

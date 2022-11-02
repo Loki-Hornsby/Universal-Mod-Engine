@@ -5,7 +5,11 @@ using System.Reflection;
 using System.Text;
 using Unity = UnityEngine;
 
-using BroforceModEngine;
+using BroforceModEngine.Handling;
+
+/// <summary>
+/// The engine - Mainly used for testing at the moment (needs tidying)
+/// </summary>
 
 namespace BroforceModEngine
 {
@@ -24,6 +28,9 @@ namespace BroforceModEngine
         public static string ModsDirectoryPath { get; private set; }
 
         internal static Harmony harmony;
+
+        // Loaded boolean
+        private static bool _loaded;
 
         /// <summary>
         /// Load Engine
@@ -50,13 +57,22 @@ namespace BroforceModEngine
 
                 // Finished Loading
                 //BroforceModSoftware.Logger.Log("ModEngine loaded", Logger.TxtBox.BackColor);
+
+                _loaded = true;
             } catch(Exception ex){
                 //BroforceModSoftware.Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
+
+                _loaded = true;
+            }
+
+            // Load recursively until success or fail
+            if (!_loaded){
+                Load();
             }
         }
 
         /// <summary>
-        /// Check if directories are present, otherwise create the directories.
+        /// Check if directories are present, otherwise create the directories. //Unused: To be replaced by GUI
         /// </summary>
         private static void CheckDirectories()
         {

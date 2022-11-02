@@ -16,6 +16,10 @@ using BroforceModSoftware;
 using BroforceModSoftware.Helpers;
 using BroforceModEngine.Handling;
 
+/// <summary>
+/// Handles the software's GUI
+/// </summary>
+
 namespace BroforceModSoftware {
     // https://stackoverflow.com/questions/18726852/redirecting-console-writeline-to-textbox
     public class ConsoleLogger : TextWriter {
@@ -109,8 +113,8 @@ namespace BroforceModSoftware {
     }
 }
 
-namespace BroforceModSoftware.GUI {
-    public partial class Form1 : Form {
+namespace BroforceModSoftware {
+    public partial class GUI : Form {
         // Check if program is admin
         public static bool IsAdministrator(){
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -162,7 +166,7 @@ namespace BroforceModSoftware.GUI {
             this.Shown += (sender, e) => GUI_Helpers.Visuals.ForceShow(sender, e);
         }
 
-        public Form1(){
+        public GUI(){
             Logger.Init(this);
             InitializeComponent();
             InitializeUI();

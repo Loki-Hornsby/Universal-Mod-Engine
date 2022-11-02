@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+/// <summary>
+/// A template for defining info about a Broforce mod.
+/// </summary>
+
 namespace BroforceModEngine.Mods
 {
     /// <summary>
