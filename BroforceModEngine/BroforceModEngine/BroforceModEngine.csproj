@@ -48,8 +48,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />      
-    <Reference Include="System.Runtime.InteropServices" />  
+    <Reference Include="System.Xml" />    
+    <Reference Include="System.Drawing" /> 
 
     <!-- Assembly-CSharp -->
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -58,8 +58,8 @@
     </Reference>
 
     <!-- Newtonsoft -->
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\lib\NewtonSoft\NewtonSoft.Json.dll</HintPath>
     </Reference>
 
     <!-- Harmony 
@@ -102,13 +102,16 @@
       <Compile Include="Loader.cs" />
       <Compile Include="ModEngine.cs" />
 
-      <!-- Shared Access file between BroforceModSoftware and BroforceModEngine -->
+      <!-- Shared Access functions between BroforceModSoftware and BroforceModEngine -->
       <Compile Include="ModHandler.cs" />
 
       <!-- Mod Handler GUI built into broforce -->
       <Compile Include="GUI.cs" />
 
-      <!-- Backend Mod Handling -->
+      <!-- Logger for Mod Engine -->
+      <Compile Include="Logger.cs" />
+
+      <!-- Mod Structure -->
       <Compile Include="Mods\BroforceMod.cs" />
       <Compile Include="Mods\ModInfo.cs" />
       <Compile Include="Mods\BroforceModLoader.cs" />
@@ -117,10 +120,6 @@
       <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
   <ItemGroup/>
-  
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 

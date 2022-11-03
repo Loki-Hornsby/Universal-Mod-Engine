@@ -30,11 +30,11 @@ namespace BroforceModSoftware {
         }
 
         public override void Write(char value){
-            Logger.Log(value.ToString(), Logger.TxtBox.BackColor);
+            Logger.Log("[Message from System] " + value.ToString(), Logger.TxtBox.BackColor);
         }
 
         public override void Write(string value){
-            Logger.Log(value, Logger.TxtBox.BackColor);
+            Logger.Log("[Message from System] " + value, Logger.TxtBox.BackColor);
         }
 
         public override Encoding Encoding {
@@ -123,9 +123,6 @@ namespace BroforceModSoftware {
         }
 
         public void InitializeUI(){
-            int x = Screen.PrimaryScreen.Bounds.Width / 4;
-            int y = Screen.PrimaryScreen.Bounds.Height / 4;
-           
             if (!IsAdministrator()){
                 if (Data.EXE.GetExeLocation() == ""){
                     // Text
@@ -149,9 +146,12 @@ namespace BroforceModSoftware {
             }
 
             // Form Sizing
+            int x = Screen.PrimaryScreen.Bounds.Width;
+            int y = Screen.PrimaryScreen.Bounds.Height;
+
             this.MinimumSize = new System.Drawing.Size(
-                x,
-                y
+                x/4,
+                y/4
             );
 
             this.MaximumSize = new System.Drawing.Size(
@@ -159,8 +159,12 @@ namespace BroforceModSoftware {
                 y
             );
 
+            this.Size = new System.Drawing.Size(
+                x/2,
+                y/4
+            );
+
             this.AutoSize = false;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             // Show form
             this.Shown += (sender, e) => GUI_Helpers.Visuals.ForceShow(sender, e);

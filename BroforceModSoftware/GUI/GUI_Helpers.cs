@@ -96,8 +96,13 @@ namespace BroforceModSoftware.Helpers {
             };
 
             // Messages
-            public const string EXEON = "NOW PLAY SOME BROFORCE BRO!\n THIS WILL LOG ANYTHING YOU NEED TO SEE WHILE PLAYING BRO.";
-            public const string EXEOFF = "COULDN'T ADD EXE BRO, TRY AGAIN BRO!";
+            public static string EXEON = "THIS WILL LOG ANYTHING YOU NEED TO SEE WHILE PLAYING BRO!" + 
+                                        Environment.NewLine + 
+                                        "REMEMBER TO LAUNCH THIS APP EACH TIME YOU WANT TO USE MODS BRO!" +
+                                        Environment.NewLine + 
+                                        "NOW PLAY SOME BROFORCE BRO!";
+
+            public static string EXEOFF = "COULDN'T ADD EXE BRO, TRY AGAIN BRO!";
 
             public static string GetEXEON(){
                 return "ADDED " + Data.Files.GetId() + Environment.NewLine + Environment.NewLine + EXEON;

@@ -3,9 +3,10 @@ using System.IO;
 using HarmonyLib;
 using System.Reflection;
 using System.Text;
-using UnityEngine;
+using Unity = UnityEngine;
 
 using BroforceModEngine.Handling;
+using BroforceModEngine.Logging;
 
 /// <summary>
 /// The engine - Mainly used for testing at the moment (needs tidying)
@@ -30,21 +31,20 @@ namespace BroforceModEngine
         internal static Harmony harmony;
 
         // Loaded boolean
-        private static bool _loaded = false;
+        public static bool _loaded = false;
 
         /// <summary>
         /// Load Engine
         /// </summary>
-        internal static void Load()
-        {
-            try
-            {
+        internal static void Load() {
+            Logger.Log("Loading Mod Engine...", Logger.LogType.None);
+
+            try {
                 // Directories
                 CheckDirectories();
 
                 // Load all assemblies
-                foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll"))
-                {
+                foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll")){
                     Assembly.LoadFile(file);
                 }
 
@@ -56,15 +56,11 @@ namespace BroforceModEngine
                 harmony.PatchAll(assembly);
 
                 // Finished Loading
-                //BroforceModSoftware.Logger.Log("ModEngine loaded", Logger.TxtBox.BackColor);
-
-                System.Console.WriteLine("HI!");
+                Logger.Log("Loaded Mod Engine...", Logger.LogType.None);
 
                 _loaded = true;
             } catch(Exception ex){
-                //BroforceModSoftware.Logger.Log(ex.ToString(), Logger.TxtBox.BackColor);
-
-                System.Console.WriteLine(ex.ToString());
+                Logger.Log(ex.ToString(), Logger.LogType.None);
 
                 _loaded = true;
             }
@@ -72,33 +68,31 @@ namespace BroforceModEngine
             // Load recursively until success or fail
             if (!_loaded){
                 Load();
+            } else {
+                Logger.Log("Mod Engine Started.", Logger.LogType.None);
             }
         }
 
         /// <summary>
         /// Check if directories are present, otherwise create the directories. //Unused: To be replaced by GUI
         /// </summary>
-        private static void CheckDirectories()
-        {
+        
+        private static void CheckDirectories(){
             EngineDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "BroforceModEngine");
             DependenciesDirectoryPath = EngineDirectoryPath;
             ModsDirectoryPath = Path.Combine(EngineDirectoryPath, "Mods");
 
-            if (!Directory.Exists(EngineDirectoryPath))
-            {
+            if (!Directory.Exists(EngineDirectoryPath)){
                 Directory.CreateDirectory(EngineDirectoryPath);
             }
 
-            if (!Directory.Exists(DependenciesDirectoryPath))
-            {
+            if (!Directory.Exists(DependenciesDirectoryPath)){
                 Directory.CreateDirectory(DependenciesDirectoryPath);
             }
 
-            if (!Directory.Exists(ModsDirectoryPath))
-            {
+            if (!Directory.Exists(ModsDirectoryPath)){
                 Directory.CreateDirectory(ModsDirectoryPath);
             }
-
         }
 
         /*

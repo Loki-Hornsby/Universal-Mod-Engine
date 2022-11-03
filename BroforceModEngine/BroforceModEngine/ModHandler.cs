@@ -27,21 +27,6 @@ namespace BroforceModEngine.Handling {
         FailOnDelete, // NO! TERRIBLE!
     }
 
-    public static class Processes {
-        public static bool IsRunning(this Process process){
-            if (process == null) 
-                throw new ArgumentNullException("process");
-
-            try {
-                Process.GetProcessById(process.Id);
-            } catch (ArgumentException) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
     public static class Data { // Nicknamed data because it modifies data - namely files
         // LATEST UPLOAD
         public static FileStates FileState;
@@ -103,9 +88,9 @@ namespace BroforceModEngine.Handling {
                     string source = files[i][0];
                     string destination = files[i][1];
 
-                    //Logger.Log("Directory Copying Is Failing", Color.Red);
+                    //Logger.Log("Directory Copying Is Failing", Logger.LogType.Error);
 
-                    DirectoryInfo dirInfo = new DirectoryInfo(source);
+                    //zDirectoryInfo dirInfo = new DirectoryInfo(source);
 
                     /*
                     DirectoryInfo[] dirs = dirInfo.GetDirectories();
@@ -113,7 +98,7 @@ namespace BroforceModEngine.Handling {
                         //f.CopyTo(Path.Combine(destination, f.Name));
                         //Directory.CreateDirectory(Path.Combine(destination, dir.Name));
                         Console.WriteLine(Path.Combine(destination, dir.Name));
-                        //Logger.Log("CHEESE", Color.Green);
+                        //Logger.Log("CHEESE", Color.Success);
                     }*/
                 }
             }  
