@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <Compile Include="..\BroforceModEngine\BroforceModEngine\ModHandler.cs" />
+      <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\ModHandler.cs" /> -->
       <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\Loader.cs" /> -->
   </ItemGroup>    
 </Project>

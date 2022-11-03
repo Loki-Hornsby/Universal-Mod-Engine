@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using Unity = UnityEngine;
 
-using BroforceModEngine.Handling;
 using BroforceModEngine.Logging;
 
 /// <summary>
@@ -56,11 +55,11 @@ namespace BroforceModEngine
                 harmony.PatchAll(assembly);
 
                 // Finished Loading
-                Logger.Log("Loaded Mod Engine...", Logger.LogType.None);
+                Logger.Log("Loaded Mod Engine...");
 
                 _loaded = true;
             } catch(Exception ex){
-                Logger.Log(ex.ToString(), Logger.LogType.None);
+                Logger.Log(ex.ToString());
 
                 _loaded = true;
             }
@@ -69,7 +68,7 @@ namespace BroforceModEngine
             if (!_loaded){
                 Load();
             } else {
-                Logger.Log("Mod Engine Started.", Logger.LogType.None);
+                Logger.Log("Mod Engine Started.");
             }
         }
 

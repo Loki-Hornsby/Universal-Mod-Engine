@@ -21,20 +21,17 @@ namespace BroforceModEngine {
 
                 ModEngine.Load();
             } catch(Exception ex) {
-                Logger.Log(ex.ToString(), Logger.LogType.None);
+                Logger.Log(ex.ToString());
             }
         }
 
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            try
-            {
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args){
+            try {
                 return Assembly.LoadFile(Path.Combine(ModEngine.EngineDirectoryPath, "0Harmony.dll"));
-            }
-            catch(Exception ex)
-            {
+            } catch(Exception ex){
                 
             }
+            
             return null;
         }
     }

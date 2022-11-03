@@ -4,30 +4,48 @@ using System.ComponentModel;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing;
+using System.Security.Permissions;
+
+using BroforceModSoftware;
 
 /// <summary>
-/// Handles the Addition and Removal of mods as well as Hooking to Broforce.exe
-/// Referenced By: GUI.cs (BroforceModSoftware), GUI.cs (BroforceModEngine, GUI.cs)
+/// Handles back end interaction for the GUI
+/// This is the entry point for where the software begins communication to the engine
 /// </summary>
 
-namespace BroforceModEngine.Handling {
-    public enum FileStates {
-        Exists, // Already exists
-        Dearth, // Too little files (None were found)
-        Excess, // Too many files
-        Invalid, // Invalid file type
+namespace BroforceModSoftware.Interaction.Back {
+    public static class BI { 
+        public enum FileStates {
+            Dearth, // Too little files (None were found)
+            Excess, // Too many files
+            Invalid, // Invalid file type
 
-        SuccessOnExe, // YES! SUCCESS!
-        FailOnExe, // NO! FAILURE!
+            SuccessOnExe, // YES! SUCCESS!
+            FailOnExe, // NO! FAILURE!
 
-        SuccessOnMod, // YES! MORE SUCCESS!
-        FailOnMod, // NO! MORE FAILURE!
+            SuccessOnMod, // YES! MORE SUCCESS!
+            FailOnMod, // NO! MORE FAILURE!
+        }
+        
+        /// <summary>
+        /// Checks wether a file is in use or not
+        /// </summary>
+        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+        static bool IsFileLocked(FileInfo f){
+            try {
+                using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
+                    stream.Close();
+                }
+            } catch (Exception ex) {
+                return true;
 
-        SuccessOnDelete, // YES! AWESOME!
-        FailOnDelete, // NO! TERRIBLE!
-    }
+                // We don't need a log here since an intentional error is meant to occur here
+            }
 
-    public static class Data { // Nicknamed data because it modifies data - namely files
+            return false;
+        }
+
         // LATEST UPLOAD
         public static FileStates FileState;
 
@@ -49,25 +67,35 @@ namespace BroforceModEngine.Handling {
 
                 try{
                     s = File.ReadAllText(StorageFilePath);
-                } catch (Exception e){
-                    s = "";
+                } catch (Exception ex){
+                    s = null;
+
+                    Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.High);
                 }
 
                 return s;
             }
 
             /// <summary>
+            /// Checks wether EXE (Broforce.exe) is in use
+            /// </summary>
+            public static bool IsInUse(){
+                return IsFileLocked(new FileInfo(GetExeLocation()));
+            }
+
+            /// <summary>
             /// Create the file
             /// </summary>
-            static void CreateExeStorage(string exe){
-                string dir = Path.GetDirectoryName(StorageFilePath);
-                string name = StorageFilePath;
+            static void CreateExeStorage(string path, string name){
+                string StorageDir = Path.GetDirectoryName(StorageFilePath);
+                string StorageFull = StorageFilePath;
 
                 // If directory does not exist, create it
-                if (!Directory.Exists(dir)){
-                    Directory.CreateDirectory(dir);
+                if (!Directory.Exists(StorageDir)){
+                    Directory.CreateDirectory(StorageDir);
 
-                    File.WriteAllText(name, exe);
+                    // Write EXE path and name to file
+                    File.WriteAllText(StorageFull, Path.Combine(path, name));
                 }
             }
 
@@ -88,7 +116,7 @@ namespace BroforceModEngine.Handling {
                     string source = files[i][0];
                     string destination = files[i][1];
 
-                    //Logger.Log("Directory Copying Is Failing", Logger.LogType.Error);
+                    //Logger.Log("Directory Copying Is Failing");
 
                     //zDirectoryInfo dirInfo = new DirectoryInfo(source);
 
@@ -106,10 +134,9 @@ namespace BroforceModEngine.Handling {
             /// <summary>
             /// Add the exe location to a text file
             /// </summary>
-            /// <returns></returns>
-            public static FileStates AddExe(){
+            public static void AddExe(){
                 if (LastFile.Contains(".exe")) {
-                    CreateExeStorage(LastPath);
+                    CreateExeStorage(LastPath, LastFile);
                     CopyEngineToExe();
 
                     FileState = FileStates.SuccessOnExe;
@@ -122,41 +149,34 @@ namespace BroforceModEngine.Handling {
                 } else {
                     FileState = FileStates.Invalid;
                 }
-
-                return FileState;
             }
         }
 
-        public static class Files{
+        public static class Files {
             /// <summary>
             /// Send the file uploaded to be added as an exe or if reenabled by a mod sent to it's reciever
             /// </summary>
-            /// <param name="files"></param>
-            /// <returns></returns>
-            public static FileStates SendFiles(string[] files){
+            public static void SendFiles(string[] files){
                 LastFiles = files;
                 LastFile = Path.GetFileName(LastFiles[0]);
                 LastPath = Path.GetDirectoryName(LastFiles[0]);
 
                 if (LastFiles.Length > 0){ // Empty?
                     if (LastFiles.Length == 1){ // Only 1 file?
-                        return EXE.AddExe();
+                        EXE.AddExe();
                     } else {
                         FileState = FileStates.Excess;
                     }
                 } else {
                     FileState = FileStates.Dearth;
                 }
-
-                return FileState;
             }
 
             /// <summary>
             /// Returns the last file stored
             /// </summary>
-            /// <returns></returns>
             public static string GetId(){
-                string pfull = ((LastFile == null) ? Path.GetFullPath(Data.EXE.StorageFilePath) : Path.GetFullPath(LastFile));
+                string pfull = ((LastFile == null) ? Path.GetFullPath(EXE.StorageFilePath) : Path.GetFullPath(LastFile));
                 return pfull;
             }
         }

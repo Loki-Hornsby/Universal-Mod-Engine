@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Logging for the mod engine - Communicates to a spawned console and GUI
@@ -8,13 +9,6 @@ using System.Drawing;
 
 namespace BroforceModEngine.Logging {
     public static class Logger {
-        public enum LogType {
-            Error,
-            Warning,
-            Success,
-            None
-        }
-
         [DllImport("kernel32")]
         static extern bool AllocConsole();
 
@@ -27,33 +21,21 @@ namespace BroforceModEngine.Logging {
                 AllocConsole();
             }
 
-            Log("Debug Console Started!", LogType.None);
+            Log("Debug Console Started!");
         }
 
-        public static void Log(string message, LogType type = LogType.None){
-            if (!_initialized) { try { Initialize(true); } catch (Exception e) { ; } } // The ";" acts like a pass statement in python
+        public static void Log(
+                string message, 
+                //LogType type = LogType.None, 
+                [CallerFilePath] string file = "", 
+                [CallerMemberName] string member = "", 
+                [CallerLineNumber] int line = 0
+            ){
 
-            if (type == LogType.None){
-                System.Console.WriteLine(message);
-                //Logger.Log(message) // Todo: need to communicate to gui somehow
-            } else {
-                Color col;
+            if (!_initialized) { try { Initialize(true); } catch (Exception ex) { ; } } // The ";" acts like a pass statement in python
 
-                switch (type){
-                    case LogType.Error:
-                        col = Color.Red;
-                        break;
-                    case LogType.Warning:
-                        col =  Color.Yellow;
-                        break;
-                    case LogType.Success:
-                        col = Color.Green;
-                        break;
-                }
-
-                System.Console.WriteLine(message);
-                //Logger.Log(message, (Color)type) // Todo: need to communicate to gui somehow
-            }
+            string RebuiltMessage = ("{0}_{1}({2}): {3}", Path.GetFileName(file), member, line, text);                                                    
+            System.Console.WriteLine(RebuiltMessage);
         }
     }
 }
