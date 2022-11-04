@@ -6,7 +6,6 @@
 
 # Dependencies
 - https://github.com/pardeike/Harmony
-- https://github.com/NeighTools/UnityDoorstop
 
 # Developer (Wip section)
 - Use Vscode or Visual Studio
