@@ -132,20 +132,20 @@ namespace BroforceModSoftware.Interaction.Front {
                     case BI.FileStates.Dearth:
                         Media.Sounds.PlayFailSound();
                         Media.Effects.ShakeNormal(form, txtbox);
-                        text = "FATAL ERROR BRO! (No files were found - Have they been deleted?)";
+                        text = "No files were found?";
                         break;
 
                     case BI.FileStates.Excess:
                         Media.Sounds.PlayFailSound();
                         Media.Effects.ShakeNormal(form, txtbox);
-                        text = "THAT'S TOO MANY FILES BRO!";
+                        text = "Too many files uploaded.";
                         break;
 
                     // Invalid
                     case BI.FileStates.Invalid:
                         Media.Sounds.PlayFailSound();
                         Media.Effects.ShakeNormal(form, txtbox);
-                        text = "INVALID INPUT BRO!";
+                        text = "Incorrect input. Is the file corrupted?";
                         break;
 
                     // Exe
@@ -163,13 +163,13 @@ namespace BroforceModSoftware.Interaction.Front {
                     case BI.FileStates.SuccessOnMod:
                         Media.Sounds.PlaySuccessSound();
                         Media.Effects.ShakeIntense(form, txtbox);
-                        text = id + " WAS UPLOADED SUCCESSFULLY BRO!";
+                        text = id + " was uploaded.";
                         break;
 
                     case BI.FileStates.FailOnMod:
                         Media.Sounds.PlayFailSound();
                         Media.Effects.ShakeNormal(form, txtbox);
-                        text = id + " FAILED TO UPLOAD BRO!";
+                        text = id + " failed to upload.";
                         break;
                 }
 

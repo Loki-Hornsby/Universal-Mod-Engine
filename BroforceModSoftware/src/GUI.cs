@@ -126,10 +126,23 @@ namespace BroforceModSoftware {
                         break;
                 }
 
-                string RebuiltMessage = String.Format("[{0}]@[{1}/{2}/{3}]: {4}",
-                    type.ToString(), Path.GetFileName(file), member, line, txt) + Environment.NewLine;          
+                string RebuiltMessage = "You shouldn't be seeing this message. Try using Options/Reset, Rebuilding from source, Or contacting the developer.";      
 
-                TxtBox.AppendText(RebuiltMessage);
+                switch (Logger.verbosity){
+                    case VerboseType.High:
+                        RebuiltMessage = String.Format("[{0}, {1}]@[{2}/{3}/{4}]: ", 
+                            v.ToString(), type.ToString(), Path.GetFileName(file), member, line) + Environment.NewLine + "    ";          
+                        break;
+                    case VerboseType.Medium:
+                        RebuiltMessage = String.Format("[{0}, {1}]: ", 
+                            v.ToString(), type.ToString());      
+                        break;
+                    case VerboseType.Low:
+                        RebuiltMessage = "~ ";
+                        break;
+                }
+
+                TxtBox.AppendText(RebuiltMessage + txt + Environment.NewLine);
                 TxtBox.BackColor = col ?? Color.Black;
             }
         }
@@ -160,7 +173,7 @@ namespace BroforceModSoftware {
                     break;
             }
 
-            Logger.Log("Set Verbose Level to " + s, Logger.LogType.Default, Logger.VerboseType.Low);
+            Logger.Log("Set Verbose Level to " + s, Logger.LogType.Default, v);
         }
 
         /// <summary>
@@ -175,6 +188,13 @@ namespace BroforceModSoftware {
         /// </summary>
         public static void AllowDragAndDrop(bool x){
             TxtBox.AllowDrop = x;
+        }
+    
+        /// <summary>
+        /// Empty Log
+        /// </summary>
+        public static void Empty(){
+            TxtBox.Text = "Log was emptied..." + Environment.NewLine;
         }
     }
 }
@@ -198,72 +218,91 @@ namespace BroforceModSoftware {
             bool retry = false;
             string s = "";
 
-            if (File.Exists(BI.EXE.StorageFilePath)){ // STORE.txt exists?
-                s += "LOCATED STORE.TXT (" + Path.GetFullPath(BI.EXE.StorageFilePath) + ")";
+            /// <summary>
+            /// Checks wether STORE.txt exists
+            /// </summary>
+            if (File.Exists(BI.EXE.StorageFilePath)){
+                s += "Found STORE.txt @ (" + Path.GetFullPath(BI.EXE.StorageFilePath) + ")";
             } else {
                 fail = true;
-                s += "STORE.TXT IS MISSING";
+                s += "STORE.txt was not found.";
             }
 
             Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Medium);
             s = "";
-
-            if (File.Exists(BI.EXE.GetExeLocation())){ // STORE.txt contents valid?
+            
+            /// <summary>
+            /// Checks wether the path inside STORE.txt exists
+            /// </summary>
+            if (File.Exists(BI.EXE.GetExeLocation())){
                 s += 
-                "LOCATED BROFORCE.EXE (" + 
+                "Found Broforce executable @ (" + 
                 BI.EXE.GetExeLocation() + ")" +
                 Environment.NewLine;
             } else {
                 fail = true;
 
-                s += BI.EXE.GetExeLocation() + " IS AN INVALID PATH FOR BROFORCE.EXE";
-            }
-
-            Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Medium);
-            s = "";
-
-            if (!fail){ // no fails occurred?
-                s += 
-                Environment.NewLine + 
-                "THIS WILL LOG ANYTHING YOU NEED TO SEE WHILE PLAYING BRO!" + 
-                Environment.NewLine + 
-                "REMEMBER TO LAUNCH THIS APP EACH TIME YOU WANT TO USE MODS BRO!" +
-                Environment.NewLine + 
-                "NOW PLAY SOME BROFORCE BRO!";
-            } else {
-                if (File.Exists(BI.EXE.StorageFilePath)){ 
-                    // Todo - create this functionality below (don't close the application)
-                    s += "FATAL ERRORS OCCURED BRO! DELETING STORE.TXT AND RELOADING...";
-
-                    File.Delete(BI.EXE.StorageFilePath);
+                if (BI.EXE.GetExeLocation() == null){
+                    s += "The stored path to the Broforce executable is empty.";
                 } else {
-                    retry = true;
-
-                    s += "ASKING USER FOR EXE LOCATION...";
+                    s += BI.EXE.GetExeLocation() + " is an invalid path for the Broforce executable.";
                 }
             }
 
             Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Medium);
-            if (retry) InitializeUI();
+            s = "";
+            
+            /// <summary>
+            /// Final output - decides wether reset is needed or if operation was successfull
+            /// </summary>
+            if (!fail){ 
+                s += 
+                Environment.NewLine + 
+                "This will log anything you need to see whilst playing." + 
+                Environment.NewLine + 
+                "~ When you want to use mods open this application first then open Broforce." +
+                Environment.NewLine + 
+                "~ If you don't want to use mods then don't open this application.";
+            } else {
+                retry = true;
 
-            if (!fail && !retry && BI.EXE.IsInUse()){ // Broforce is launched or incorrect exe was chosen?
-                Logger.Log("EITHER BROFORCE IS CURRENTLY RUNNING OR YOU CHOSE THE WRONG EXE BRO! (TRY USING OPTIONS/RESET BRO!)", Logger.LogType.Error, Logger.VerboseType.Low);
+                if (File.Exists(BI.EXE.StorageFilePath)){ 
+                    s += "The path in STORE.txt was incorrect. Resetting...";
+    
+                    File.Delete(BI.EXE.StorageFilePath);
+                } else {
+                    s += "Asking user to upload executable file for Broforce...";
+                }
             }
+
+            /// <summary>
+            /// Only logs above contents if selected EXE isn't currently running
+            /// </summary>
+            if (!fail && !retry && BI.EXE.IsInUse()){ 
+                Logger.Log("You need to open this application before launching Broforce. Use Options/Reset in the context menu above if you have chosen the wrong exe or close this application and reopen it after closing Broforce.", Logger.LogType.Error, Logger.VerboseType.Low);
+            } else {
+                Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Low);
+            }
+
+            // Reset if needed
+            if (retry) InitializeUI();
         }
 
         /// <summary>
         /// Reset STORE.txt
         /// </summary>
         void Reset(object sender, EventArgs e){
+            Logger.Empty();
+
             if (File.Exists(BI.EXE.StorageFilePath)){ 
-                Logger.Log("RESETTING STORE.TXT!", Logger.LogType.Success, Logger.VerboseType.Medium);
+                Logger.Log("Resetting STORE.txt.", Logger.LogType.Success, Logger.VerboseType.Medium);
 
                 File.Delete(BI.EXE.StorageFilePath);
             } else {
-                Logger.Log("ALREADY RESET STORE.TXT!", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                Logger.Log("Already reset STORE.txt!", Logger.LogType.Warning, Logger.VerboseType.Medium);
             }
 
-            Logger.Log("RESETTING...", Logger.LogType.Success, Logger.VerboseType.Low);
+            Logger.Log("Resetting...", Logger.LogType.Success, Logger.VerboseType.Low);
 
             InitializeUI();
         }
@@ -272,25 +311,33 @@ namespace BroforceModSoftware {
         /// Initialize UI Controls
         /// </summary>
         public void InitializeUI(){
+            // Tip
+            if (!IsAdministrator()) Logger.Log(
+                "If you would like to see a higher level of logging at startup then run this application as administrator. This will stop you from uploading files for security reasons.", 
+                Logger.LogType.Success, Logger.VerboseType.Low
+            );
+
+            Logger.AddNewLine();
+
             // Starting Message
-            if (!IsAdministrator()){ // Administrator enabled?
-                if (BI.EXE.GetExeLocation() == null){ // Exe location found?
-                    // Text
-                    Logger.Log("DRAG AND DROP BROFORCE.EXE HERE BRO!", Logger.LogType.Success, Logger.VerboseType.Low);
+            if (BI.EXE.GetExeLocation() == null){ // Exe location found?
+                // info
+                Logger.Log("STORE.txt contents are empty. Asking for exe...", Logger.LogType.Warning, Logger.VerboseType.High);
 
-                    // Drag and drop
-                    Logger.AllowDragAndDrop(true);
-                    Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
-                } else {
-                    // Show launch info
-                    GenerateLaunchInfo(null, null);
-
-                    // Drag and drop
-                    Logger.AllowDragAndDrop(false);
-                }
-            } else {
                 // Text
-                Logger.Log("PLEASE RUN THIS APPLICATION WITHOUT ADMINISTRATOR BRO!", Logger.LogType.Error, Logger.VerboseType.Low);
+                Logger.Log(@"Drag and Drop the executable file for Broforce into this window. (Usually this is named 'Broforce_beta.exe' or 'Broforce.exe' and can normally be found under 'Steam\steamapps\common\Broforce' - you could also right click the file on your desktop then click 'Open File Location')", Logger.LogType.Success, Logger.VerboseType.Low);
+
+                // Drag and drop
+                Logger.AllowDragAndDrop(true);
+            } else {
+                // info
+                Logger.Log("STORE.txt contents are not empty. No action needed...", Logger.LogType.Success, Logger.VerboseType.High);
+
+                // Show launch info
+                GenerateLaunchInfo(null, null);
+
+                // Drag and drop
+                Logger.AllowDragAndDrop(false);
             }
         }
 
@@ -323,7 +370,7 @@ namespace BroforceModSoftware {
             // Tool Menu
             this.IsMdiContainer = true;
 
-            // Create a MenuStrip control with a new window.
+            // Menu strip stuff
             MenuStrip ms = new MenuStrip();
 
             ToolStripMenuItem options = new ToolStripMenuItem("Options");
@@ -343,8 +390,17 @@ namespace BroforceModSoftware {
                 "High", null, new EventHandler((sender, e) => SetVerboseLevel(sender, e, Logger.VerboseType.High)));
                 verbosity.DropDownItems.Add(high_verbose);
 
-            SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
+            // Override startup verbosity
+            if (IsAdministrator()){
+                SetVerboseLevel(high_verbose, null, Logger.VerboseType.High);
 
+                Logger.Log("Reminder: Running this application as administrator will usually not allow for upload of files. This serves as a way to quickly debug startup.", 
+                    Logger.LogType.Warning, Logger.VerboseType.Low);
+            } else {
+                SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
+            }
+
+            // Assigning
             ms.Items.Add(verbosity);
 
             ms.MdiWindowListItem = verbosity;
@@ -352,6 +408,9 @@ namespace BroforceModSoftware {
             ms.Dock = DockStyle.Top;
             this.MainMenuStrip = ms;
             this.Controls.Add(ms);
+
+            // Subscribe logger to drag drop event
+            Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
 
             // Form Sizing
             int x = Screen.PrimaryScreen.Bounds.Width;

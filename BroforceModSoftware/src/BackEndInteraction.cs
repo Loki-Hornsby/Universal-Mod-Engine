@@ -70,7 +70,7 @@ namespace BroforceModSoftware.Interaction.Back {
                 } catch (Exception ex){
                     s = null;
 
-                    Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.High);
+                    // We don't need a log here since an intentional error is meant to occur here
                 }
 
                 return s;
@@ -93,8 +93,10 @@ namespace BroforceModSoftware.Interaction.Back {
                 // If directory does not exist, create it
                 if (!Directory.Exists(StorageDir)){
                     Directory.CreateDirectory(StorageDir);
+                }
 
-                    // Write EXE path and name to file
+                // Write EXE path and name to file
+                if (!File.Exists(StorageFull)){
                     File.WriteAllText(StorageFull, Path.Combine(path, name));
                 }
             }
