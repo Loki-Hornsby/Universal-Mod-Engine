@@ -1,3 +1,5 @@
 *.vs/
 *.vscode/
 *obj/
+# Ignores storage file since it is local to the user
+BroforceModSoftware/bin/Debug/netcoreapp3.1/Storage
