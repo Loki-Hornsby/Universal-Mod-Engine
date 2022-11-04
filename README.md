@@ -6,6 +6,7 @@
 
 # Dependencies
 - https://github.com/pardeike/Harmony
+- https://www.newtonsoft.com/json
 
 # Developer (Wip section)
 - Use Vscode or Visual Studio
