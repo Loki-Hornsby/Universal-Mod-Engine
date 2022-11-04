@@ -102,9 +102,6 @@
       <Compile Include="Loader.cs" />
       <Compile Include="ModEngine.cs" />
 
-      <!-- Shared Access functions between BroforceModSoftware and BroforceModEngine -->
-      <Compile Include="ModHandler.cs" />
-
       <!-- Mod Handler GUI built into broforce -->
       <Compile Include="GUI.cs" />
 

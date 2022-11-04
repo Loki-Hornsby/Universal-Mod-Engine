@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Security.Permissions;
 
 using BroforceModSoftware;
+using BroforceModEngine;
 
 /// <summary>
 /// Handles back end interaction for the GUI
@@ -27,25 +28,22 @@ namespace BroforceModSoftware.Interaction.Back {
             SuccessOnMod, // YES! MORE SUCCESS!
             FailOnMod, // NO! MORE FAILURE!
         }
-        
+
         /// <summary>
-        /// Checks wether a file is in use or not
+        /// Begins loading the mod engine as well as broforce.exe
         /// </summary>
-        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
-        static bool IsFileLocked(FileInfo f){
-            try {
-                using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
-                    stream.Close();
+        public static Action BeginLoad(){
+            return () => {
+                while (!EXE.IsInUse()){
+                    // Do absolutely nothing...
                 }
-            } catch (Exception ex) {
-                return true;
 
-                // We don't need a log here since an intentional error is meant to occur here
-            }
+                Logger.Log("Starting Mod Engine Via GUI...", Logger.LogType.Warning, Logger.VerboseType.Low);
 
-            return false;
+                System.Console.WriteLine(Loader.Load());
+            };
         }
-
+        
         // LATEST UPLOAD
         public static FileStates FileState;
 
@@ -62,7 +60,7 @@ namespace BroforceModSoftware.Interaction.Back {
             /// <summary>
             /// Get location of exe
             /// </summary>
-            public static string GetExeLocation(){
+            public static string GetLocation(){
                 string s;
 
                 try{
@@ -77,10 +75,29 @@ namespace BroforceModSoftware.Interaction.Back {
             }
 
             /// <summary>
+            /// Checks wether a file is in use or not
+            /// </summary>
+            // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+            static bool IsFileLocked(FileInfo f){
+                try {
+                    using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
+                        stream.Close();
+                    }
+                } catch (Exception ex) {
+                    return true;
+
+                    // We don't need a log here since an intentional error is meant to occur here
+                }
+
+                return false;
+            }
+
+
+            /// <summary>
             /// Checks wether EXE (Broforce.exe) is in use
             /// </summary>
             public static bool IsInUse(){
-                return IsFileLocked(new FileInfo(GetExeLocation()));
+                return IsFileLocked(new FileInfo(EXE.GetLocation()));
             }
 
             /// <summary>
@@ -106,8 +123,8 @@ namespace BroforceModSoftware.Interaction.Back {
             /// </summary>
             public static void CopyEngineToExe(){
                 string[][] files = new string[][] { 
-                    new string[] { EnginePath, Path.Combine(GetExeLocation(), EngineFolderName) }, 
-                    new string[] { Doorstop, GetExeLocation() }
+                    new string[] { EnginePath, Path.Combine(EXE.GetLocation(), EngineFolderName) }, 
+                    new string[] { Doorstop, EXE.GetLocation() }
                 };
 
                 // files[i] ~ Array containing source and destination
@@ -138,16 +155,11 @@ namespace BroforceModSoftware.Interaction.Back {
             /// </summary>
             public static void AddExe(){
                 if (LastFile.Contains(".exe")) {
+                    // Create exe storage and copy engine to exe's location
                     CreateExeStorage(LastPath, LastFile);
                     CopyEngineToExe();
 
                     FileState = FileStates.SuccessOnExe;
-
-                    /*if (!failAfterLoad){
-                        FileState = FileStates.SuccessOnExe;
-                    } else {
-                        FileState = FileStates.FailOnExe;
-                    }*/
                 } else {
                     FileState = FileStates.Invalid;
                 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 /// <summary>
 /// Handles threading for the GUI
@@ -17,32 +18,25 @@ namespace BroforceModSoftware.Threading {
 
         public static void QueueTask(Action action){
             tasks.Enqueue(action);
-        }
 
-        public static void ExecuteTasks(){
-            if (tasks.Count > 0){
-                RunNextTask();
-            }
+            RunNextTask();
         }
 
         // Runs the next task queued in [tasks]
-        async static void RunNextTask(int timeout = 10){
-            // Timeout in ms
-            timeout = timeout * 1000;
+        static void RunNextTask(){
+            new Thread(() => {
+                Thread.CurrentThread.IsBackground = true; 
 
-            // Task creation
-            var task = Task.Run(tasks.Dequeue());
-            //await task.ContinueWith(t => );
+                // Task creation
+                Task.Run(tasks.Dequeue());
 
-            // Timeout
-            if (await Task.WhenAny(task, Task.Delay(timeout)) == task) {
                 // Task completed without timing out
-                if (tasks.Count > 0){
-                    RunNextTask();
-                } else {
+                if (tasks.Count == 0){
                     if (Finished != null) Finished.Invoke(); 
+                } else {
+                    RunNextTask();
                 }
-            }
+            }).Start();
         }
     }
 }

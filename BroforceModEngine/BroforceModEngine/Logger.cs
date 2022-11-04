@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 
 /// <summary>
-/// Logging for the mod engine - Communicates to a spawned console and GUI
+/// Logging for the mod engine - Communicates to a spawned console
 /// </summary>
 
 namespace BroforceModEngine.Logging {
@@ -14,28 +13,20 @@ namespace BroforceModEngine.Logging {
 
         public static bool _initialized;
 
-        public static void Initialize(bool console){
+        public static void Initialize(){
             _initialized = true;
-
-            if (console){ 
-                AllocConsole();
-            }
-
+            AllocConsole();
             Log("Debug Console Started!");
         }
 
-        public static void Log(
-                string message, 
-                //LogType type = LogType.None, 
-                [CallerFilePath] string file = "", 
-                [CallerMemberName] string member = "", 
-                [CallerLineNumber] int line = 0
-            ){
-
-            if (!_initialized) { try { Initialize(true); } catch (Exception ex) { ; } } // The ";" acts like a pass statement in python
-
-            string RebuiltMessage = ("{0}_{1}({2}): {3}", Path.GetFileName(file), member, line, text);                                                    
-            System.Console.WriteLine(RebuiltMessage);
+        public static void Log(string message){
+            if (!_initialized) { 
+                try { 
+                    Initialize(); 
+                } catch (Exception ex) {} 
+            }
+                                                
+            System.Console.WriteLine(message);
         }
     }
 }

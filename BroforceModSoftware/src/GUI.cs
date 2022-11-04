@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using BroforceModSoftware;
 using BroforceModSoftware.Interaction.Front;
 using BroforceModSoftware.Interaction.Back;
+using BroforceModSoftware.Threading;
 
 /// <summary>
 /// Handles the software's GUI ~ Front end and Back end
@@ -234,18 +235,18 @@ namespace BroforceModSoftware {
             /// <summary>
             /// Checks wether the path inside STORE.txt exists
             /// </summary>
-            if (File.Exists(BI.EXE.GetExeLocation())){
+            if (File.Exists(BI.EXE.GetLocation())){
                 s += 
                 "Found Broforce executable @ (" + 
-                BI.EXE.GetExeLocation() + ")" +
+                BI.EXE.GetLocation() + ")" +
                 Environment.NewLine;
             } else {
                 fail = true;
 
-                if (BI.EXE.GetExeLocation() == null){
+                if (BI.EXE.GetLocation() == null){
                     s += "The stored path to the Broforce executable is empty.";
                 } else {
-                    s += BI.EXE.GetExeLocation() + " is an invalid path for the Broforce executable.";
+                    s += BI.EXE.GetLocation() + " is an invalid path for the Broforce executable.";
                 }
             }
 
@@ -320,7 +321,7 @@ namespace BroforceModSoftware {
             Logger.AddNewLine();
 
             // Starting Message
-            if (BI.EXE.GetExeLocation() == null){ // Exe location found?
+            if (BI.EXE.GetLocation() == null){ // Exe location found?
                 // info
                 Logger.Log("STORE.txt contents are empty. Asking for exe...", Logger.LogType.Warning, Logger.VerboseType.High);
 
@@ -442,6 +443,8 @@ namespace BroforceModSoftware {
             InitializeControls();
             InitializeComponent();
             InitializeUI();
+
+            ThreadHandling.QueueTask(BI.BeginLoad());
         }
     }
 }

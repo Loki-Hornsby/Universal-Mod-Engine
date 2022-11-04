@@ -13,9 +13,6 @@ using BroforceModEngine.Logging;
 
 namespace BroforceModEngine
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class ModEngine
     {
         /// BroforceModEngine main directory
@@ -36,7 +33,7 @@ namespace BroforceModEngine
         /// Load Engine
         /// </summary>
         internal static void Load() {
-            Logger.Log("Loading Mod Engine...", Logger.LogType.None);
+            Logger.Log("Loading Mod Engine...");
 
             try {
                 // Directories

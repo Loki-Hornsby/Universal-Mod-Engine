@@ -173,8 +173,6 @@ namespace BroforceModSoftware.Interaction.Front {
                         break;
                 }
 
-                ThreadHandling.ExecuteTasks();
-
                 return text;
             }
     

@@ -8,7 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\ModHandler.cs" /> -->
       <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\Loader.cs" /> -->
+      <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\Loader.cs" /> -->
+
+      <!-- External Dll's -->
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\0Harmony.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Assembly-CSharp.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\BroforceModEngine.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\BroforceModEngine.pdb" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\MonoMod.RuntimeDetour.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\MonoMod.Utils.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Newtonsoft.Json.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.CoreModule.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.IMGUIModule.dll" />
+
+      <Reference Include="BroforceModEngine" />
   </ItemGroup>    
 </Project>
