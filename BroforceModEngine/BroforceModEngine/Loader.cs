@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Diagnostics;
 
 using HarmonyLib;
-using BroforceModEngine.Logging;
 
 /// <summary>
 /// The entry point for the engine
@@ -12,20 +11,47 @@ using BroforceModEngine.Logging;
 /// </summary>
 
 namespace BroforceModEngine {
-    public static class Loader {
-        public static string Load() {
-            // Initialize the logger
-            if (!Logger._initialized) Logger.Initialize();
+    public static class Logger {
+        static Func<string, string> EngineLowLogFunction;
+        static Func<string, string> EngineMediumLogFunction;
+        static Func<string, string> EngineHighLogFunction;
 
-            Logger.Log("HI! FROM LAUNCHED ENGINE");
+        public static void Initialize(Func<string, string> LogFuncLow, Func<string, string> LogFuncMedium, Func<string, string> LogFuncHigh){
+            EngineLowLogFunction = LogFuncLow;
+            EngineMediumLogFunction = LogFuncMedium;
+            EngineHighLogFunction = LogFuncHigh;
+        }
+
+        public static void Log(string message, int verbosity){
+            switch (verbosity){
+                default:
+                    EngineLowLogFunction(message);
+                    break;
+                case 2:
+                    EngineMediumLogFunction(message);
+                    break;
+                case 3:
+                    EngineHighLogFunction(message);
+                    break;
+            }
+        }
+    }
+
+    public static class Loader {
+        public static string Load(Func<string, string> LogFuncLow, Func<string, string> LogFuncMedium, Func<string, string> LogFuncHigh) {
+            // Begin logging
+            Logger.Initialize(LogFuncLow, LogFuncMedium, LogFuncHigh);
+            Logger.Log("Logging was activated...", 3);
 
             // Begin execution of mod engine
             try {
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
+                Logger.Log("Passed 1st stage load...", 3);
+
                 ModEngine.Load();
             } catch(Exception ex) {
-                Logger.Log(ex.ToString());
+                Logger.Log(ex.ToString(), 3);
             }
 
             return Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);

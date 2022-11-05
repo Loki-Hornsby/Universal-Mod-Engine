@@ -30,17 +30,50 @@ namespace BroforceModSoftware.Interaction.Back {
         }
 
         /// <summary>
+        /// Pass the GUI logging over to the mod engine
+        /// </summary>
+        public static string PassEngineLogLow(string message){
+            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.Low);
+
+            return "";
+        }
+
+        /// <summary>
+        /// Pass the GUI logging over to the mod engine
+        /// </summary>
+        public static string PassEngineLogMedium(string message){
+            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.Medium);
+
+            return "";
+        }
+
+        /// <summary>
+        /// Pass the GUI logging over to the mod engine
+        /// </summary>
+        public static string PassEngineLogHigh(string message){
+            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.High);
+
+            return "";
+        }
+
+        /// <summary>
         /// Begins loading the mod engine as well as broforce.exe
         /// </summary>
         public static Action BeginLoad(){
             return () => {
-                while (!EXE.IsInUse()){
-                    // Do absolutely nothing...
+                if (!BI.EXE.IsInUse()){
+                    // Do absolutely nothing while waiting...
+                    while (!File.Exists(EXE.GetLocation())){}
+                    while (!EXE.IsInUse()){}
+
+                    // Begin load
+                    Logger.AddNewLine();
+                    Logger.Log("Starting Mod Engine Via GUI...", Logger.LogType.Custom, Logger.VerboseType.Low, Color.Purple);
+                    System.Console.WriteLine(Loader.Load(PassEngineLogLow, PassEngineLogMedium, PassEngineLogHigh));
+
+                    while (EXE.IsInUse()){} // Wait to close
+                    System.Windows.Forms.Application.Exit();
                 }
-
-                Logger.Log("Starting Mod Engine Via GUI...", Logger.LogType.Warning, Logger.VerboseType.Low);
-
-                System.Console.WriteLine(Loader.Load());
             };
         }
         

@@ -12,7 +12,7 @@ using BroforceModSoftware.Interaction.Back;
 /// </summary>
 
 namespace BroforceModSoftware {
-    static class Program {
+    class Program {
         // The main entry point for the application.
         [STAThread]
         static void Main() {   

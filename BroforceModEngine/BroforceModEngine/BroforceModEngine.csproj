@@ -105,9 +105,6 @@
       <!-- Mod Handler GUI built into broforce -->
       <Compile Include="GUI.cs" />
 
-      <!-- Logger for Mod Engine -->
-      <Compile Include="Logger.cs" />
-
       <!-- Mod Structure -->
       <Compile Include="Mods\BroforceMod.cs" />
       <Compile Include="Mods\ModInfo.cs" />

@@ -5,10 +5,11 @@ using System.Reflection;
 using System.Text;
 using Unity = UnityEngine;
 
-using BroforceModEngine.Logging;
-
 /// <summary>
 /// The engine - Mainly used for testing at the moment (needs tidying)
+/// This is going to be our replacement for doorstop
+/// https://www.unknowncheats.me/forum/general-programming-and-reversing/209134-injecting-dll-unity3d-game.html
+/// https://www.unknowncheats.me/forum/general-programming-and-reversing/176942-accessing-mono-loading-assemblies.html
 /// </summary>
 
 namespace BroforceModEngine
@@ -33,11 +34,11 @@ namespace BroforceModEngine
         /// Load Engine
         /// </summary>
         internal static void Load() {
-            Logger.Log("Loading Mod Engine...");
+            Logger.Log("Passed 2nd stage load...", 3);
 
             try {
                 // Directories
-                CheckDirectories();
+                //CheckDirectories(); // Unused: To be replaced by GUI installer
 
                 // Load all assemblies
                 foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll")){
@@ -52,11 +53,11 @@ namespace BroforceModEngine
                 harmony.PatchAll(assembly);
 
                 // Finished Loading
-                Logger.Log("Loaded Mod Engine...");
+                Logger.Log("Passed 3rd stage load...", 3);
 
                 _loaded = true;
             } catch(Exception ex){
-                Logger.Log(ex.ToString());
+                Logger.Log(ex.ToString(), 3);
 
                 _loaded = true;
             }
@@ -65,7 +66,7 @@ namespace BroforceModEngine
             if (!_loaded){
                 Load();
             } else {
-                Logger.Log("Mod Engine Started.");
+                Logger.Log("Mod Engine Started! :D", 1);
             }
         }
 
@@ -115,10 +116,8 @@ namespace BroforceModEngine
         /// </summary>
         /// https://github.com/Gorzon38/BF-CODE/blob/main/BF-1131/Assembly-CSharp/Menu.cs
         [HarmonyPatch(typeof(MainMenu), "Awake")] // typeof(MainMenu), "Awake" or "Start"
-        class LoadEverything_Patch
-        {
-            public static void Postfix()
-            {
+        class LoadEverything_Patch {
+            public static void Postfix() {
                 CauseError();
             }
         }

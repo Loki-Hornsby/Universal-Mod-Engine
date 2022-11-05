@@ -1,1 +1,0 @@
-This shows a simple harmony patch

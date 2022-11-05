@@ -194,17 +194,15 @@ namespace BroforceModSoftware.Interaction.Front {
 
                 if (BI.FileState == BI.FileStates.FailOnExe || BI.FileState == BI.FileStates.FailOnMod){
                     col = Color.Red;
-                } else if (BI.FileState == BI.FileStates.SuccessOnExe || BI.FileState == BI.FileStates.SuccessOnMod){
-                    col = Color.Green;
                 } else {
-                    col = Color.Orange;
+                    col = txtbox.BackColor;
                 }
 
                 // Disable Drag and Drop
                 if (BI.FileState == BI.FileStates.SuccessOnExe) Logger.AllowDragAndDrop(false);
 
                 // Log Output from response
-                if (text != "") Logger.Log(text, Logger.LogType.Custom, Logger.VerboseType.Low, col);
+                if (!String.IsNullOrEmpty(text)) Logger.Log(text, Logger.LogType.Custom, Logger.VerboseType.Low, col);
             }
 
             /// <summary>

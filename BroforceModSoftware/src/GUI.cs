@@ -32,11 +32,15 @@ namespace BroforceModSoftware {
         }
 
         public override void Write(char value){
-            Logger.Log("[Message from System] " + value.ToString(), Logger.LogType.Default, Logger.VerboseType.High);
+            if (!String.IsNullOrEmpty(value.ToString())) {
+                Logger.Log(value.ToString(), Logger.LogType.System, Logger.VerboseType.High);
+            }
         }
 
         public override void Write(string value){
-            Logger.Log("[Message from System] " + value, Logger.LogType.Default, Logger.VerboseType.High);
+            if (!String.IsNullOrEmpty(value)) {
+                Logger.Log(value, Logger.LogType.System, Logger.VerboseType.High);
+            }
         }
 
         public override Encoding Encoding {
@@ -49,8 +53,12 @@ namespace BroforceModSoftware {
             Error,
             Warning,
             Success,
+            
+            Engine,
+            System,
+
             Custom,
-            Default
+            Default,
         }
 
         public enum VerboseType {
@@ -108,43 +116,53 @@ namespace BroforceModSoftware {
                 [CallerLineNumber] int line = 0
             ){
             
-            if ((int)v <= (int)verbosity){
-                switch (type){
-                    case LogType.Error:
-                        col = Color.Red;
-                        break;
-                    case LogType.Warning:
-                        col = Color.Yellow;
-                        break;
-                    case LogType.Success:
-                        col = Color.Green;
-                        break;
-                    case LogType.Custom:
-                        col = col;
-                        break;
-                    case LogType.Default:
-                        col = Logger.TxtBox.BackColor;
-                        break;
+            if (!String.IsNullOrEmpty(txt)){
+                if ((int)v <= (int)verbosity){
+                    switch (type){
+                        case LogType.Error:
+                            col = Color.Red;
+                            break;
+                        case LogType.Warning:
+                            col = Color.Yellow;
+                            break;
+                        case LogType.Success:
+                            col = Color.Green;
+                            break;
+
+                        case LogType.Engine:
+                            col = Logger.TxtBox.BackColor;
+                            break;
+                        case LogType.System:
+                            col = Logger.TxtBox.BackColor;
+                            break;
+
+                        case LogType.Custom: // Allows for custom color select
+                            // col = col; 
+                            break;
+                        case LogType.Default:
+                            col = Logger.TxtBox.BackColor; 
+                            break;
+                    }
+
+                    string RebuiltMessage = "You shouldn't be seeing this message. Try using Options/Reset, Rebuilding from source, Or contacting the developer.";      
+
+                    switch (Logger.verbosity){
+                        case VerboseType.High:
+                            RebuiltMessage = String.Format("[{0}, {1}]@[{2}/{3}/{4}]: ", 
+                                v.ToString(), type.ToString(), Path.GetFileName(file), member, line);          
+                            break;
+                        case VerboseType.Medium:
+                            RebuiltMessage = String.Format("[{0}, {1}]: ", 
+                                v.ToString(), type.ToString());      
+                            break;
+                        case VerboseType.Low:
+                            RebuiltMessage = "~ ";
+                            break;
+                    }
+                    
+                    TxtBox.AppendText(RebuiltMessage + txt + Environment.NewLine);
+                    TxtBox.BackColor = col ?? Logger.TxtBox.BackColor;
                 }
-
-                string RebuiltMessage = "You shouldn't be seeing this message. Try using Options/Reset, Rebuilding from source, Or contacting the developer.";      
-
-                switch (Logger.verbosity){
-                    case VerboseType.High:
-                        RebuiltMessage = String.Format("[{0}, {1}]@[{2}/{3}/{4}]: ", 
-                            v.ToString(), type.ToString(), Path.GetFileName(file), member, line) + Environment.NewLine + "    ";          
-                        break;
-                    case VerboseType.Medium:
-                        RebuiltMessage = String.Format("[{0}, {1}]: ", 
-                            v.ToString(), type.ToString());      
-                        break;
-                    case VerboseType.Low:
-                        RebuiltMessage = "~ ";
-                        break;
-                }
-
-                TxtBox.AppendText(RebuiltMessage + txt + Environment.NewLine);
-                TxtBox.BackColor = col ?? Color.Black;
             }
         }
         
@@ -259,11 +277,13 @@ namespace BroforceModSoftware {
             if (!fail){ 
                 s += 
                 Environment.NewLine + 
-                "This will log anything you need to see whilst playing." + 
+                "You can now open Broforce!" +
+                Environment.NewLine + 
+                "~ This will log anything you need to see whilst playing." + 
                 Environment.NewLine + 
                 "~ When you want to use mods open this application first then open Broforce." +
                 Environment.NewLine + 
-                "~ If you don't want to use mods then don't open this application.";
+                "~ If you don't want to use mods then don't open this application! (Duh ;P)";
             } else {
                 retry = true;
 
@@ -280,6 +300,7 @@ namespace BroforceModSoftware {
             /// Only logs above contents if selected EXE isn't currently running
             /// </summary>
             if (!fail && !retry && BI.EXE.IsInUse()){ 
+                // Bug: this isn't changing the color
                 Logger.Log("You need to open this application before launching Broforce. Use Options/Reset in the context menu above if you have chosen the wrong exe or close this application and reopen it after closing Broforce.", Logger.LogType.Error, Logger.VerboseType.Low);
             } else {
                 Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Low);
@@ -326,7 +347,7 @@ namespace BroforceModSoftware {
                 Logger.Log("STORE.txt contents are empty. Asking for exe...", Logger.LogType.Warning, Logger.VerboseType.High);
 
                 // Text
-                Logger.Log(@"Drag and Drop the executable file for Broforce into this window. (Usually this is named 'Broforce_beta.exe' or 'Broforce.exe' and can normally be found under 'Steam\steamapps\common\Broforce' - you could also right click the file on your desktop then click 'Open File Location')", Logger.LogType.Success, Logger.VerboseType.Low);
+                Logger.Log(@"Drag and Drop the executable file for Broforce into this window. (Usually this is named 'Broforce_beta.exe' or 'Broforce.exe' and can normally be found under 'Steam\steamapps\common\Broforce')", Logger.LogType.Success, Logger.VerboseType.Low);
 
                 // Drag and drop
                 Logger.AllowDragAndDrop(true);
@@ -436,6 +457,15 @@ namespace BroforceModSoftware {
 
             // Show form
             this.Shown += (sender, e) => FI.Visuals.ForceShow(sender, e);
+        }
+
+        // https://stackoverflow.com/questions/8367586/asking-for-confirmation-when-x-button-is-clicked
+        protected override void OnFormClosing(FormClosingEventArgs e){
+            if (BI.EXE.IsInUse()){
+                if (MessageBox.Show("Closing the engine whilst the game is open is not recommended.\nAre you sure you want to close the engine?", "Close Engine?", MessageBoxButtons.YesNo) == DialogResult.No){
+                    e.Cancel = true;
+                }
+            }
         }
 
         public GUI(){
