@@ -3,8 +3,8 @@
 Thank you [Gorzon](https://github.com/Gorzon38)!
 
 # Usage
-_Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
-
+- _Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
+- _Before usage please make sure to read the disclaimer featured below._
 ### Clone source
 To clone the source download this github repositry, unzip it to your desired location, then run `BROMODS.exe` which can be located at `.\BroforceModSoftware\bin\Debug\netcoreapp3.1\`
 ### Use recent release
@@ -36,7 +36,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _Content from broforce is used such as audio and code - I and my contributors in no way claim to own any of it._ 
 - _The intellectual property goes to that of the original author and their publisher (Broforce ~ Free Lives ~ Devolver Digital)._ 
 - _Any metadata or text detailing false information in terms of ownership of assets is not intentional and is an accident - please contact me if this is the case._ 
-- _Content from broforce is to be used in terms of modding only - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
+- _Content from broforce used in this repositry is to be used in terms of modding and use of the application itself exclusively - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
 - _This software is under the implication of user created content for broforce._
 - _Me and my contributors do not hold any liability for damage to your machine caused by this software._
 - _Use of the software implies that you have understood these terms._
