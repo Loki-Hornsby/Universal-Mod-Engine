@@ -1,3 +1,7 @@
+
+# BROMODS
+Thank you [Gorzon](https://github.com/Gorzon38)!
+
 # Usage
 _Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
 
@@ -34,8 +38,3 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _The intellectual property goes to that of the original author and their publisher (Broforce ~ Free Lives ~ Devolver Digital)._ 
 - _Any metadata detailing false information is not intentional and is an accident - please contact me if this is the case._ 
 - _Content from broforce is to be used in terms of modding only - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
-
-##
-<p align="center">
-Thankyou Gorzon! (https://github.com/Gorzon38)
-</p>
