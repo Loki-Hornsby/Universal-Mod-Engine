@@ -16,10 +16,19 @@ namespace BroforceModSoftware {
         // The main entry point for the application.
         [STAThread]
         static void Main() {   
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUI());
+            bool exists = (System.Diagnostics.Process.GetProcessesByName(
+                System.IO.Path.GetFileNameWithoutExtension(
+                    System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1);
+
+            if (!exists){
+                Application.SetHighDpiMode(HighDpiMode.SystemAware);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new GUI());
+            } else {
+                MessageBox.Show("There is already another instance of this application running!", "Warning!", MessageBoxButtons.OK);
+                System.Windows.Forms.Application.Exit();
+            }
         }
     }
 }

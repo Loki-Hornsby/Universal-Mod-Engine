@@ -30,6 +30,26 @@ namespace BroforceModSoftware.Interaction.Back {
         }
 
         /// <summary>
+        /// Checks wether a file is in use or not
+        /// </summary>
+        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+        public static bool IsFileLocked(string s){
+            try {
+                FileInfo f = new FileInfo(s);
+                
+                using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
+                    stream.Close();
+                }
+            } catch (IOException ex) {
+                return true;
+
+                // We don't need a log here since an intentional error is meant to occur here
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Pass the GUI logging over to the mod engine
         /// </summary>
         public static string PassEngineLogLow(string message){
@@ -106,27 +126,7 @@ namespace BroforceModSoftware.Interaction.Back {
                 return s;
             }
 
-            /// <summary>
-            /// Checks wether a file is in use or not
-            /// </summary>
-            // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
-            static bool IsFileLocked(string s){
-                try {
-                    FileInfo f = new FileInfo(s);
-                    
-                    using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
-                        stream.Close();
-                    }
-                } catch (Exception ex) {
-                    return true;
-
-                    // We don't need a log here since an intentional error is meant to occur here
-                }
-
-                return false;
-            }
-
-
+        
             /// <summary>
             /// Checks wether EXE (Broforce.exe) is in use
             /// </summary>

@@ -219,7 +219,6 @@ namespace BroforceModSoftware.Interaction.Front {
             /// </summary>
             public static void ForceShow(object sender, EventArgs e) {
                 Form f = sender as Form;
-                f.TopMost = true;
                 f.Focus();
                 f.BringToFront();
                 f.Activate();
