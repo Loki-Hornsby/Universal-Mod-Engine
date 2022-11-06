@@ -97,7 +97,7 @@ namespace BroforceModSoftware.Interaction.Back {
 
                 try{
                     s = File.ReadAllText(StorageFilePath);
-                } catch (Exception ex){
+                } catch (IOException ex){
                     s = null;
 
                     // We don't need a log here since an intentional error is meant to occur here
