@@ -23,6 +23,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 # Dependencies
 - https://github.com/pardeike/Harmony (and subdependencies such as `mono.cecil`)
 - https://www.newtonsoft.com/json
+- https://github.com/mono/mono
 
 # Developer (Wip section)
 - Use Vscode or Visual Studio
