@@ -1,5 +1,5 @@
 # Usage
-_Note: always be carefull when downloading executables over the internet - they could be malicious - it's best to build from source and read the used `.csproj` file to understand what is being packaged in the executable file_
+_Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read the used `.csproj` file to understand what is being packaged in the executable file_
 
 ## Clone source
 To clone the source download this github repositry then run `BROMODS.exe` which can be located in `.\BroforceModSoftware\bin\Debug\netcoreapp3.1`
