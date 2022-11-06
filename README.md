@@ -25,14 +25,6 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - https://www.newtonsoft.com/json
 - https://github.com/mono/mono
 
-# Developer (Wip section)
-- Use Vscode or Visual Studio
-- When using vscode a global.json file will be required with the sdk version set to "3.5.0"
-- dotnet run ~ runs application in current working directory
-- dotnet build ~ builds application in current working directory
-- MSBuild /p:Configuration=Release /p:Platform="AnyCPU" - Builds to bin/release where contents can then be copied into broforce/BroforceModEngine folder
-- cd {path} ~ changes working directory
-
 # Disclaimer
 - _Content from [Broforce](https://www.broforcegame.com/) is used such as audio and code - I and my contributors in no way claim to own any of it._ 
 - _The intellectual property goes to that of the original author and their publisher ([Broforce](https://www.broforcegame.com/) ~ [Free Lives](https://freelives.net/) ~ [Devolver Digital](https://www.devolverdigital.com/))._ 
