@@ -40,3 +40,4 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _Content from broforce is to be used in terms of modding only - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
 - _This software is under the implication of user created content for broforce_
 - _Me and my contributors do not hold any liability for damage to your machine caused by this software_
+- _Use of the software implies that you have understand these terms_
