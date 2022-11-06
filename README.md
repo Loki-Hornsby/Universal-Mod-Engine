@@ -39,4 +39,5 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _Content from [Broforce](https://www.broforcegame.com/) used in this repositry is to be used in terms of modding and use of the application itself exclusively - i and my contributors do not endorse the copying of [Broforce](https://www.broforcegame.com/)'s assets for incorrect use._
 - _This software is under the implication that it (itself) is user created content for [Broforce](https://www.broforcegame.com/)._
 - _Me and my contributors do not hold any liability for damage to your machine caused by this software._
-- _Use of the software implies that you have understood these terms._
+- _Use of this software implies that you have understood these terms._
+- _The term "Software" defines the entire contents of this repositry and not just the executable file for the application itself_
