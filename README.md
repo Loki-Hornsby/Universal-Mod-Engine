@@ -35,7 +35,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _The usage of the term "Software" in this disclaimer defines the entire contents of this repositry and not just the executable file for the application itself._
 
 # Extras
-## Doorstop Alternative
+### Doorstop Alternative
 - Originally we were using [Doorstop](https://github.com/NeighTools/UnityDoorstop) to load mods however i decided to replace it since i like to remove as many dependencies as i can.
 - If you'd like to alter my immplementation or just learn a bit more about how it works i reccommend checking out the following links
   - https://code.visualstudio.com/docs/languages/cpp
