@@ -17,7 +17,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 7. Run `BROMODS.exe` which has been generated at `\BroMods\BroforceModSoftware\bin\Debug\netcoreapp3.1\`
 
 # Dependencies
-- https://github.com/pardeike/Harmony
+- https://github.com/pardeike/Harmony (and subdependencies such as `mono.cecil`)
 - https://www.newtonsoft.com/json
 
 # Developer (Wip section)
