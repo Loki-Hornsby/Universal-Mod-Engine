@@ -2,9 +2,14 @@
 # BROMODS
 Thank you [Gorzon](https://github.com/Gorzon38)!
 
+1. [How do i use the mod engine?](#usage)
+2. [What does this project depend on?](#dependencies)
+3. [Gimme' a breakdown doc.](#disclaimer)
+4. [Tell me more!](#extras)
+
 # Usage
 - _Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
-- _Before usage please make sure to read the disclaimer featured below._
+- _Before usage please make sure to read the [disclaimer](#disclaimer) featured below._
 ### Clone source
 To clone the source download this github repositry, unzip it to your desired location, then run `BROMODS.exe` which can be located at `.\BroforceModSoftware\bin\Debug\netcoreapp3.1\`
 ### Use recent release
