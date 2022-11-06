@@ -45,7 +45,6 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - If you'd like to alter my immplementation or just learn a bit more about how it works i reccommend checking out the following links
   - https://code.visualstudio.com/docs/languages/cpp
   - https://www.msys2.org/
-  - https://stackoverflow.com/questions/36094802/embeded-mono-load-assemblies-from-memory 
-  - https://www.unknowncheats.me/forum/general-programming-and-reversing/176942-accessing-mono-loading-assemblies.html
+  - https://www.unknowncheats.me
   - https://www.mono-project.com/docs/advanced/embedding/
   - https://www.youtube.com/watch?v=KCtLiBnlpk4 
