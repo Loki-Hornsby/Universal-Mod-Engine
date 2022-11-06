@@ -117,9 +117,17 @@
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
+  <!-- 
+    
   <PropertyGroup>
-    <!-- Bug: path needs to be local to user -->
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> <!-- Bobby Path -->
-    <!-- <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent> --> <!-- Gorzon Path -->
-  </PropertyGroup>
+    Bug: path needs to be local to user
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent>
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\$(ProjectName)\$(ProjectName).dll*"</PostBuildEvent>
+  </PropertyGroup> 
+  
+  Why is this disabled?
+  Because now we no longer need to depend on the mod engine being inside the broforce engine
+  Infact the GUI now handles the packaging of files completely and acts as a standalone
+
+  -->
 </Project>

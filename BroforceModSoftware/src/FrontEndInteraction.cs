@@ -25,7 +25,7 @@ namespace BroforceModSoftware.Interaction.Front {
         public static class Media {
             public static class Sounds {
                 // Paths
-                public const string SoundsPath = @"..\..\..\Sounds";
+                public const string SoundsPath = @".\Sounds";
 
                 public static void PlayBroforceFoundSound(){
                     ThreadHandling.QueueTask(() => {

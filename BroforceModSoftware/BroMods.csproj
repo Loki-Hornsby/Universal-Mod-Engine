@@ -21,7 +21,14 @@
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.dll" />
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.IMGUIModule.dll" />-->
 
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\**" CopyToPublishDirectory="PreserveNewest"/>
+      <Content Include="Sounds\*.*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>  
+
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\*.*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>  
+
       <Reference Include="BroforceModEngine" />
   </ItemGroup>    
 </Project>

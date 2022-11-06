@@ -37,9 +37,6 @@ namespace BroforceModEngine
             Logger.Log("Passed 2nd stage load...", 3);
 
             try {
-                // Directories
-                //CheckDirectories(); // Unused: To be replaced by GUI installer
-
                 // Load all assemblies
                 foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll")){
                     Assembly.LoadFile(file);
@@ -67,28 +64,6 @@ namespace BroforceModEngine
                 Load();
             } else {
                 Logger.Log("Mod Engine Started! :D", 1);
-            }
-        }
-
-        /// <summary>
-        /// Check if directories are present, otherwise create the directories. //Unused: To be replaced by GUI
-        /// </summary>
-        
-        private static void CheckDirectories(){
-            EngineDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "BroforceModEngine");
-            DependenciesDirectoryPath = EngineDirectoryPath;
-            ModsDirectoryPath = Path.Combine(EngineDirectoryPath, "Mods");
-
-            if (!Directory.Exists(EngineDirectoryPath)){
-                Directory.CreateDirectory(EngineDirectoryPath);
-            }
-
-            if (!Directory.Exists(DependenciesDirectoryPath)){
-                Directory.CreateDirectory(DependenciesDirectoryPath);
-            }
-
-            if (!Directory.Exists(ModsDirectoryPath)){
-                Directory.CreateDirectory(ModsDirectoryPath);
             }
         }
 

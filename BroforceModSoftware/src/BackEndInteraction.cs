@@ -88,9 +88,6 @@ namespace BroforceModSoftware.Interaction.Back {
 
         public static class EXE {
             public const string StorageFilePath = @".\Storage\STORE.txt";
-            public const string EnginePath = @"..\..\..\..\BroforceModEngine\BroforceModEngine\bin\Release";
-            public const string Doorstop = @"..\..\..\..\BroforceModEngine\lib\Doorstop";
-            public const string EngineFolderName = "BROMODS";
 
             /// <summary>
             /// Get location of exe
@@ -160,45 +157,12 @@ namespace BroforceModSoftware.Interaction.Back {
             }
 
             /// <summary>
-            /// Copy the engine to the exe
-            /// </summary>
-            public static void CopyEngineToExe(){
-                string[][] files = new string[][] { 
-                    new string[] { EnginePath, Path.Combine(EXE.GetLocation(), EngineFolderName) }, 
-                    new string[] { Doorstop, EXE.GetLocation() }
-                };
-
-                // files[i] ~ Array containing source and destination
-                // files[i][0] ~ Source
-                // files[i][1] ~ Destination
-                
-                for (int i = 0; i < files.Length; i++){
-                    string source = files[i][0];
-                    string destination = files[i][1];
-
-                    //Logger.Log("Directory Copying Is Failing");
-
-                    //zDirectoryInfo dirInfo = new DirectoryInfo(source);
-
-                    /*
-                    DirectoryInfo[] dirs = dirInfo.GetDirectories();
-                    foreach(DirectoryInfo dir in dirs){
-                        //f.CopyTo(Path.Combine(destination, f.Name));
-                        //Directory.CreateDirectory(Path.Combine(destination, dir.Name));
-                        Console.WriteLine(Path.Combine(destination, dir.Name));
-                        //Logger.Log("CHEESE", Color.Success);
-                    }*/
-                }
-            }  
-
-            /// <summary>
             /// Add the exe location to a text file
             /// </summary>
             public static void AddExe(){
                 if (LastFile.Contains(".exe")) {
-                    // Create exe storage and copy engine to exe's location
+                    // Create exe storage
                     CreateExeStorage(LastPath, LastFile);
-                    //CopyEngineToExe();
 
                     FileState = FileStates.SuccessOnExe;
                 } else {
