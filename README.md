@@ -33,10 +33,10 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - cd {path} ~ changes working directory
 
 # Disclaimer
-- _Content from broforce is used such as audio and code - I and my contributors in no way claim to own any of it._ 
-- _The intellectual property goes to that of the original author and their publisher (Broforce ~ Free Lives ~ Devolver Digital)._ 
+- _Content from [Broforce](https://www.broforcegame.com/) is used such as audio and code - I and my contributors in no way claim to own any of it._ 
+- _The intellectual property goes to that of the original author and their publisher ([Broforce](https://www.broforcegame.com/) ~ [Free Lives](https://freelives.net/) ~ [Devolver Digital](https://www.devolverdigital.com/))._ 
 - _Any metadata or text detailing false information in terms of ownership of assets is not intentional and is an accident - please contact me if this is the case._ 
-- _Content from broforce used in this repositry is to be used in terms of modding and use of the application itself exclusively - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
-- _This software is under the implication of user created content for broforce._
+- _Content from [Broforce](https://www.broforcegame.com/) used in this repositry is to be used in terms of modding and use of the application itself exclusively - i and my contributors do not endorse the copying of [Broforce](https://www.broforcegame.com/)'s assets for incorrect use._
+- _This software is under the implication of user created content for [Broforce](https://www.broforcegame.com/)._
 - _Me and my contributors do not hold any liability for damage to your machine caused by this software._
 - _Use of the software implies that you have understood these terms._
