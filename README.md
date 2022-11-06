@@ -27,3 +27,6 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - dotnet build ~ builds application in current working directory
 - MSBuild /p:Configuration=Release /p:Platform="AnyCPU" - Builds to bin/release where contents can then be copied into broforce/BroforceModEngine folder
 - cd {path} ~ changes working directory
+
+# Disclaimer
+_Content from broforce is used such as audio and code ~ i and my contributors in no way claim to own any of it. The intellectual property goes to that of the original author and their publisher (Broforce ~ Free Lives ~ Devolver Digital). Any metadata displaying the original author as me or anyone else is not intential and most likely an accident._ 
