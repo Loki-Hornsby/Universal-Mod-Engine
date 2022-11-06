@@ -5,13 +5,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-      <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\Loader.cs" /> -->
-      <!-- <Compile Include="..\BroforceModEngine\BroforceModEngine\Loader.cs" /> -->
-
-      <!-- External Dll's -->
+      <!-- External Dll's 
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\0Harmony.dll" />
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Assembly-CSharp.dll" />
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\BroforceModEngine.dll" />
@@ -21,8 +19,9 @@
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Newtonsoft.Json.dll" />
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.CoreModule.dll" />
       <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.IMGUIModule.dll" />
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.IMGUIModule.dll" />-->
 
+      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\**" CopyToPublishDirectory="PreserveNewest"/>
       <Reference Include="BroforceModEngine" />
   </ItemGroup>    
 </Project>

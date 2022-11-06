@@ -73,6 +73,8 @@ namespace BroforceModSoftware.Interaction.Back {
 
                     while (EXE.IsInUse()){} // Wait to close
                     System.Windows.Forms.Application.Exit();
+                } else {
+                    Logger.Log("Error occurred when trying to launch mod engine...", Logger.LogType.Error, Logger.VerboseType.Low);
                 }
             };
         }
@@ -111,8 +113,10 @@ namespace BroforceModSoftware.Interaction.Back {
             /// Checks wether a file is in use or not
             /// </summary>
             // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
-            static bool IsFileLocked(FileInfo f){
+            static bool IsFileLocked(string s){
                 try {
+                    FileInfo f = new FileInfo(s);
+                    
                     using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
                         stream.Close();
                     }
@@ -130,7 +134,11 @@ namespace BroforceModSoftware.Interaction.Back {
             /// Checks wether EXE (Broforce.exe) is in use
             /// </summary>
             public static bool IsInUse(){
-                return IsFileLocked(new FileInfo(EXE.GetLocation()));
+                if (String.IsNullOrEmpty(EXE.GetLocation())){
+                    return false;
+                } else {
+                    return IsFileLocked(EXE.GetLocation());
+                }
             }
 
             /// <summary>
@@ -190,7 +198,7 @@ namespace BroforceModSoftware.Interaction.Back {
                 if (LastFile.Contains(".exe")) {
                     // Create exe storage and copy engine to exe's location
                     CreateExeStorage(LastPath, LastFile);
-                    CopyEngineToExe();
+                    //CopyEngineToExe();
 
                     FileState = FileStates.SuccessOnExe;
                 } else {

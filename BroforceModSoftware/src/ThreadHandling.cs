@@ -24,19 +24,13 @@ namespace BroforceModSoftware.Threading {
 
         // Runs the next task queued in [tasks]
         static void RunNextTask(){
-            new Thread(() => {
-                Thread.CurrentThread.IsBackground = true; 
+            Task.Run(tasks.Dequeue());
 
-                // Task creation
-                Task.Run(tasks.Dequeue());
-
-                // Task completed without timing out
-                if (tasks.Count == 0){
-                    if (Finished != null) Finished.Invoke(); 
-                } else {
-                    RunNextTask();
-                }
-            }).Start();
+            if (tasks.Count == 0){
+                if (Finished != null) Finished.Invoke(); 
+            } else {
+                RunNextTask();
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace BroforceModSoftware {
             }
         }
 
-        public override void Write(string value){
+        public override void Write(string? value){
             if (!String.IsNullOrEmpty(value)) {
                 Logger.Log(value, Logger.LogType.System, Logger.VerboseType.High);
             }
@@ -130,17 +130,17 @@ namespace BroforceModSoftware {
                             break;
 
                         case LogType.Engine:
-                            col = Logger.TxtBox.BackColor;
+                            col = TxtBox.BackColor;
                             break;
                         case LogType.System:
-                            col = Logger.TxtBox.BackColor;
+                            col = TxtBox.BackColor;
                             break;
 
                         case LogType.Custom: // Allows for custom color select
                             // col = col; 
                             break;
                         case LogType.Default:
-                            col = Logger.TxtBox.BackColor; 
+                            col = TxtBox.BackColor; 
                             break;
                     }
 
@@ -212,7 +212,7 @@ namespace BroforceModSoftware {
         /// <summary>
         /// Empty Log
         /// </summary>
-        public static void Empty(){
+        public static void Clear(){
             TxtBox.Text = "Log was emptied..." + Environment.NewLine;
         }
     }
@@ -221,18 +221,28 @@ namespace BroforceModSoftware {
 namespace BroforceModSoftware {
     public partial class GUI : Form {
         /// <summary>
-        /// Check if program is admin
+        /// Reset STORE.txt
         /// </summary>
-        public static bool IsAdministrator(){
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        void Reset(object sender, EventArgs e){
+            Logger.Clear();
+
+            if (File.Exists(BI.EXE.StorageFilePath)){ 
+                Logger.Log("Resetting STORE.txt.", Logger.LogType.Success, Logger.VerboseType.Medium);
+
+                File.Delete(BI.EXE.StorageFilePath);
+            } else {
+                Logger.Log("Already reset STORE.txt!", Logger.LogType.Warning, Logger.VerboseType.Medium);
+            }
+
+            Logger.Log("Resetting...", Logger.LogType.Success, Logger.VerboseType.Low);
+
+            StartGUI();
         }
 
         /// <summary>
         /// Log the launch info
         /// </summary>
-        public void GenerateLaunchInfo(object? sender, DragEventArgs? e){
+        void GenerateLaunchInfo(object sender, DragEventArgs e){
             bool fail = false;
             bool retry = false;
             string s = "";
@@ -261,7 +271,7 @@ namespace BroforceModSoftware {
             } else {
                 fail = true;
 
-                if (BI.EXE.GetLocation() == null){
+                if (String.IsNullOrEmpty(BI.EXE.GetLocation())){
                     s += "The stored path to the Broforce executable is empty.";
                 } else {
                     s += BI.EXE.GetLocation() + " is an invalid path for the Broforce executable.";
@@ -307,32 +317,22 @@ namespace BroforceModSoftware {
             }
 
             // Reset if needed
-            if (retry) InitializeUI();
+            if (retry) StartGUI();
         }
 
         /// <summary>
-        /// Reset STORE.txt
+        /// Check if program is admin
         /// </summary>
-        void Reset(object sender, EventArgs e){
-            Logger.Empty();
-
-            if (File.Exists(BI.EXE.StorageFilePath)){ 
-                Logger.Log("Resetting STORE.txt.", Logger.LogType.Success, Logger.VerboseType.Medium);
-
-                File.Delete(BI.EXE.StorageFilePath);
-            } else {
-                Logger.Log("Already reset STORE.txt!", Logger.LogType.Warning, Logger.VerboseType.Medium);
-            }
-
-            Logger.Log("Resetting...", Logger.LogType.Success, Logger.VerboseType.Low);
-
-            InitializeUI();
+        bool IsAdministrator(){
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         /// <summary>
         /// Initialize UI Controls
         /// </summary>
-        public void InitializeUI(){
+        void StartGUI(){
             // Tip
             if (!IsAdministrator()) Logger.Log(
                 "If you would like to see a higher level of logging at startup then run this application as administrator. This will stop you from uploading files for security reasons.", 
@@ -342,7 +342,7 @@ namespace BroforceModSoftware {
             Logger.AddNewLine();
 
             // Starting Message
-            if (BI.EXE.GetLocation() == null){ // Exe location found?
+            if (String.IsNullOrEmpty(BI.EXE.GetLocation())){ // Exe location found?
                 // info
                 Logger.Log("STORE.txt contents are empty. Asking for exe...", Logger.LogType.Warning, Logger.VerboseType.High);
 
@@ -363,8 +363,14 @@ namespace BroforceModSoftware {
             }
         }
 
+        void SetVerboseLevel(object sender, EventArgs? e, Logger.VerboseType type) {
+            Logger.SetVerbosity(type);
+
+            UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
+        }
+
         // https://stackoverflow.com/questions/13603654/check-only-one-toolstripmenuitem
-        public void UncheckOtherToolStripMenuItems(ToolStripMenuItem selectedMenuItem) {
+        void UncheckOtherToolStripMenuItems(ToolStripMenuItem selectedMenuItem) {
             selectedMenuItem.Checked = true;
 
             // Select the other MenuItens from the ParentMenu(OwnerItens) and unchecked this,
@@ -382,25 +388,21 @@ namespace BroforceModSoftware {
             //selectedMenuItem.Owner.Show();
         }
 
-        private void SetVerboseLevel(object? sender, EventArgs? e, Logger.VerboseType type) {
-            Logger.SetVerbosity(type);
-
-            UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
-        }
-
-        public void InitializeControls(){
+        void SetupToolbar(){
             // Tool Menu
             this.IsMdiContainer = true;
 
             // Menu strip stuff
             MenuStrip ms = new MenuStrip();
 
+            // Options
             ToolStripMenuItem options = new ToolStripMenuItem("Options");
             ToolStripMenuItem reset = new ToolStripMenuItem("Reset", null, new EventHandler(Reset));
             options.DropDownItems.Add(reset);
 
             ms.Items.Add(options);
 
+            // Verbosity
             ToolStripMenuItem verbosity = new ToolStripMenuItem("Verbosity");
             ToolStripMenuItem low_verbose = new ToolStripMenuItem(
                 "Low", null, new EventHandler((sender, e) => SetVerboseLevel(sender, e, Logger.VerboseType.Low)));
@@ -411,6 +413,8 @@ namespace BroforceModSoftware {
             ToolStripMenuItem high_verbose = new ToolStripMenuItem(
                 "High", null, new EventHandler((sender, e) => SetVerboseLevel(sender, e, Logger.VerboseType.High)));
                 verbosity.DropDownItems.Add(high_verbose);
+
+            ms.Items.Add(verbosity);
 
             // Override startup verbosity
             if (IsAdministrator()){
@@ -423,17 +427,15 @@ namespace BroforceModSoftware {
             }
 
             // Assigning
-            ms.Items.Add(verbosity);
-
-            ms.MdiWindowListItem = verbosity;
+            ms.MdiWindowListItem = verbosity; // What does this do?
            
+            // Finishing Setup 
             ms.Dock = DockStyle.Top;
             this.MainMenuStrip = ms;
             this.Controls.Add(ms);
+        }
 
-            // Subscribe logger to drag drop event
-            Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
-
+        void SetupForm(){
             // Form Sizing
             int x = Screen.PrimaryScreen.Bounds.Width;
             int y = Screen.PrimaryScreen.Bounds.Height;
@@ -459,22 +461,36 @@ namespace BroforceModSoftware {
             this.Shown += (sender, e) => FI.Visuals.ForceShow(sender, e);
         }
 
-        // https://stackoverflow.com/questions/8367586/asking-for-confirmation-when-x-button-is-clicked
-        protected override void OnFormClosing(FormClosingEventArgs e){
-            if (BI.EXE.IsInUse()){
-                if (MessageBox.Show("Closing the engine whilst the game is open is not recommended.\nAre you sure you want to close the engine?", "Close Engine?", MessageBoxButtons.YesNo) == DialogResult.No){
-                    e.Cancel = true;
-                }
-            }
-        }
-
         public GUI(){
+            // Logger Setup
             Logger.Init(this);
-            InitializeControls();
+            Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
+
+            // General Setup
+            SetupForm();
+            SetupToolbar();
             InitializeComponent();
-            InitializeUI();
+
+            // Show Start UI
+            StartGUI();
 
             ThreadHandling.QueueTask(BI.BeginLoad());
+        }
+
+        // https://stackoverflow.com/questions/8367586/asking-for-confirmation-when-x-button-is-clicked
+        protected override void OnFormClosing(FormClosingEventArgs e){
+            try {
+                if (BI.EXE.IsInUse()){
+                    if (MessageBox.Show("Closing the engine whilst the game is open is not recommended.\nAre you sure you want to close the engine?", "Close Engine?", MessageBoxButtons.YesNo) == DialogResult.No){
+                        e.Cancel = true;
+                    }
+                } else {
+                    e.Cancel = false;
+                }
+            } catch (Exception ex) {
+                MessageBox.Show(ex.ToString(), "Error!", MessageBoxButtons.OK);
+                e.Cancel = false;
+            }
         }
     }
 }
