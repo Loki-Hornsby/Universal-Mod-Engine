@@ -35,5 +35,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - _Any metadata detailing false information is not intentional and is an accident - please contact me if this is the case._ 
 - _Content from broforce is to be used in terms of modding only - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
 
-#
-Thankyou [Gorzon](https://github.com/Gorzon38)!
+##
+<p align="center">
+Thankyou Gorzon! (https://github.com/Gorzon38)
+</p>
