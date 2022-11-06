@@ -33,8 +33,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 - cd {path} ~ changes working directory
 
 # Disclaimer
-- _Content from broforce is used such as audio and code._ 
-- _I and my contributors in no way claim to own any of it._ 
+- _Content from broforce is used such as audio and code - I and my contributors in no way claim to own any of it._ 
 - _The intellectual property goes to that of the original author and their publisher (Broforce ~ Free Lives ~ Devolver Digital)._ 
 - _Any metadata or text detailing false information in terms of ownership of assets is not intentional and is an accident - please contact me if this is the case._ 
 - _Content from broforce is to be used in terms of modding only - i and my contributors do not endorse the copying of broforce's assets for incorrect use._
