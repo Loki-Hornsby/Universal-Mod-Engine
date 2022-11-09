@@ -43,9 +43,10 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 # Extras
 ### Doorstop Alternative
 - Originally we were using [Doorstop](https://github.com/NeighTools/UnityDoorstop) to load our mod engine however i decided to replace it since i like to remove as many dependencies as i can from a project.
-- If you'd like to alter my immplementation or just learn a bit more about how it works i reccommend checking out the following links
+- Here are some usefull links if you'd like to try making something like this yourself;
   - https://code.visualstudio.com/docs/languages/cpp
   - https://www.msys2.org/
   - https://www.unknowncheats.me
   - https://www.mono-project.com/docs/advanced/embedding/
   - https://www.linuxquestions.org/questions/linux-software-2/how-do-i-add-to-the-pkg_config_path-environment-variable-619202/
+  - https://github.com/microsoft/vscode-cpptools/issues/10118
