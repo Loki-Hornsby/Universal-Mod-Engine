@@ -50,3 +50,4 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
   - https://www.mono-project.com/docs/advanced/embedding/
   - https://www.linuxquestions.org/questions/linux-software-2/how-do-i-add-to-the-pkg_config_path-environment-variable-619202/
   - https://github.com/microsoft/vscode-cpptools/issues/10118
+  - https://stackoverflow.com/questions/3420931/pkg-config-path-for-mono-on-mac
