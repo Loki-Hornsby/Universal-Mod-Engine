@@ -28,7 +28,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 # Dependencies
 - https://harmony.pardeike.net
 - https://www.newtonsoft.com/json
-- https://www.mono-project.com
+- https://www.mono-project.com (Includes `Mono.cecil`)
 
 # Disclaimer
 - _Content from [Broforce](https://www.broforcegame.com/) is used such as audio and code - I and my contributors in no way claim to own any of it._ 
