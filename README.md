@@ -3,7 +3,7 @@
 Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools.com/showthread.php?t=16470) and [Joe Best-Rotheray](https://www.codersblock.org/blog//2014/06/integrating-monocecil-with-unity.html)!
 
 1. [How do i use the mod engine?](#usage)
-2. [I've modified your code but i don't know how to test it!](#building)
+2. [Dude, i've like totally ripped off your code but i don't know how to test it works!](#building)
 3. [What does this project depend on?](#dependencies)
 4. [Gimme' a breakdown doc.](#disclaimer)
 
