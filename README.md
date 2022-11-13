@@ -1,6 +1,6 @@
 
 # BROMODS
-Thank you [Gorzon](https://github.com/Gorzon38)!
+Thank you [Gorzon](https://github.com/Gorzon38) and [Joe Best-Rotheray](https://www.codersblock.org/blog//2014/06/integrating-monocecil-with-unity.html)!
 
 1. [How do i use the mod engine?](#usage)
 2. [What does this project depend on?](#dependencies)
