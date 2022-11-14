@@ -1,5 +1,7 @@
+# Ignore these files since they are local to the user
 *.vs/
 *.vscode/
 *obj/
-# Ignores storage file since it is local to the user
 BroforceModSoftware/bin/Debug/netcoreapp3.1/Storage
+BroforceModSoftware/bin/Debug/netcoreapp3.1/Levels
+BroforceModSoftware/bin/Debug/netcoreapp3.1/Saves
