@@ -30,10 +30,6 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 1. Set your local path to the engine's `.csproj` file (`cd <YourPath>\BroMods\BroforceModEngine\BroforceModEngine\`)
 2. Run `MSBuild /p:Configuration=Release /p:Platform="AnyCPU"`
 
-### Building the injector
-1. Set your local path to the injector's `.csproj` file (`cd <YourPath>\BroMods\BroforceModEngine\ModEngineInjector`)
-2. Run `dotnet build -c:Release` in the terminal
-
 ### Final Step
 - Run `BROMODS.exe` which has been generated at `BroMods/BroforceModSoftware/bin/Debug/netcoreapp3.1/`
 
