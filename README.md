@@ -19,7 +19,7 @@ To use the recent release head over to the releases tab and find a zip - then un
 _The following instructions use "Visual Studio Code" (Not to be confused with "Visual Studio" which is more commonly used (i like to do everything manually so i can understand what's going on))_
 
 ### Setup
-1. `MSBUILD` and `dotnet` **will** be needed ([These dependencies](#dependencies), `.NET` version `3.5` and `3.1` **may** be needed)
+1. `MSBUILD` and `dotnet` **will** be needed ([These dependencies](#dependencies) alongside `.NET` version `3.5` and `3.1` **may** be needed)
 2. Create a new vscode terminal
 
 ### Building the software
