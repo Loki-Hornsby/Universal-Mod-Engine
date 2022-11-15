@@ -21,16 +21,21 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 ### Setup
 1. `MSBUILD` and `dotnet` **will** be needed (Installing [`Mono`](#dependencies) and `.NET` version `3.5` and `3.1` **may** be needed)
 2. Create a new vscode terminal
+3. Ensure you follow these steps in order
 
-### Building the software
-1. Set your local path to the software's `.csproj` file (`cd <YourPath>\BroMods\BroforceModSoftware\`)
+### 1. Building the injector
+1. Set your local path to the injector's `.csproj` file (`cd <YourPath>\BroMods\BroforceModEngine\ModEngineInjector\`)
 2. Run `dotnet build -c:Release`
 
-### Building the engine
+### 2. Building the engine
 1. Set your local path to the engine's `.csproj` file (`cd <YourPath>\BroMods\BroforceModEngine\BroforceModEngine\`)
 2. Run `MSBuild /p:Configuration=Release /p:Platform="AnyCPU"`
 
-### Final Step
+### 3. Building the software
+1. Set your local path to the software's `.csproj` file (`cd <YourPath>\BroMods\BroforceModSoftware\`)
+2. Run `dotnet build -c:Release`
+
+### 4. Final Step
 - Run `BROMODS.exe` which has been generated at `BroMods/BroforceModSoftware/bin/Release/netcoreapp3.1/`
 
 ```lua
