@@ -24,7 +24,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 
 ### Building the software
 1. Set your local path to the software's `.csproj` file (`cd <YourPath>\BroMods\BroforceModSoftware\`)
-2. Run `dotnet build`
+2. Run `dotnet build -c:Release`
 
 ### Building the engine
 1. Set your local path to the engine's `.csproj` file (`cd <YourPath>\BroMods\BroforceModEngine\BroforceModEngine\`)
