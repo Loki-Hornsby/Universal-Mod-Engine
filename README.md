@@ -11,7 +11,7 @@ Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools
 - _Note: always be carefull when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
 - _Before usage please make sure to read the [disclaimer](#disclaimer) featured below._
 ### Clone source
-To clone the source download this github repositry, unzip it to your desired location, then run `BROMODS.exe` which can be located at `./BroforceModSoftware/bin/Debug/netcoreapp3.1/`
+To clone the source download this github repositry, unzip it to your desired location, then run `BROMODS.exe` which can be located at `./BroforceModSoftware/bin/Release/netcoreapp3.1/`
 ### Use recent release
 To use the recent release head over to the releases tab and find a zip - then unzip it and run the exe!
 
@@ -31,7 +31,7 @@ _The following instructions use "Visual Studio Code" (Not to be confused with "V
 2. Run `MSBuild /p:Configuration=Release /p:Platform="AnyCPU"`
 
 ### Final Step
-- Run `BROMODS.exe` which has been generated at `BroMods/BroforceModSoftware/bin/Debug/netcoreapp3.1/`
+- Run `BROMODS.exe` which has been generated at `BroMods/BroforceModSoftware/bin/Release/netcoreapp3.1/`
 
 ```lua
 if Errors then
