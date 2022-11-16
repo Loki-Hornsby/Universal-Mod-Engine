@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PlayerOptions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <playerName>Brononymous</playerName>
+  <musicVolume>0.3</musicVolume>
+  <masterVolume>1</masterVolume>
+  <resolutionW>0</resolutionW>
+  <resolutionH>0</resolutionH>
+  <fullscreen>false</fullscreen>
+  <SaveGifEnabled>false</SaveGifEnabled>
+  <GermanKeyboardLayout>false</GermanKeyboardLayout>
+  <hardMode>false</hardMode>
+  <suppressAnnouncer>false</suppressAnnouncer>
+  <disableDaisywheel>false</disableDaisywheel>
+  <playOnlineWithFnet>false</playOnlineWithFnet>
+  <hasDefaultedMasterVolume>false</hasDefaultedMasterVolume>
+  <cameraShakeAmount>1</cameraShakeAmount>
+  <gamePadMapping1 />
+  <gamePadMapping2 />
+  <gamePadMapping3 />
+  <gamePadMapping4 />
+  <cameraPostFXLevel>2</cameraPostFXLevel>
+  <vSync>false</vSync>
+  <keyPlayer1Fire>Z</keyPlayer1Fire>
+  <keyPlayer1Special>X</keyPlayer1Special>
+  <keyPlayer1Jump>UpArrow</keyPlayer1Jump>
+  <keyPlayer1Up>UpArrow</keyPlayer1Up>
+  <keyPlayer1Down>DownArrow</keyPlayer1Down>
+  <keyPlayer1Left>LeftArrow</keyPlayer1Left>
+  <keyPlayer1Right>RightArrow</keyPlayer1Right>
+  <keyPlayer1HighFive>C</keyPlayer1HighFive>
+  <keyPlayer1Gesture>V</keyPlayer1Gesture>
+  <keyPlayer1Sprint>LeftShift</keyPlayer1Sprint>
+  <keyPlayer2Fire>T</keyPlayer2Fire>
+  <keyPlayer2Special>Y</keyPlayer2Special>
+  <keyPlayer2Jump>W</keyPlayer2Jump>
+  <keyPlayer2Up>W</keyPlayer2Up>
+  <keyPlayer2Down>S</keyPlayer2Down>
+  <keyPlayer2Left>A</keyPlayer2Left>
+  <keyPlayer2Right>D</keyPlayer2Right>
+  <keyPlayer2HighFive>U</keyPlayer2HighFive>
+  <keyPlayer2Gesture>I</keyPlayer2Gesture>
+  <keyPlayer2Sprint>RightShift</keyPlayer2Sprint>
+  <keyPlayer3Fire>None</keyPlayer3Fire>
+  <keyPlayer3Special>None</keyPlayer3Special>
+  <keyPlayer3Jump>None</keyPlayer3Jump>
+  <keyPlayer3Up>None</keyPlayer3Up>
+  <keyPlayer3Down>None</keyPlayer3Down>
+  <keyPlayer3Left>None</keyPlayer3Left>
+  <keyPlayer3Right>None</keyPlayer3Right>
+  <keyPlayer3HighFive>None</keyPlayer3HighFive>
+  <keyPlayer3Gesture>None</keyPlayer3Gesture>
+  <keyPlayer3Sprint>None</keyPlayer3Sprint>
+  <keyPlayer4Fire>None</keyPlayer4Fire>
+  <keyPlayer4Special>None</keyPlayer4Special>
+  <keyPlayer4Jump>None</keyPlayer4Jump>
+  <keyPlayer4Up>None</keyPlayer4Up>
+  <keyPlayer4Down>None</keyPlayer4Down>
+  <keyPlayer4Left>None</keyPlayer4Left>
+  <keyPlayer4Right>None</keyPlayer4Right>
+  <keyPlayer4HighFive>None</keyPlayer4HighFive>
+  <keyPlayer4Gesture>None</keyPlayer4Gesture>
+  <keyPlayer4Sprint>None</keyPlayer4Sprint>
+  <controllerRumble>true</controllerRumble>
+  <alwaysShowBubbles>true</alwaysShowBubbles>
+  <overrideLanguage />
+</PlayerOptions>

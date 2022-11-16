@@ -3,7 +3,8 @@ using System.IO;
 using HarmonyLib;
 using System.Reflection;
 using System.Text;
-using Unity = UnityEngine;
+
+using Injection;
 
 /// <summary>
 /// The engine - Mainly used for testing at the moment (needs tidying)
@@ -12,58 +13,46 @@ using Unity = UnityEngine;
 /// https://www.unknowncheats.me/forum/general-programming-and-reversing/176942-accessing-mono-loading-assemblies.html
 /// </summary>
 
-namespace BroforceModEngine
-{
-    public static class ModEngine
-    {
-        /// BroforceModEngine main directory
-        public static string EngineDirectoryPath { get; private set; }
-
-        /// BroforceModEngine dependencies directory
-        public static string DependenciesDirectoryPath { get; private set; }
-
+namespace BroforceModEngine {
+    public static class ModEngine {
         /// BroforceModEngine mods directory
-        public static string ModsDirectoryPath { get; private set; }
+        public const string ModsDirectoryPath = @"bin\"; // Unknown? yet to be implemented
 
         internal static Harmony harmony;
 
-        // Loaded boolean
-        public static bool _loaded = false;
+        public static int Main(string[] args){
+            System.Console.WriteLine("Mod Engine Compiled.");
+
+            return 0;
+        }
 
         /// <summary>
         /// Load Engine
         /// </summary>
-        internal static void Load() {
-            Logger.Log("Passed 2nd stage load...", 3);
+        internal static void Load(string InjDLL, string BroDLL) {
+            Logger.Log("Starting...", 1);
 
             try {
                 // Load all assemblies
-                foreach (string file in Directory.GetFiles(DependenciesDirectoryPath, "*.dll")){
-                    Assembly.LoadFile(file);
+                foreach (string file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")){
+                    try {
+                        Assembly.LoadFile(file);
+                    } catch (Exception ex) {
+                        Logger.Log("Assembly Load Fail: " + ex.ToString(), 3);
+                    }
                 }
 
                 // Enable Harmony and logging
-                Harmony.DEBUG = true;
+                //Harmony.DEBUG = true;
 
-                harmony = new Harmony("com.example.patch");
-                var assembly = Assembly.GetExecutingAssembly();
-                harmony.PatchAll(assembly);
+                //harmony = new Harmony("com.example.patch");
+                //var assembly = Assembly.GetExecutingAssembly();
+                //harmony.PatchAll(assembly);
 
-                // Finished Loading
-                Logger.Log("Passed 3rd stage load...", 3);
-
-                _loaded = true;
+                // Inject
+                Logger.Log(Injector.Inject(InjDLL, BroDLL).ToString(), 3);
             } catch(Exception ex){
-                Logger.Log(ex.ToString(), 3);
-
-                _loaded = true;
-            }
-
-            // Load recursively until success or fail
-            if (!_loaded){
-                Load();
-            } else {
-                Logger.Log("Mod Engine Started! :D", 1);
+                Logger.Log("Internal Mod Engine Load Fail: " + ex.ToString(), 3);
             }
         }
 
@@ -90,11 +79,11 @@ namespace BroforceModEngine
         /// Having some fun
         /// </summary>
         /// https://github.com/Gorzon38/BF-CODE/blob/main/BF-1131/Assembly-CSharp/Menu.cs
-        [HarmonyPatch(typeof(MainMenu), "Awake")] // typeof(MainMenu), "Awake" or "Start"
+        /*[HarmonyPatch(typeof(MainMenu), "Awake")] // typeof(MainMenu), "Awake" or "Start"
         class LoadEverything_Patch {
             public static void Postfix() {
                 CauseError();
             }
-        }
+        }*/
     }
 }

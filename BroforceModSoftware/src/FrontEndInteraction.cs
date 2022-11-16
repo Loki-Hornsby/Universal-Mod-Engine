@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -125,7 +124,6 @@ namespace BroforceModSoftware.Interaction.Front {
             /// </summary>
             static string PerformResponse(Form form, TextBox txtbox){
                 string text = "";
-                string id = BI.Files.GetId();
 
                 switch (BI.FileState){
                     // Too little or too much
@@ -163,13 +161,13 @@ namespace BroforceModSoftware.Interaction.Front {
                     case BI.FileStates.SuccessOnMod:
                         Media.Sounds.PlaySuccessSound();
                         Media.Effects.ShakeIntense(form, txtbox);
-                        text = id + " was uploaded.";
+                        text = "Mod was uploaded.";
                         break;
 
                     case BI.FileStates.FailOnMod:
                         Media.Sounds.PlayFailSound();
                         Media.Effects.ShakeNormal(form, txtbox);
-                        text = id + " failed to upload.";
+                        text = "Mod failed to upload.";
                         break;
                 }
 
@@ -209,11 +207,22 @@ namespace BroforceModSoftware.Interaction.Front {
             /// Hover event
             /// </summary>
             public static void Enter(object sender, DragEventArgs e) {
-                if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+                e.Effect = DragDropEffects.Copy;
             }
         }
 
         public static class Visuals {
+            public static void ExitWithMessageBox(string s){
+                MessageBox.Show(
+                    s, 
+                    "Warning!", 
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                System.Windows.Forms.Application.Exit();
+            }
+
             /// <summary>
             /// Bring the window to the front
             /// </summary>

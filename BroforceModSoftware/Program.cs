@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using BroforceModSoftware.Interaction.Back;
+using BroforceModSoftware.Interaction.Front;
 
 /// <summary>
+/// Build Order: Injector, Engine, GUI
 /// Launches the GUI
 /// Taskkill /IM BroMods.exe /F 
 /// </summary>
@@ -20,14 +23,15 @@ namespace BroforceModSoftware {
                 System.IO.Path.GetFileNameWithoutExtension(
                     System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1);
 
-            if (!exists){
-                Application.SetHighDpiMode(HighDpiMode.SystemAware);
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new GUI());
-            } else {
-                MessageBox.Show("There is already another instance of this application running!", "Warning!", MessageBoxButtons.OK);
-                System.Windows.Forms.Application.Exit();
+            if (!BI.InstanceIsRunning(BI.EXE.GetLocation(), "Broforce")){
+                if (!exists){
+                    Application.SetHighDpiMode(HighDpiMode.SystemAware);
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new GUI());
+                } else {
+                    FI.Visuals.ExitWithMessageBox("There is already another instance of this application running!");
+                }
             }
         }
     }

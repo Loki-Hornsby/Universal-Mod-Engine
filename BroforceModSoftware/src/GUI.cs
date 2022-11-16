@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;  
 using System.Text;
@@ -251,73 +250,53 @@ namespace BroforceModSoftware {
             /// Checks wether STORE.txt exists
             /// </summary>
             if (File.Exists(BI.EXE.StorageFilePath)){
-                s += "Found STORE.txt @ (" + Path.GetFullPath(BI.EXE.StorageFilePath) + ")";
+                s = "Found STORE.txt";
             } else {
+                s = "STORE.txt was not found.";
+
                 fail = true;
-                s += "STORE.txt was not found.";
             }
 
             Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Medium);
-            s = "";
             
             /// <summary>
             /// Checks wether the path inside STORE.txt exists
             /// </summary>
-            if (File.Exists(BI.EXE.GetLocation())){
-                s += 
-                "Found Broforce executable @ (" + 
-                BI.EXE.GetLocation() + ")" +
-                Environment.NewLine;
+            if (BI.EXE.GetLocation() != null){
+                s = "Found Broforce executable";
             } else {
-                fail = true;
+                s = "Couldn't Find Broforce executable";
 
-                if (String.IsNullOrEmpty(BI.EXE.GetLocation())){
-                    s += "The stored path to the Broforce executable is empty.";
-                } else {
-                    s += BI.EXE.GetLocation() + " is an invalid path for the Broforce executable.";
-                }
+                fail = true;
             }
 
             Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Medium);
-            s = "";
             
             /// <summary>
             /// Final output - decides wether reset is needed or if operation was successfull
             /// </summary>
             if (!fail){ 
-                s += 
-                Environment.NewLine + 
-                "You can now open Broforce!" +
-                Environment.NewLine + 
-                "~ This will log anything you need to see whilst playing." + 
-                Environment.NewLine + 
-                "~ When you want to use mods open this application first then open Broforce." +
-                Environment.NewLine + 
-                "~ If you don't want to use mods then don't open this application! (Duh ;P)";
+                s = "Opening Broforce... This will log anything you need to see whilst playing.";
             } else {
                 retry = true;
 
                 if (File.Exists(BI.EXE.StorageFilePath)){ 
-                    s += "The path in STORE.txt was incorrect. Resetting...";
+                    s = "The path in STORE.txt was incorrect. Resetting...";
     
                     File.Delete(BI.EXE.StorageFilePath);
                 } else {
-                    s += "Asking user to upload executable file for Broforce...";
+                    s = "Asking user to upload executable file for Broforce...";
                 }
             }
 
-            /// <summary>
-            /// Only logs above contents if selected EXE isn't currently running
-            /// </summary>
-            if (!fail && !retry && BI.EXE.IsInUse()){ 
-                // Bug: this isn't changing the color
-                Logger.Log("You need to open this application before launching Broforce. Use Options/Reset in the context menu above if you have chosen the wrong exe or close this application and reopen it after closing Broforce.", Logger.LogType.Error, Logger.VerboseType.Low);
-            } else {
-                Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Low);
-            }
+            Logger.Log(s, (fail) ? Logger.LogType.Error : Logger.LogType.Success, Logger.VerboseType.Low);
 
             // Reset if needed
-            if (retry) StartGUI();
+            if (retry){ 
+                StartGUI();
+            } else if (!fail) { // Continue into load sequence
+                BI.BeginLoad();
+            }
         }
 
         /// <summary>
@@ -342,24 +321,20 @@ namespace BroforceModSoftware {
             Logger.AddNewLine();
 
             // Starting Message
-            if (String.IsNullOrEmpty(BI.EXE.GetLocation())){ // Exe location found?
-                // info
-                Logger.Log("STORE.txt contents are empty. Asking for exe...", Logger.LogType.Warning, Logger.VerboseType.High);
+            if (BI.EXE.GetLocation() == null){ // Exe location found?
+                // Drag and drop
+                Logger.AllowDragAndDrop(true);
+                Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
 
                 // Text
                 Logger.Log(@"Drag and Drop the executable file for Broforce into this window. (Usually this is named 'Broforce_beta.exe' or 'Broforce.exe' and can normally be found under 'Steam\steamapps\common\Broforce')", Logger.LogType.Success, Logger.VerboseType.Low);
-
-                // Drag and drop
-                Logger.AllowDragAndDrop(true);
+                if (BI.InstanceIsRunning(BI.EXE.GetLocation(), "Broforce")) Logger.Log(@"/!\ Ensure that you close any running Broforce instances before doing this /!\", Logger.LogType.Warning, Logger.VerboseType.Low);
             } else {
-                // info
-                Logger.Log("STORE.txt contents are not empty. No action needed...", Logger.LogType.Success, Logger.VerboseType.High);
+                // Drag and drop
+                Logger.AllowDragAndDrop(false);
 
                 // Show launch info
                 GenerateLaunchInfo(null, null);
-
-                // Drag and drop
-                Logger.AllowDragAndDrop(false);
             }
         }
 
@@ -464,7 +439,6 @@ namespace BroforceModSoftware {
         public GUI(){
             // Logger Setup
             Logger.Init(this);
-            Logger.TxtBox.DragDrop += (sender, e) => GenerateLaunchInfo(sender, e);
 
             // General Setup
             SetupForm();
@@ -473,24 +447,6 @@ namespace BroforceModSoftware {
 
             // Show Start UI
             StartGUI();
-
-            ThreadHandling.QueueTask(BI.BeginLoad());
-        }
-
-        // https://stackoverflow.com/questions/8367586/asking-for-confirmation-when-x-button-is-clicked
-        protected override void OnFormClosing(FormClosingEventArgs e){
-            try {
-                if (BI.EXE.IsInUse()){
-                    if (MessageBox.Show("Closing the engine whilst the game is open is not recommended.\nAre you sure you want to close the engine?", "Close Engine?", MessageBoxButtons.YesNo) == DialogResult.No){
-                        e.Cancel = true;
-                    }
-                } else {
-                    e.Cancel = false;
-                }
-            } catch (Exception ex) {
-                MessageBox.Show(ex.ToString(), "Error!", MessageBoxButtons.OK);
-                e.Cancel = false;
-            }
         }
     }
 }

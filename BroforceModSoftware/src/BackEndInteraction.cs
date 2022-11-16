@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Security.Permissions;
 
 using BroforceModSoftware;
+using BroforceModSoftware.Interaction.Front;
 using BroforceModEngine;
 
 /// <summary>
@@ -29,24 +30,41 @@ namespace BroforceModSoftware.Interaction.Back {
             FailOnMod, // NO! MORE FAILURE!
         }
 
+        public static string InjectionDLL = 
+            @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
+        public static string BroforceDLL = 
+            @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
+        
         /// <summary>
-        /// Checks wether a file is in use or not
+        /// Check if file at path is running
         /// </summary>
-        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
-        public static bool IsFileLocked(string s){
-            try {
-                FileInfo f = new FileInfo(s);
-                
-                using (FileStream stream = f.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None)){
-                    stream.Close();
+        public static bool InstanceIsRunning(string path, string PseudoName){
+            if (EXE.GetLocation() == null){
+                Logger.Log("EXE Location is invalid!", Logger.LogType.Warning, Logger.VerboseType.Medium);
+
+                return false;
+            } else {
+                try {
+                    foreach (Process p in Process.GetProcesses()){
+                        // Bug: could cause errors if someone has a weird path --> how can i fix this?
+                        if (path.ToLower().Contains(p.ProcessName.ToLower())){ 
+                            FI.Visuals.ExitWithMessageBox(
+                                "An instance of " + PseudoName + " named "
+                                + "'" + p.ProcessName + "'" +
+                                " is already running! Please close it before trying to launch the engine."
+                            );
+
+                            return true;
+                        }
+                    }
+
+                    return false;
+                } catch (Exception e) {
+                    Logger.Log(e.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+
+                    return false;
                 }
-            } catch (IOException ex) {
-                return true;
-
-                // We don't need a log here since an intentional error is meant to occur here
             }
-
-            return false;
         }
 
         /// <summary>
@@ -78,33 +96,26 @@ namespace BroforceModSoftware.Interaction.Back {
 
         /// <summary>
         /// Begins loading the mod engine as well as broforce.exe
+        /// https://stackoverflow.com/questions/2237628/c-sharp-process-killing/2237689#2237689
         /// </summary>
-        public static Action BeginLoad(){
-            return () => {
-                if (!BI.EXE.IsInUse()){
-                    // Do absolutely nothing while waiting...
-                    while (!File.Exists(EXE.GetLocation())){}
-                    while (!EXE.IsInUse()){}
+        public static void BeginLoad(){
+            // Raise error if assembly-csharp is being accessed
+            BI.InstanceIsRunning(BroforceDLL, "Assembly-Csharp.dll");
 
-                    // Begin load
-                    Logger.AddNewLine();
-                    Logger.Log("Starting Mod Engine Via GUI...", Logger.LogType.Custom, Logger.VerboseType.Low, Color.Purple);
-                    System.Console.WriteLine(Loader.Load(PassEngineLogLow, PassEngineLogMedium, PassEngineLogHigh));
+            // Load Engine
+            System.Console.WriteLine(
+                Loader.Load(
+                    PassEngineLogLow, PassEngineLogMedium, PassEngineLogHigh,
+                    InjectionDLL, BroforceDLL
+                )
+            );
 
-                    while (EXE.IsInUse()){} // Wait to close
-                    System.Windows.Forms.Application.Exit();
-                } else {
-                    Logger.Log("Error occurred when trying to launch mod engine...", Logger.LogType.Error, Logger.VerboseType.Low);
-                }
-            };
+            // Open Broforce
+            //Process.Start(EXE.GetLocation());
         }
         
         // LATEST UPLOAD
         public static FileStates FileState;
-
-        public static string[] LastFiles = null;
-        public static string LastFile = null;
-        public static string LastPath = null;
 
         public static class EXE {
             public const string StorageFilePath = @".\Storage\STORE.txt";
@@ -119,23 +130,19 @@ namespace BroforceModSoftware.Interaction.Back {
                     s = File.ReadAllText(StorageFilePath);
                 } catch (IOException ex){
                     s = null;
+                }
 
-                    // We don't need a log here since an intentional error is meant to occur here
+                if (!File.Exists(s)){
+                    if (String.IsNullOrEmpty(s)){
+                        Logger.Log("The stored path to the Broforce executable is empty.", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                    } else {
+                        Logger.Log(s + " is an invalid path for the Broforce executable.", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                    }
+
+                    s = null;
                 }
 
                 return s;
-            }
-
-        
-            /// <summary>
-            /// Checks wether EXE (Broforce.exe) is in use
-            /// </summary>
-            public static bool IsInUse(){
-                if (String.IsNullOrEmpty(EXE.GetLocation())){
-                    return false;
-                } else {
-                    return IsFileLocked(EXE.GetLocation());
-                }
             }
 
             /// <summary>
@@ -159,7 +166,7 @@ namespace BroforceModSoftware.Interaction.Back {
             /// <summary>
             /// Add the exe location to a text file
             /// </summary>
-            public static void AddExe(){
+            public static void AddExe(string LastPath, string LastFile){
                 if (LastFile.Contains(".exe")) {
                     // Create exe storage
                     CreateExeStorage(LastPath, LastFile);
@@ -176,27 +183,17 @@ namespace BroforceModSoftware.Interaction.Back {
             /// Send the file uploaded to be added as an exe or if reenabled by a mod sent to it's reciever
             /// </summary>
             public static void SendFiles(string[] files){
-                LastFiles = files;
-                LastFile = Path.GetFileName(LastFiles[0]);
-                LastPath = Path.GetDirectoryName(LastFiles[0]);
+                string[] LastFiles = files;
 
                 if (LastFiles.Length > 0){ // Empty?
                     if (LastFiles.Length == 1){ // Only 1 file?
-                        EXE.AddExe();
+                        EXE.AddExe(Path.GetDirectoryName(LastFiles[0]), Path.GetFileName(LastFiles[0]));
                     } else {
                         FileState = FileStates.Excess;
                     }
                 } else {
                     FileState = FileStates.Dearth;
                 }
-            }
-
-            /// <summary>
-            /// Returns the last file stored
-            /// </summary>
-            public static string GetId(){
-                string pfull = ((LastFile == null) ? Path.GetFullPath(EXE.StorageFilePath) : Path.GetFullPath(LastFile));
-                return pfull;
             }
         }
     }

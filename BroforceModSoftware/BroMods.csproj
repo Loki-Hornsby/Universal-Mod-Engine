@@ -2,25 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>annotations</Nullable>
+
+    <!-- Consistent settings -->
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-      <!-- External Dll's 
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\0Harmony.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Assembly-CSharp.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\BroforceModEngine.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\BroforceModEngine.pdb" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\MonoMod.RuntimeDetour.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\MonoMod.Utils.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\Newtonsoft.Json.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.CoreModule.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.dll" />
-      <Content Include="..\BroforceModEngine\BroforceModEngine\bin\Release\UnityEngine.IMGUIModule.dll" />-->
-
       <Content Include="Sounds\*.*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  

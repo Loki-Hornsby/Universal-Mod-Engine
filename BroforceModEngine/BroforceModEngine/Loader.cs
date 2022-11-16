@@ -38,33 +38,36 @@ namespace BroforceModEngine {
     }
 
     public static class Loader {
-        public static string Load(Func<string, string> LogFuncLow, Func<string, string> LogFuncMedium, Func<string, string> LogFuncHigh) {
+        public static string Load(
+            Func<string, string> LogFuncLow, Func<string, string> LogFuncMedium, Func<string, string> LogFuncHigh,
+            string InjDLL, string BroDLL) {
+
             // Begin logging
             Logger.Initialize(LogFuncLow, LogFuncMedium, LogFuncHigh);
             Logger.Log("Logging was activated...", 3);
 
             // Begin execution of mod engine
             try {
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                AppDomain.CurrentDomain.AssemblyResolve += (x, y) => ResolveDLL(x, y); 
 
-                Logger.Log("Passed 1st stage load...", 3);
-
-                ModEngine.Load();
+                ModEngine.Load(InjDLL, BroDLL);
             } catch(Exception ex) {
-                Logger.Log(ex.ToString(), 3);
+                Logger.Log("Resolve and Load Mod Engine Fail: " + ex.ToString(), 3);
             }
 
             return Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
         }
 
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args){
-            try {
-                return Assembly.LoadFile(Path.Combine(ModEngine.EngineDirectoryPath, "0Harmony.dll"));
-            } catch(Exception ex){
-                
+        private static Assembly ResolveDLL(object sender, ResolveEventArgs args){
+            Logger.Log("TRYING TO RESOLVE " + args.Name, 3);
+
+            if (args.Name.Contains("ModEngineInjector")) {
+                return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ModEngineInjector.dll"));
+            } else if (args.Name.Contains("0Harmony")) {
+                return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "0Harmony.dll"));
+            } else {
+                return null;
             }
-            
-            return null;
         }
     }
 }
