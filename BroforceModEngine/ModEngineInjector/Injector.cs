@@ -3,6 +3,8 @@ using System.IO;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
+using System.Linq;
+using BindingFlags = System.Reflection.BindingFlags;
 
 // Notes;
 // https://www.mono-project.com/docs/tools+libraries/libraries/Mono.Cecil/faq/
@@ -71,6 +73,7 @@ namespace Injection {
         static void CreateBackup(string file){
             /// Todo: Uninstaller should move original assembly-csharp back into correct place
 
+            bool backup = false;
             string BackupFilePath = GetBackup(file);
             string BackupFolder = Path.GetDirectoryName(BackupFilePath);
 
@@ -82,6 +85,8 @@ namespace Injection {
             // Move File to Backup
             if (!File.Exists(BackupFilePath)){
                 File.Move(file, BackupFilePath);
+
+                backup = true;
             }
 
             // Delete last file written to by injector
@@ -98,25 +103,53 @@ namespace Injection {
             // We use GetBackup since the backup file is now used as a template ~ this frees up BroDLL to be used
             ChosenAssembly = new LoadedAssembly(GetBackup(BroDLL));
 
-            // Get the method we want to inject into
-            var method = InjectionUtils.GetMethodDefinition(InjectionUtils.GetTypeDefinition(ChosenAssembly.GetTypes(), "Menu"), "Awake");
+            // Get our chosen field, type or method
+            /*var speedField = InjectionUtils.GetFieldDefinition(
+                InjectionUtils.GetTypeDefinition(
+                    ChosenAssembly.GetTypes(), 
+                    "TestVanDammeAnim"
+                ), 
+                
+                "canAirdash"
+            );*/
 
-            // Get the IL processor
+            var method = InjectionUtils.GetMethodDefinition(
+                InjectionUtils.GetTypeDefinition(
+                    ChosenAssembly.GetTypes(), 
+                    "TestVanDammeAnim"
+                ), 
+                
+                "Awake"
+            );
+
+            var field = InjectionUtils.GetFieldDefinition(
+                InjectionUtils.GetTypeDefinition(
+                    ChosenAssembly.GetTypes(), 
+                    "TestVanDammeAnim"
+                ), 
+                
+                "canWallClimb"
+            );
+
+            // Get the IL processor (Only needed for methods)
             // CIL and IL are synonymous https://stackoverflow.com/questions/293800/what-is-the-difference-between-cil-and-msil-il 
             // https://en.wikipedia.org/wiki/Common_Intermediate_Language
+                // https://en.wikipedia.org/wiki/List_of_CIL_instructions 
             var il = method.Body.GetILProcessor();
 
-            // Write our code into the chosen method
-            /*Instruction first = method.Body.Instructions[0];
-            il.InsertBefore(first, Instruction.Create(OpCodes.Ldstr, "Enter " + method.FullName + "." + method.Name ));
-            il.InsertBefore(first, Instruction.Create(OpCodes.Call, method));
+            // Testing   // RID: 10554
+            Instruction first = method.Body.Instructions[0];
+            il.InsertBefore(first, Instruction.Create(OpCodes.Ldarg_0));
+			il.InsertBefore(first, Instruction.Create(OpCodes.Ldc_I4, 0));
+			il.InsertBefore(first, Instruction.Create(OpCodes.Stfld, field));
 
-            Instruction last = method.Body.Instructions[method.Body.Instructions.Count - 1];
-            il.InsertBefore(last, Instruction.Create(OpCodes.Ldstr, "Exit " + method.FullName + "." + method.Name ) );
-            il.InsertBefore(last, Instruction.Create(OpCodes.Call, method));*/
+            /*
 
-            method.Body.Instructions.Clear(); 
-            method.Body.ExceptionHandlers.Clear(); 
+            0x001362B0 02         IL_01EC: ldarg.0
+            0x001362B1 16         IL_01ED: ldc.i4.0
+            0x001362B2 7D3A290004 IL_01EE: stfld     bool TestVanDammeAnim::canWallClimb
+
+            */
 
             // Write to the assembly
             // We use BroDLL and thus replace Broforce's DLL with ours
