@@ -29,7 +29,7 @@ namespace BroforceModEngine {
         /// <summary>
         /// Load Engine
         /// </summary>
-        internal static void Load(string InjDLL, string BroDLL) {
+        internal static void Load(string BroDLL) {
             Logger.Log("Starting...", 1);
 
             try {
@@ -50,7 +50,7 @@ namespace BroforceModEngine {
                 //harmony.PatchAll(assembly);
 
                 // Inject
-                Logger.Log(Injector.Inject(InjDLL, BroDLL).ToString(), 3);
+                Logger.Log(Injector.Inject(BroDLL).ToString(), 3);
             } catch(Exception ex){
                 Logger.Log("Internal Mod Engine Load Fail: " + ex.ToString(), 3);
             }

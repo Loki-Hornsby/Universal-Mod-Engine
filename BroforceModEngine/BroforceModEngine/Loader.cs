@@ -40,7 +40,7 @@ namespace BroforceModEngine {
     public static class Loader {
         public static string Load(
             Func<string, string> LogFuncLow, Func<string, string> LogFuncMedium, Func<string, string> LogFuncHigh,
-            string InjDLL, string BroDLL) {
+            string BroDLL) {
 
             // Begin logging
             Logger.Initialize(LogFuncLow, LogFuncMedium, LogFuncHigh);
@@ -50,7 +50,7 @@ namespace BroforceModEngine {
             try {
                 AppDomain.CurrentDomain.AssemblyResolve += (x, y) => ResolveDLL(x, y); 
 
-                ModEngine.Load(InjDLL, BroDLL);
+                ModEngine.Load(BroDLL);
             } catch(Exception ex) {
                 Logger.Log("Resolve and Load Mod Engine Fail: " + ex.ToString(), 3);
             }

@@ -29,11 +29,6 @@ namespace BroforceModSoftware.Interaction.Back {
             SuccessOnMod, // YES! MORE SUCCESS!
             FailOnMod, // NO! MORE FAILURE!
         }
-
-        public static string InjectionDLL = 
-            @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
-        public static string BroforceDLL = 
-            @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
         
         /// <summary>
         /// Check if file at path is running
@@ -99,14 +94,12 @@ namespace BroforceModSoftware.Interaction.Back {
         /// https://stackoverflow.com/questions/2237628/c-sharp-process-killing/2237689#2237689
         /// </summary>
         public static void BeginLoad(){
-            // Raise error if assembly-csharp is being accessed
-            BI.InstanceIsRunning(BroforceDLL, "Assembly-Csharp.dll");
-
             // Load Engine
             System.Console.WriteLine(
                 Loader.Load(
                     PassEngineLogLow, PassEngineLogMedium, PassEngineLogHigh,
-                    InjectionDLL, BroforceDLL
+                    Path.Combine(Path.GetDirectoryName(EXE.GetLocation()), @"Broforce_beta_Data\Managed\Assembly-CSharp.dll") 
+                        // Bug: this path could change...
                 )
             );
 

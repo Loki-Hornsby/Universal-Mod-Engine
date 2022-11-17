@@ -59,25 +59,82 @@ namespace Injection {
         }
 
         /// <summary>
-        /// Backs up the original Assembly-Csharp.dll to a separate folder so long as a backup doesn't already exist
+        /// Get backup file naming convention
         /// </summary>
-        public static string CreateBackup(string BroDLL){
-            /*if (!Directory.Exists(BroDLL + @"..\..\BACKUP\")){
-
-            }
-
-            if (!File.Exists(Path.GetDirectoryName(BroDLL + @"..\..\BACKUP\Backup.dll"))){
-                System.IO.File.Move(@"..\..\BACKUP\" + Path.GetFileName(BroDLL), "Backup.dll");
-            }*/
-
-            return "";
+        static string GetBackup(string file){
+            return Path.GetDirectoryName(file) + @"\..\..\BACKUP\" + Path.GetFileName(file);
         }
 
-        public static int Inject(string InjDLL, string BroDLL) {
-            CreateBackup(BroDLL);
+        /// <summary>
+        /// Move a file into a BACKUP folder
+        /// </summary>
+        static void CreateBackup(string file){
+            /// Todo: Uninstaller should move original assembly-csharp back into correct place
+
+            string BackupFilePath = GetBackup(file);
+            string BackupFolder = Path.GetDirectoryName(BackupFilePath);
+
+            // Create Backup Folder
+            if (!Directory.Exists(BackupFolder)){
+                Directory.CreateDirectory(BackupFolder);
+            }
+
+            // Move File to Backup
+            if (!File.Exists(BackupFilePath)){
+                File.Move(file, BackupFilePath);
+            }
+        }
+        
+        /// <summary>
+        /// Get temporary file naming convention
+        /// </summary>
+        static string GetTemp(string file){
+            return Path.GetDirectoryName(file) + @"\" + "Temp_" + Path.GetFileName(file);
+        }
+
+        /// <summary>
+        /// Create a temporary file from backup
+        /// </summary>
+        static string BackupAndTemp(string file){
+            // We backup the original file first 
+            CreateBackup(file);
+
+            string temp = GetTemp(file);
+
+            // Delete Previous temp file
+            if (File.Exists(temp)){
+                File.Delete(temp);
+            }
+
+            // Copy from backup
+            if (!File.Exists(temp)){
+                string backup = GetBackup(file);
+
+                if (File.Exists(backup)) {
+                    File.Copy(backup, temp, false);
+                } else {
+                    System.Console.WriteLine("Create Backup Failed!");
+                }
+            } else {
+                System.Console.WriteLine("Delete Temp Failed!");
+            }
+
+            return temp;
+        }
+
+        static void ConvertTemp(string file){
+            string backupName = Path.GetFileName(GetBackup(file));
+
+            // Rename temp to match backup file - We actually copy it so a temp file is always present for debug reasons
+            File.Copy(file, Path.GetDirectoryName(file) + @"\" + backupName);
+        }
+
+        public static int Inject(string BroDLL) {
+            // Create a temporary file to modify and then eventually overwrite assembly-csharp.
+            string temp = BackupAndTemp(BroDLL);
 
             // Load our chosen assembly (Assembly-CSharp.dll)
-            ChosenAssembly = new LoadedAssembly(BroDLL);
+            ChosenAssembly = new LoadedAssembly(GetBackup(BroDLL));
 
             // Get the method we want to inject into
             var method = InjectionUtils.GetMethodDefinition(InjectionUtils.GetTypeDefinition(ChosenAssembly.GetTypes(), "Menu"), "Awake");
@@ -100,7 +157,10 @@ namespace Injection {
             method.Body.ExceptionHandlers.Clear(); 
 
             // Write to the assembly
-            ChosenAssembly.GetDefinition().Write(InjDLL);
+            ChosenAssembly.GetDefinition().Write(temp);
+
+            // Convert temp to its backup equivalent
+            ConvertTemp(temp);
             
             return 0;
         }
