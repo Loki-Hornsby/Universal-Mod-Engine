@@ -4,12 +4,9 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 using System.Linq;
-using BindingFlags = System.Reflection.BindingFlags;
 
-// Notes;
-// https://www.mono-project.com/docs/tools+libraries/libraries/Mono.Cecil/faq/
-// https://www.codersblock.org/blog//2014/06/integrating-monocecil-with-unity.html
-// https://forum.exetools.com/showthread.php?t=16470
+using Injection.Utilities;
+using Injection.Library;
 
 namespace Injection {
     // This is the class for the assembly we load
@@ -52,7 +49,7 @@ namespace Injection {
 
     // This is the INJECTOR2000.
     public static class Injector {
-        static LoadedAssembly ChosenAssembly = null;
+        public static LoadedAssembly ChosenAssembly = null;
 
         public static int Main(string[] Args){
             System.Console.WriteLine("Injector Compiled.");
@@ -103,53 +100,8 @@ namespace Injection {
             // We use GetBackup since the backup file is now used as a template ~ this frees up BroDLL to be used
             ChosenAssembly = new LoadedAssembly(GetBackup(BroDLL));
 
-            // Get our chosen field, type or method
-            /*var speedField = InjectionUtils.GetFieldDefinition(
-                InjectionUtils.GetTypeDefinition(
-                    ChosenAssembly.GetTypes(), 
-                    "TestVanDammeAnim"
-                ), 
-                
-                "canAirdash"
-            );*/
-
-            var method = InjectionUtils.GetMethodDefinition(
-                InjectionUtils.GetTypeDefinition(
-                    ChosenAssembly.GetTypes(), 
-                    "TestVanDammeAnim"
-                ), 
-                
-                "Awake"
-            );
-
-            var field = InjectionUtils.GetFieldDefinition(
-                InjectionUtils.GetTypeDefinition(
-                    ChosenAssembly.GetTypes(), 
-                    "TestVanDammeAnim"
-                ), 
-                
-                "canWallClimb"
-            );
-
-            // Get the IL processor (Only needed for methods)
-            // CIL and IL are synonymous https://stackoverflow.com/questions/293800/what-is-the-difference-between-cil-and-msil-il 
-            // https://en.wikipedia.org/wiki/Common_Intermediate_Language
-                // https://en.wikipedia.org/wiki/List_of_CIL_instructions 
-            var il = method.Body.GetILProcessor();
-
-            // Testing   // RID: 10554
-            Instruction first = method.Body.Instructions[0];
-            il.InsertBefore(first, Instruction.Create(OpCodes.Ldarg_0));
-			il.InsertBefore(first, Instruction.Create(OpCodes.Ldc_I4, 0));
-			il.InsertBefore(first, Instruction.Create(OpCodes.Stfld, field));
-
-            /*
-
-            0x001362B0 02         IL_01EC: ldarg.0
-            0x001362B1 16         IL_01ED: ldc.i4.0
-            0x001362B2 7D3A290004 IL_01EE: stfld     bool TestVanDammeAnim::canWallClimb
-
-            */
+            // Testing
+            Player.canWallClimb(false);
 
             // Write to the assembly
             // We use BroDLL and thus replace Broforce's DLL with ours
