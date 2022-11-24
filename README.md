@@ -1,5 +1,5 @@
 
-# Universal Mod Loader
+# Universal Mod Engine
 Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools.com/showthread.php?t=16470), [Cecilifier](https://cecilifier.me/) and [Joe Best-Rotheray](https://www.codersblock.org/blog//2014/06/integrating-monocecil-with-unity.html)!
 
 1. [I want mods **NOW!**](#usage)
