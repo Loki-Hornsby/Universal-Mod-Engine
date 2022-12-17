@@ -35,7 +35,7 @@ namespace Software.Interaction.Back {
         /// </summary>
         public static bool InstanceIsRunning(string path){
             if (EXE.GetLocation() == null){
-                Logger.Log("EXE Location is invalid!", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                //Logger.log("EXE Location is invalid!", Logger.LogType.Warning, Logger.VerboseType.Medium);
 
                 return false;
             } else {
@@ -55,7 +55,7 @@ namespace Software.Interaction.Back {
 
                     return false;
                 } catch (Exception e) {
-                    Logger.Log(e.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+                    //Logger.log(e.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
 
                     return false;
                 }
@@ -66,7 +66,7 @@ namespace Software.Interaction.Back {
         /// Pass the GUI logging over to the Engine
         /// </summary>
         public static string PassEngineLogLow(string message){
-            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.Low);
+            //Logger.log(message, Logger.LogType.Engine, Logger.VerboseType.Low);
 
             return "";
         }
@@ -75,7 +75,7 @@ namespace Software.Interaction.Back {
         /// Pass the GUI logging over to the Engine
         /// </summary>
         public static string PassEngineLogMedium(string message){
-            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.Medium);
+            //Logger.log(message, Logger.LogType.Engine, Logger.VerboseType.Medium);
 
             return "";
         }
@@ -84,7 +84,7 @@ namespace Software.Interaction.Back {
         /// Pass the GUI logging over to the Engine
         /// </summary>
         public static string PassEngineLogHigh(string message){
-            Logger.Log(message, Logger.LogType.Engine, Logger.VerboseType.High);
+            //Logger.log(message, Logger.LogType.Engine, Logger.VerboseType.High);
 
             return "";
         }
@@ -104,7 +104,7 @@ namespace Software.Interaction.Back {
             );
 
             // Open // Bug: this causes read/write issues // Todo: when GUI is closed assemblyCSharp.dll should return to default
-            Process.Start(EXE.GetLocation());
+            //Process.Start(EXE.GetLocation());
         }
         
         // LATEST UPLOAD
@@ -127,9 +127,9 @@ namespace Software.Interaction.Back {
 
                 if (!File.Exists(s)){
                     if (String.IsNullOrEmpty(s)){
-                        Logger.Log("The stored path to the executable is empty.", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                        //Logger.log("The stored path to the executable is empty.", Logger.LogType.Warning, Logger.VerboseType.Medium);
                     } else {
-                        Logger.Log(s + " is an invalid path for the executable.", Logger.LogType.Warning, Logger.VerboseType.Medium);
+                        //Logger.log(s + " is an invalid path for the executable.", Logger.LogType.Warning, Logger.VerboseType.Medium);
                     }
 
                     s = null;

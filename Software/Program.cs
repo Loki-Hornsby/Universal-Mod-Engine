@@ -28,7 +28,7 @@ namespace Software {
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new GUI());
                 } else {
-                    FI.Visuals.ExitWithMessageBox("There is already another instance of this application running!");
+                    // FI.Visuals.ExitWithMessageBox("There is already another instance of this application running!");
                 }
             }
         }

@@ -21,46 +21,39 @@ namespace Software.Interaction.Front {
     public static class FI {
         public static class DragAndDrop {
             /// <summary>
-            /// Perform an effect dependant on current state
+            /// Return text dependent on file state
             /// </summary>
             static string PerformResponse(Form form, TextBox txtbox){
-                string text = "";
-
                 switch (BI.FileState){
                     // Too little or too much
                     case BI.FileStates.Dearth:
-                        text = "No files were found?";
-                        break;
+                        return "No files were found?";
 
                     case BI.FileStates.Excess:
-                        text = "Too many files uploaded.";
-                        break;
+                        return "Too many files uploaded.";
 
                     // Invalid
                     case BI.FileStates.Invalid:
-                        text = "Incorrect input. Is the file corrupted?";
-                        break;
+                        return "Incorrect input. Is the file corrupted?";
 
                     // Exe
                     case BI.FileStates.SuccessOnExe:
-                        text = "Exe upload succeeded!";
-                        break;
+                        return "Exe upload succeeded!";
 
                     case BI.FileStates.FailOnExe:
-                        text = "Exe upload failed!";
-                        break;
+                        return "Exe upload failed!";
 
                     // Mod
                     case BI.FileStates.SuccessOnMod:
-                        text = "Mod was uploaded.";
-                        break;
+                        return "Mod was uploaded.";
 
                     case BI.FileStates.FailOnMod:
-                        text = "Mod failed to upload.";
-                        break;
+                        return "Mod failed to upload.";
+                    
+                    // Fatal error
+                    default:
+                        return "FATAL ERROR!";
                 }
-
-                return text;
             }
     
             /// <summary>
@@ -86,10 +79,10 @@ namespace Software.Interaction.Front {
                 }
 
                 // Disable Drag and Drop
-                if (BI.FileState == BI.FileStates.SuccessOnExe) Logger.AllowDragAndDrop(false);
+                //if (BI.FileState == BI.FileStates.SuccessOnExe) Logger.AllowDragAndDrop(false);
 
                 // Log Output from response
-                if (!String.IsNullOrEmpty(text)) Logger.Log(text, Logger.LogType.Custom, Logger.VerboseType.Low, col);
+                //if (!String.IsNullOrEmpty(text)) //Logger.log(text, Logger.LogType.Custom, Logger.VerboseType.Low, col);
             }
 
             /// <summary>
@@ -110,16 +103,6 @@ namespace Software.Interaction.Front {
                 );
 
                 System.Windows.Forms.Application.Exit();
-            }
-
-            /// <summary>
-            /// Bring the window to the front
-            /// </summary>
-            public static void ForceShow(object sender, EventArgs e) {
-                Form f = sender as Form;
-                f.Focus();
-                f.BringToFront();
-                f.Activate();
             }
         }
     }

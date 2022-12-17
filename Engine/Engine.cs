@@ -24,7 +24,7 @@ namespace Engine {
         /// Load Engine
         /// </summary>
         internal static void Load(string BroDLL) {
-            Logger.Log("Starting...", 1);
+            //Logger.log("Starting...", 1);
 
             try {
                 // Load all assemblies
@@ -32,14 +32,14 @@ namespace Engine {
                     try {
                         Assembly.LoadFile(file);
                     } catch (Exception ex) {
-                        Logger.Log("Assembly Load Fail: " + ex.ToString(), 3);
+                        //Logger.log("Assembly Load Fail: " + ex.ToString(), 3);
                     }
                 }
 
                 // Inject
-                Logger.Log(Injector.Inject(BroDLL).ToString(), 3);
+                //Logger.log(Injector.Inject(BroDLL).ToString(), 3);
             } catch(Exception ex){
-                Logger.Log("Internal Engine Load Fail: " + ex.ToString(), 3);
+                //Logger.log("Internal Engine Load Fail: " + ex.ToString(), 3);
             }
         }
     }

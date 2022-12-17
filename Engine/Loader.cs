@@ -42,7 +42,7 @@ namespace Engine {
 
             // Begin logging
             Logger.Initialize(LogFuncLow, LogFuncMedium, LogFuncHigh);
-            Logger.Log("Logging was activated...", 3);
+            //Logger.log("Logging was activated...", 3);
 
             // Begin execution of Engine
             try {
@@ -50,14 +50,14 @@ namespace Engine {
 
                 Engine.Load(BroDLL);
             } catch(Exception ex) {
-                Logger.Log("Resolve and Load Engine Fail: " + ex.ToString(), 3);
+                //Logger.log("Resolve and Load Engine Fail: " + ex.ToString(), 3);
             }
 
             return Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
         }
 
         private static Assembly ResolveDLL(object sender, ResolveEventArgs args){
-            Logger.Log("TRYING TO RESOLVE " + args.Name, 3);
+            //Logger.log("TRYING TO RESOLVE " + args.Name, 3);
 
             if (args.Name.Contains("Injector")) {
                 return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Injector.dll"));
