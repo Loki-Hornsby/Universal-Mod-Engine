@@ -8,7 +8,6 @@ Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools
 4. [Gimme' a breakdown doc.](#disclaimer)
 
 # Usage
-_Note: always be careful when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
 ### Clone source
 To clone the source download this github repository, unzip it to your desired location, then run `Gui.exe` which can be located at `./Software/bin/Release/netcoreapp3.1/`
 ### Use recent release
