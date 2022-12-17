@@ -1,5 +1,5 @@
 
-# Universal Mod Loader
+# Universal Mod Engine
 Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools.com/showthread.php?t=16470), [Cecilifier](https://cecilifier.me/) and [Joe Best-Rotheray](https://www.codersblock.org/blog//2014/06/integrating-monocecil-with-unity.html)!
 
 1. [I want mods **NOW!**](#usage)
@@ -8,8 +8,6 @@ Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools
 4. [Gimme' a breakdown doc.](#disclaimer)
 
 # Usage
-- _Note: always be careful when downloading executable files over the internet - they could be malicious - it's best to build the project manually and read any `.csproj` files located in the project to understand what is being packaged in the executable file_
-- _Before usage please make sure to read the [disclaimer](#disclaimer) featured below._
 ### Clone source
 To clone the source download this github repository, unzip it to your desired location, then run `Gui.exe` which can be located at `./Software/bin/Release/netcoreapp3.1/`
 ### Use recent release
