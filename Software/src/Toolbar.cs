@@ -11,20 +11,13 @@ using System.Security.Principal;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using Software;
-using Software.Interaction.Front;
-using Software.Interaction.Back;
+using ModInterface;
 
 namespace Software {
-    /*
     public class Toolbar {
-        void SetVerboseLevel(object sender, EventArgs? e, Logger.VerboseType type) {
-            Logger.SetVerbosity(type);
-
-            UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
-        }
-
-        // https://stackoverflow.com/questions/13603654/check-only-one-toolstripmenuitem
+        /// <summary>
+        /// https://stackoverflow.com/questions/13603654/check-only-one-toolstripmenuitem
+        /// </summary>
         void UncheckOtherToolStripMenuItems(ToolStripMenuItem selectedMenuItem) {
             selectedMenuItem.Checked = true;
 
@@ -43,17 +36,45 @@ namespace Software {
             //selectedMenuItem.Owner.Show();
         }
 
-        void Setup(Form form){
+        /// <summary>
+        /// Change Verbosity of logger
+        /// </summary>
+        void SetVerboseLevel(object sender, EventArgs? e, Logger.VerboseType type) {
+            // Change verbosity
+            //Logger.SetVerbosity(type);
+
+            // Uncheck unneeded items
+            UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
+        }
+
+        /// <summary>
+        /// Change loaded interface
+        /// </summary>
+        void ChangeInterface(object sender, EventArgs? e){
+            // Get interfaces
+            InterfaceLoader.PollInterfaces();
+
+            // Uncheck unneeded items
+            UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
+        }
+
+        /// <summary>
+        /// Toolbar constructor
+        /// </summary>
+        public Toolbar(Form form){
             // Tool Menu
             form.IsMdiContainer = true;
 
-            // Menu strip stuff
+            // Menu Strip
             MenuStrip ms = new MenuStrip();
 
             // Options
-            ToolStripMenuItem options = new ToolStripMenuItem("Options");
-            ToolStripMenuItem reset = new ToolStripMenuItem("Reset", null, new EventHandler(Reset));
-            options.DropDownItems.Add(reset);
+            ToolStripMenuItem options = new ToolStripMenuItem("Interfaces");
+
+            for (int i = 0; i < 200; i++){
+                ToolStripMenuItem change = new ToolStripMenuItem(i.ToString(), null, new EventHandler(ChangeInterface));
+                options.DropDownItems.Add(change);
+            }
 
             ms.Items.Add(options);
 
@@ -72,26 +93,19 @@ namespace Software {
             ms.Items.Add(verbosity);
 
             // Override startup verbosity
-            if (IsAdministrator()){
+            /*if (IsAdministrator()){
                 SetVerboseLevel(high_verbose, null, Logger.VerboseType.High);
 
                 //Logger.log("Reminder: Running this application as administrator will usually not allow for upload of files. This serves as a way to quickly debug startup.", 
-                    Logger.LogType.Warning, Logger.VerboseType.Low);
+                    //Logger.LogType.Warning, Logger.VerboseType.Low);
             } else {
                 SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
-            }
-
-            // Assigning
-            ms.MdiWindowListItem = verbosity; // What does this do?
+            }*/
             
             // Finishing Setup 
             ms.Dock = DockStyle.Top;
             form.MainMenuStrip = ms;
             form.Controls.Add(ms);
         }
-
-        public Toolbar(){
-            Setup();
-        }
-    }*/
+    }
 }

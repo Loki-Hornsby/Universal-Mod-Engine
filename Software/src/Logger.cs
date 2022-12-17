@@ -48,15 +48,15 @@ public class ConsoleLogger : TextWriter {
 public class Logger {
     // Type of log
     public enum LogType {
-        Error,
-        Warning,
-        Success,
+        Error = 1,
+        Warning = 2,
+        Success = 3,
         
-        Engine,
-        System,
+        Engine = 4,
+        System = 5,
 
-        Custom,
-        Default,
+        Custom = 6,
+        Default = 0,
     }
 
     // Verbosity

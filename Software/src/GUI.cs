@@ -13,6 +13,18 @@ using System;
 /// </summary>
 
 namespace Software {
+    public static class Config {
+        public static Window window;
+        public static Logger logger;
+        public static Toolbar toolbar;
+
+        public static void InputData(Window _window, Logger _logger, Toolbar _toolbar){
+            window = _window;
+            logger = _logger;
+            toolbar = _toolbar;
+        }
+    }
+
     public partial class GUI : Form {
         /// <summary>
         /// Start The GUI
@@ -29,18 +41,18 @@ namespace Software {
                 // Window
                 Window window = new Window(this);
 
-                // Components
-                //Components components = new Components(this);
-
                 // Logger
                 Logger logger = new Logger(this);
 
                 // Toolbar
-                //Toolbar toolbar = new Toolbar(this); 
+                Toolbar toolbar = new Toolbar(this); 
+
+                // Config
+                Config.InputData(window, logger, toolbar);
 
                 return true;
             } catch (Exception ex) {
-                ////Logger.log(ex.ToString());
+                Config.logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.High);
 
                 return false;
             }

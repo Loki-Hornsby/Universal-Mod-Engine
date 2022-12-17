@@ -1,12 +1,11 @@
 using System;
 
-namespace Interface {
-    /*
-    public class CustomInterface {
+namespace ModInterface {
+    public class CustomModInterface {
         /// <summary>
         /// Data class which stores all the needed information about our interface
         /// </summary>
-        class Data {
+        public class Data {
             string name;
 
             /// <summary>
@@ -31,7 +30,7 @@ namespace Interface {
         /// Constructor for our custom interface
         /// </summary>
         /// <param name="name"> Name of your interface </param>
-        public CustomInterface(string name){
+        public CustomModInterface(string name){
             data = new Data(name);
         }   
 
@@ -41,5 +40,5 @@ namespace Interface {
         public Data GetData() {
             return data;
         }
-    }*/
+    }
 }

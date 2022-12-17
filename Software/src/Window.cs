@@ -29,9 +29,12 @@ namespace Software {
         }
 
         /// <summary>
-        /// Setup the window
+        /// Window Constructor
         /// </summary>
-        void Setup(Form form){
+        public Window(Form form){
+            // Text
+            form.Text = "Universal Mod Loader";
+
             // Form Sizing
             int x = Screen.PrimaryScreen.Bounds.Width;
             int y = Screen.PrimaryScreen.Bounds.Height;
@@ -55,13 +58,6 @@ namespace Software {
 
             // Show form
             form.Shown += (sender, e) => ForceShow(sender, e);
-        }
-
-        /// <summary>
-        /// Window Constructor
-        /// </summary>
-        public Window(Form form){
-            Setup(form);
         }
     }
 }

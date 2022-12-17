@@ -20,6 +20,11 @@
       <Reference Include="Engine" />
 
       <!-- Load all our interfaces -->
-      <Compile Include="..\Interfaces\InterfaceLoader.cs" />
+      <Content Include="..\Interfaces\*.*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>  
+
+      <Reference Include="ModInterface" />
+      <Compile Include="..\Interfaces\*.cs"></Compile>  
   </ItemGroup>    
 </Project>
