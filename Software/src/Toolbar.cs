@@ -14,11 +14,11 @@ using System.Runtime.CompilerServices;
 using ModInterface;
 
 namespace Software {
-    public class Toolbar {
+    public static class Toolbar {
         /// <summary>
         /// https://stackoverflow.com/questions/13603654/check-only-one-toolstripmenuitem
         /// </summary>
-        void UncheckOtherToolStripMenuItems(ToolStripMenuItem selectedMenuItem) {
+        static void UncheckOtherToolStripMenuItems(ToolStripMenuItem selectedMenuItem) {
             selectedMenuItem.Checked = true;
 
             // Select the other MenuItens from the ParentMenu(OwnerItens) and unchecked this,
@@ -39,9 +39,9 @@ namespace Software {
         /// <summary>
         /// Change Verbosity of logger
         /// </summary>
-        void SetVerboseLevel(object sender, EventArgs? e, Logger.VerboseType type) {
+        static void SetVerboseLevel(object sender, EventArgs? e, Logger.VerboseType type) {
             // Change verbosity
-            //Logger.SetVerbosity(type);
+            Logger.SetVerbosity(type);
 
             // Uncheck unneeded items
             UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
@@ -50,18 +50,23 @@ namespace Software {
         /// <summary>
         /// Change loaded interface
         /// </summary>
-        void ChangeInterface(object sender, EventArgs? e){
+        static void ChangeInterface(object sender, EventArgs? e){
+            // Interface
+            InterfaceLoader.Setup();
+
             // Get interfaces
-            InterfaceLoader.PollInterfaces();
+            List<CustomModInterface> interfaces = InterfaceLoader.PollInterfaces();
+            Logger.Log("HIIII", Logger.LogType.Error, Logger.VerboseType.Low);
+            System.Console.WriteLine("HII");
 
             // Uncheck unneeded items
             UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
         }
 
         /// <summary>
-        /// Toolbar constructor
+        /// Toolbar Setup
         /// </summary>
-        public Toolbar(Form form){
+        public static void Setup(Form form){
             // Tool Menu
             form.IsMdiContainer = true;
 
@@ -93,6 +98,8 @@ namespace Software {
             ms.Items.Add(verbosity);
 
             // Override startup verbosity
+            SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
+            
             /*if (IsAdministrator()){
                 SetVerboseLevel(high_verbose, null, Logger.VerboseType.High);
 

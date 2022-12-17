@@ -16,11 +16,11 @@ using Software.Interaction.Front;
 using Software.Interaction.Back;
 
 namespace Software {
-    public class Window {
+    public static class Window {
         /// <summary>
         /// Bring the window to the front
         /// </summary>
-        void ForceShow(object sender, EventArgs e) {
+        static void ForceShow(object sender, EventArgs e) {
             Form form = sender as Form;
 
             form.Focus();
@@ -29,9 +29,9 @@ namespace Software {
         }
 
         /// <summary>
-        /// Window Constructor
+        /// Window Setup
         /// </summary>
-        public Window(Form form){
+        public static void Setup(Form form){
             // Text
             form.Text = "Universal Mod Loader";
 

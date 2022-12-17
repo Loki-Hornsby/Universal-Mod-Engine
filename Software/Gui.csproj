@@ -24,7 +24,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  
 
-      <Reference Include="ModInterface" />
       <Compile Include="..\Interfaces\*.cs"></Compile>  
   </ItemGroup>    
 </Project>

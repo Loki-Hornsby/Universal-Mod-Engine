@@ -20,23 +20,21 @@ using Software.Interaction.Back;
 /// </summary>
 
 public class ConsoleLogger : TextWriter {
-    Logger logger;
     Control textbox;
 
-    public ConsoleLogger(Logger _logger, Control _textbox){
-        logger = _logger;
+    public ConsoleLogger(Control _textbox){
         textbox = _textbox;
     }
 
     public override void Write(char value){
         if (!String.IsNullOrEmpty(value.ToString())) {
-            //Logger.log(value.ToString(), logger.LogType.System, logger.VerboseType.High);
+            Logger.Log(value.ToString(), Logger.LogType.System, Logger.VerboseType.High);
         }
     }
 
     public override void Write(string? value){
         if (!String.IsNullOrEmpty(value)) {
-            //Logger.log(value, logger.LogType.System, logger.VerboseType.High);
+            Logger.Log(value, Logger.LogType.System, Logger.VerboseType.High);
         }
     }
 
@@ -45,18 +43,18 @@ public class ConsoleLogger : TextWriter {
     }
 }
 
-public class Logger {
+public static class Logger {
     // Type of log
     public enum LogType {
-        Error = 1,
-        Warning = 2,
-        Success = 3,
+        Error,
+        Warning,
+        Success,
         
-        Engine = 4,
-        System = 5,
+        Engine,
+        System,
 
-        Custom = 6,
-        Default = 0,
+        Custom,
+        Default,
     }
 
     // Verbosity
@@ -66,16 +64,16 @@ public class Logger {
         Low = 1
     }
 
-    VerboseType verbosity;
+    static VerboseType verbosity;
 
     // Components
-    TextBox textbox;
-    Form form;
+    static TextBox textbox;
+    static Form form;
 
     /// <summary>
-    /// Initialises Logger
+    /// Logger Setup
     /// </summary>
-    public Logger(Form f){
+    public static void Setup(Form f){
         // Form
         form = f;
 
@@ -93,7 +91,7 @@ public class Logger {
         textbox.BackColor = Color.Green;
 
         // Set output to textbox
-        Console.SetOut(new ConsoleLogger(this, textbox));
+        Console.SetOut(new ConsoleLogger(textbox));
 
         // Add text to form
         form.Controls.Add(textbox);
@@ -102,7 +100,7 @@ public class Logger {
     /// <summary>
     /// Outputs to log
     /// </summary>
-    public void Log(
+    public static void Log(
             string txt, 
             LogType type, 
             VerboseType v,
@@ -165,14 +163,14 @@ public class Logger {
     /// <summary>
     /// Changes color of log
     /// </summary>
-    public void SetLogColor(Color col){
+    public static void SetLogColor(Color col){
         textbox.BackColor = col;
     }
 
     /// <summary>
     /// Change verbosity of logger
     /// </summary>
-    public void SetVerbosity(VerboseType v){
+    public static void SetVerbosity(VerboseType v){
         verbosity = v;
         string s = "";
 
@@ -194,21 +192,21 @@ public class Logger {
     /// <summary>
     /// Adds new empty line to log
     /// </summary>
-    public void AddNewLine(){
+    public static void AddNewLine(){
         textbox.AppendText(Environment.NewLine);
     }
 
     /// <summary>
     /// Allows upload of files to log
     /// </summary>
-    public void AllowDragAndDrop(bool x){
+    public static void AllowDragAndDrop(bool x){
         textbox.AllowDrop = x;
     }
 
     /// <summary>
     /// Empty Log
     /// </summary>
-    public void Clear(){
+    public static void Clear(){
         textbox.Text = "Log was emptied..." + Environment.NewLine;
     }
 }
