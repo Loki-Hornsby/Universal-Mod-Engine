@@ -17,9 +17,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  
 
-      <Reference Include="Engine" />
+      <Reference Include="Engine"/>
 
-      <!-- Load all our interfaces -->
+      <!-- Include our interfaces -->
       <Content Include="..\Interfaces\*.*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  

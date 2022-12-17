@@ -1,32 +1,60 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;  
 using System.Text;
+using System.Windows.Forms;
+using System.Media;
+using System.Diagnostics;
+using System.Security.Principal;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Reflection;
 
-using Injection;
+//using Injection;
+using ModInterface;
+using Software;
 
 /// <summary>
-/// The engine - Mainly used for testing at the moment (needs tidying)
+/// The mod engine
 /// </summary>
 
 namespace Engine {
     public static class Engine {
-        /// Engine mods directory
-        public const string ModsDirectoryPath = @"bin\"; // Unknown? yet to be implemented
-
-        public static int Main(string[] args){
-            System.Console.WriteLine("Engine Compiled.");
-
+        /// <summary>
+        /// Entry point
+        /// </summary>
+        public static int Main(string[] Args){
             return 0;
+        }
+
+        /// <summary>
+        /// Resolve DLLs
+        /// </summary>
+        private static Assembly ResolveDLL(object sender, ResolveEventArgs args){
+            //Logger.log("TRYING TO RESOLVE " + args.Name, 3);
+
+            if (args.Name.Contains("Injector")) {
+                return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Injector.dll"));
+            } else {
+                return null;
+            }
         }
 
         /// <summary>
         /// Load Engine
         /// </summary>
-        internal static void Load(string BroDLL) {
-            //Logger.log("Starting...", 1);
+        public static void Load() {
+            Logger.Log("Starting...", Logger.LogType.Error, Logger.VerboseType.Low);
 
             try {
+                // Interface
+                InterfaceLoader.Setup();
+
+                // Resolve DLLs
+                AppDomain.CurrentDomain.AssemblyResolve += (x, y) => ResolveDLL(x, y); 
+
                 // Load all assemblies
                 foreach (string file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")){
                     try {

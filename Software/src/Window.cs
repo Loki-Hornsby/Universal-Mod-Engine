@@ -11,7 +11,6 @@ using System.Security.Principal;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using Software;
 using Software.Interaction.Front;
 using Software.Interaction.Back;
 

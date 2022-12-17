@@ -51,13 +51,9 @@ namespace Software {
         /// Change loaded interface
         /// </summary>
         static void ChangeInterface(object sender, EventArgs? e){
-            // Interface
-            InterfaceLoader.Setup();
-
             // Get interfaces
             List<CustomModInterface> interfaces = InterfaceLoader.PollInterfaces();
-            Logger.Log("HIIII", Logger.LogType.Error, Logger.VerboseType.Low);
-            System.Console.WriteLine("HII");
+            Logger.Log(interfaces.Count().ToString(), Logger.LogType.Success, Logger.VerboseType.Low);
 
             // Uncheck unneeded items
             UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
@@ -99,15 +95,6 @@ namespace Software {
 
             // Override startup verbosity
             SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
-            
-            /*if (IsAdministrator()){
-                SetVerboseLevel(high_verbose, null, Logger.VerboseType.High);
-
-                //Logger.log("Reminder: Running this application as administrator will usually not allow for upload of files. This serves as a way to quickly debug startup.", 
-                    //Logger.LogType.Warning, Logger.VerboseType.Low);
-            } else {
-                SetVerboseLevel(low_verbose, null, Logger.VerboseType.Low);
-            }*/
             
             // Finishing Setup 
             ms.Dock = DockStyle.Top;

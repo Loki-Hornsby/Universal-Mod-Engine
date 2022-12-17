@@ -8,19 +8,14 @@ using System.Windows.Forms;
 using System.Media;
 using System;
 
+using Engine;
+
 /// <summary>
 /// Handles the software's GUI ~ Front end and Back end
 /// </summary>
 
 namespace Software {
     public partial class GUI : Form {
-        /// <summary>
-        /// Start The GUI
-        /// </summary>
-        public void Start(){
-            
-        }
-
         /// <summary>
         /// Setup The GUI
         /// </summary>
@@ -47,13 +42,11 @@ namespace Software {
         /// GUI constructor
         /// </summary>
         public GUI(){
-            // Just a precautionary step
-                // We don't want any nasty bugs to go unnoticed
-
-            bool setup = Setup();
-
-            if (setup){
-                Start();
+            // If the GUI launches then start the engine
+            if (Setup()){
+                Engine.Engine.Load();
+            } else {
+                Logger.Log("The engine failed to start!", Logger.LogType.Error, Logger.VerboseType.Low);
             }
         }
     }

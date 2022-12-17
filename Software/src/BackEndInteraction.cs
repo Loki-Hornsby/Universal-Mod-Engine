@@ -7,7 +7,6 @@ using System.IO;
 using System.Drawing;
 using System.Security.Permissions;
 
-using Software;
 using Software.Interaction.Front;
 using Engine;
 
@@ -95,13 +94,13 @@ namespace Software.Interaction.Back {
         /// </summary>
         public static void BeginLoad(){
             // Load Engine
-            System.Console.WriteLine(
+            /*System.Console.WriteLine(
                 Loader.Load(
                     PassEngineLogLow, PassEngineLogMedium, PassEngineLogHigh,
                     Path.Combine(Path.GetDirectoryName(EXE.GetLocation()), @"Broforce_beta_Data\Managed\Assembly-CSharp.dll") 
                     // Bug: this path isn't the same for every game
                 )
-            );
+            );*/
 
             // Open // Bug: this causes read/write issues // Todo: when GUI is closed assemblyCSharp.dll should return to default
             //Process.Start(EXE.GetLocation());
