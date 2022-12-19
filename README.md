@@ -12,8 +12,8 @@ Use the releases tab to get the latest standalone EXE or [build from source](#bu
 # Build
 - Build using `dotnet build -c:Release`
 - `.csproj` files (in build order) are;
-  - `..\UUniversalModEngine\Software\Gui.csproj` (Software)
-  - `..\UUniversalModEngine\Injector\Injector.csproj` (Injector)
+  - `..\UniversalModEngine\Software\Gui.csproj` (Software)
+  - `..\UniversalModEngine\Injector\Injector.csproj` (Injector)
   - `..\UniversalModEngine\Engine\Engine.csproj` (Engine)
 - Run `Engine.exe` which is located at `..\UUniversalModEngine\Engine\bin\Release`
 
