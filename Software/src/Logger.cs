@@ -135,7 +135,7 @@ namespace Software {
                             break;
                     }
 
-                    string RebuiltMessage = "You shouldn't be seeing this message. Try using Options/Reset, Rebuilding from source, Or contacting the developer.";      
+                    string RebuiltMessage = "";      
 
                     switch (verbosity){
                         case VerboseType.High:

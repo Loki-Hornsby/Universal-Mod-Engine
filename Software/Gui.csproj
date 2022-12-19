@@ -10,20 +10,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-      <!-- Include the engine -->
-      <Content Include="..\Engine\bin\Release\*.*">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>  
-
-      <Reference Include="Engine"/>
-
-      <!-- Include our interfaces -->
-      <Content Include="..\Interfaces\*.*">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>  
-
-      <Compile Include="..\Interfaces\*.cs"></Compile>  
-  </ItemGroup>    
 </Project>

@@ -11,8 +11,6 @@ using System.Security.Principal;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using ModInterface;
-
 namespace Software {
     public static class Toolbar {
         /// <summary>
@@ -52,8 +50,8 @@ namespace Software {
         /// </summary>
         static void ChangeInterface(object sender, EventArgs? e){
             // Get interfaces
-            List<CustomModInterface> interfaces = InterfaceLoader.PollInterfaces();
-            Logger.Log(interfaces.Count().ToString(), Logger.LogType.Success, Logger.VerboseType.Low);
+            /*List<CustomModInterface> interfaces = InterfaceLoader.PollInterfaces();
+            Logger.Log(interfaces.Count().ToString(), Logger.LogType.Success, Logger.VerboseType.Low);*/
 
             // Uncheck unneeded items
             UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);

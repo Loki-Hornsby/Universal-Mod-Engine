@@ -8,12 +8,6 @@ using System.Windows.Forms;
 using System.Media;
 using System;
 
-using Engine;
-
-/// <summary>
-/// Handles the software's GUI ~ Front end and Back end
-/// </summary>
-
 namespace Software {
     public partial class GUI : Form {
         /// <summary>
@@ -35,18 +29,6 @@ namespace Software {
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
 
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// GUI constructor
-        /// </summary>
-        public GUI(){
-            // If the GUI launches then start the engine
-            if (Setup()){
-                Engine.Engine.Load();
-            } else {
-                Logger.Log("The engine failed to start!", Logger.LogType.Error, Logger.VerboseType.Low);
             }
         }
     }
