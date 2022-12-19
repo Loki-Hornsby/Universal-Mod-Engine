@@ -1,3 +1,8 @@
+/// <summary>
+/// Copyright 2022, Loki Alexander Button Hornsby (Loki Hornsby), All rights reserved.
+/// Licensed under the BSD 3-Clause "New" or "Revised" License
+/// </summary>
+
 using System;
 using System.IO;
 using Mono.Cecil;
@@ -85,7 +90,10 @@ namespace Injection.Library {
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Library ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \\
-
+    
+    /// <summary>
+    /// ~~@ Testing
+    /// </summary>
     public static class Player {
         public static void canWallClimb(bool x){
             // RID: 10554

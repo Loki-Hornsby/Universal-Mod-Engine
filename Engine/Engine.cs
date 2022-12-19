@@ -1,4 +1,9 @@
-﻿using System;
+﻿/// <summary>
+/// Copyright 2022, Loki Alexander Button Hornsby (Loki Hornsby), All rights reserved.
+/// Licensed under the BSD 3-Clause "New" or "Revised" License
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -12,8 +17,10 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 using Software;
+using Injection;
 
 /// <summary>
 /// The mod engine
@@ -24,7 +31,7 @@ namespace Engine {
         // GUI
         public static GUI gui;
 
-        // DEBUG
+        // Debug
         public static bool debug;
 
         // Console
@@ -43,9 +50,9 @@ namespace Engine {
         }
 
         /// <summary>
-        /// Creates a console
+        /// Start the GUI
         /// </summary>
-        static void SetupGUI(){
+        static void StartGUI(){
             // Setup Application
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
@@ -56,57 +63,32 @@ namespace Engine {
             bool setup = gui.Setup();
 
             // Launch
-            Application.Run(gui);
-
-            //System.Threading.Thread.Sleep(5000);
-
-            Logger.Log("Starting...", Logger.LogType.Error, Logger.VerboseType.Low);
-        }
-
-        /// <summary>
-        /// Entry point
-        /// </summary>
-        static void Main(string[] args){
-            // Debug
-            debug = QueryDebugMode();
-            if (debug) AllocConsole();
-
-            // Instance of GUI already exists
-            bool exists = (System.Diagnostics.Process.GetProcessesByName(
-                System.IO.Path.GetFileNameWithoutExtension(
-                    System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1);
-
-            // GUI
-            if (!exists){
-                SetupGUI();
-            }
+            new Thread(
+                delegate(){
+                    Application.Run(gui);
+                }
+            ).Start();
         }
 
         /// <summary>
         /// Resolve DLLs
         /// </summary>
         private static Assembly ResolveDLL(object sender, ResolveEventArgs args){
-            //Logger.log("TRYING TO RESOLVE " + args.Name, 3);
+            Logger.Log("TRYING TO RESOLVE " + args.Name, Logger.LogType.Warning, Logger.VerboseType.Low);
 
             if (args.Name.Contains("Injector")) {
                 return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Injector.dll"));
             } else {
+                Logger.Log("Skipped", Logger.LogType.Warning, Logger.VerboseType.Low);
                 return null;
             }
         }
 
         /// <summary>
-        /// Load Engine
+        /// Start the Engine
         /// </summary>
-        public static void Load() {
-            System.Console.WriteLine("£dsds");
-            Logger.Log("Starting...", Logger.LogType.Error, Logger.VerboseType.Low);
-            Logger.SetLogColor(Color.Red);
-
+        public static void StartEngine() {
             try {
-                // Interface
-                //InterfaceLoader.Setup();
-
                 // Resolve DLLs
                 AppDomain.CurrentDomain.AssemblyResolve += (x, y) => ResolveDLL(x, y); 
 
@@ -115,14 +97,51 @@ namespace Engine {
                     try {
                         Assembly.LoadFile(file);
                     } catch (Exception ex) {
-                        //Logger.log("Assembly Load Fail: " + ex.ToString(), 3);
+                        Logger.Log("Assembly Load Fail: " + ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
                     }
                 }
 
-                // Inject
-                //Logger.log(Injector.Inject(BroDLL).ToString(), 3);
+                // Load Injector
+                string DLL = @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
+                Injector.Inject(DLL);
+
+                // Load Interface
+                //InterfaceLoader.Setup();
+
+                Logger.Log("Engine Loaded!", Logger.LogType.Success, Logger.VerboseType.Low);
             } catch(Exception ex){
-                //Logger.log("Internal Engine Load Fail: " + ex.ToString(), 3);
+                Logger.Log("Engine Failed to Load!", Logger.LogType.Error, Logger.VerboseType.Low);
+                Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+            }
+        }
+
+        /// <summary>
+        /// Entry point
+        /// </summary>
+        [STAThread] // [STAThread] allows the GUI to run parallel to the program when starting a new thread
+        static void Main(string[] args){
+            // Instance of GUI already exists
+            bool exists = (System.Diagnostics.Process.GetProcessesByName(
+                System.IO.Path.GetFileNameWithoutExtension(
+                    System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1);
+
+            // If an instance doesn't already exist
+            if (!exists){
+                // Debug (Creates a console and enables debug boolean if user selects yes)
+                debug = QueryDebugMode();
+                if (debug) AllocConsole();
+
+                // Start the GUI
+                StartGUI();
+
+                // Start the Engine
+                StartEngine();
+            } else {
+                MessageBox.Show(
+                    "An instance of the UME is already running! Please close it and try again.", 
+                    "Warning!", 
+                    MessageBoxButtons.OK
+                );
             }
         }
     }

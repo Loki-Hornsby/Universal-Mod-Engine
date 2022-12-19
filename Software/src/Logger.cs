@@ -1,3 +1,8 @@
+/// <summary>
+/// Copyright 2022, Loki Alexander Button Hornsby (Loki Hornsby), All rights reserved.
+/// Licensed under the BSD 3-Clause "New" or "Revised" License
+/// </summary>
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,13 +30,13 @@ namespace Software {
 
         public override void Write(char value){
             if (!String.IsNullOrEmpty(value.ToString())) {
-                Logger.Log(value.ToString(), Logger.LogType.System, Logger.VerboseType.High);
+                Logger.Log(value.ToString(), Logger.LogType.Default, Logger.VerboseType.High);
             }
         }
 
         public override void Write(string value){ // public override void Write(string? value){
             if (!String.IsNullOrEmpty(value)) {
-                Logger.Log(value, Logger.LogType.System, Logger.VerboseType.High);
+                Logger.Log(value, Logger.LogType.Default, Logger.VerboseType.High);
             }
         }
 
@@ -46,9 +51,6 @@ namespace Software {
             Error,
             Warning,
             Success,
-            
-            Engine,
-            System,
 
             Custom,
             Default,
@@ -118,13 +120,6 @@ namespace Software {
                             break;
                         case LogType.Success:
                             col = Color.Green;
-                            break;
-
-                        case LogType.Engine:
-                            col = textbox.BackColor;
-                            break;
-                        case LogType.System:
-                            col = textbox.BackColor;
                             break;
 
                         case LogType.Custom: // Allows for custom color select

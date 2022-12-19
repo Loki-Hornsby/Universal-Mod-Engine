@@ -1,3 +1,8 @@
+/// <summary>
+/// Copyright 2022, Loki Alexander Button Hornsby (Loki Hornsby), All rights reserved.
+/// Licensed under the BSD 3-Clause "New" or "Revised" License
+/// </summary>
+
 using System;
 using System.IO;
 using Mono.Cecil;
@@ -92,20 +97,18 @@ namespace Injection {
             }
         }
 
-        public static int Inject(string BroDLL) {
-            // Create backup of file (so long as a backup doesn't already exists) and also delete the previous injector file
-            CreateBackup(BroDLL);
+        public static int Inject(string DLL) {
+            // Create backup of file
+            CreateBackup(DLL);
 
             // Load our chosen assembly (Assembly-CSharp.dll)
-            // We use GetBackup since the backup file is now used as a template ~ this frees up BroDLL to be used
-            ChosenAssembly = new LoadedAssembly(GetBackup(BroDLL));
+            ChosenAssembly = new LoadedAssembly(GetBackup(DLL));
 
-            // Testing
+            // ~~@ Testing
             Player.canWallClimb(false);
 
             // Write to the assembly
-            // We use BroDLL and thus replace 's DLL with ours
-            ChosenAssembly.GetDefinition().Write(BroDLL);
+            ChosenAssembly.GetDefinition().Write(DLL);
             
             return 0;
         }
