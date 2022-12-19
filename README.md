@@ -15,7 +15,7 @@ Use the releases tab to get the latest standalone EXE or [build from source](#bu
   - `..\UniversalModEngine\Software\Gui.csproj` (Software)
   - `..\UniversalModEngine\Injector\Injector.csproj` (Injector)
   - `..\UniversalModEngine\Engine\Engine.csproj` (Engine)
-- Run `Engine.exe` which is located at `..\UUniversalModEngine\Engine\bin\Release`
+- Run `Engine.exe` which is located at `..\UniversalModEngine\Engine\bin\Release`
 
 # Dependencies
 - https://www.mono-project.com (`Mono.cecil`)
