@@ -10,6 +10,7 @@ using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 using System.Linq;
 
+using Software;
 using Injection.Utilities;
 using Injection.Library;
 
@@ -74,8 +75,7 @@ namespace Injection {
         /// </summary>
         static void CreateBackup(string file){
             /// Todo: Uninstaller should move original assembly-csharp back into correct place
-
-            bool backup = false;
+            
             string BackupFilePath = GetBackup(file);
             string BackupFolder = Path.GetDirectoryName(BackupFilePath);
 
@@ -84,32 +84,54 @@ namespace Injection {
                 Directory.CreateDirectory(BackupFolder);
             }
 
-            // Move File to Backup
+            // Move original file to generated backup path
             if (!File.Exists(BackupFilePath)){
                 File.Move(file, BackupFilePath);
 
-                backup = true;
-            }
-
-            // Delete last file written to by injector
-            if (File.Exists(file)){
+            // If a backup already exists then we can safely delete the original file
+            } else {
                 File.Delete(file);
             }
         }
 
+        /// <summary>
+        /// Initialize our file backup
+        /// </summary>
+        static void InitializeBackup(string origin){
+            string backup = GetBackup(origin);
+
+            // If a backup of our original (origin) file exists
+            if (File.Exists(backup)){
+                // Delete the origin
+                File.Delete(origin);
+
+                // Replace the origin with the backup file
+                File.Copy(backup, origin);
+
+            // Create a backup if it doesn't exist
+            } else {
+                CreateBackup(origin);
+            }
+        }
+
         public static int Inject(string DLL) {
-            // Create backup of file
-            CreateBackup(DLL);
+            // If our DLL exists
+            if (File.Exists(DLL)){
+                // Initialize Backup Procedure for the file
+                InitializeBackup(DLL);
 
-            // Load our chosen assembly (Assembly-CSharp.dll)
-            ChosenAssembly = new LoadedAssembly(GetBackup(DLL));
+                // Load our chosen assembly (Assembly-CSharp.dll)
+                ChosenAssembly = new LoadedAssembly(GetBackup(DLL));
 
-            // ~~@ Testing
-            Player.canWallClimb(false);
+                // ~~@ Testing
+                Tools.ChangeField<bool>("TestVanDammeAnim", "Awake", "canAirdash", true);
 
-            // Write to the assembly
-            ChosenAssembly.GetDefinition().Write(DLL);
-            
+                // Write to the assembly
+                ChosenAssembly.GetDefinition().Write(DLL);
+            } else {
+                Logger.Log("DLL DOESN'T EXIST!", Logger.LogType.Error, Logger.VerboseType.Low);
+            }
+
             return 0;
         }
     }

@@ -59,17 +59,17 @@
     <!-- Unity Modules // Bug: may result in version issues - so it's best if interfaces handle this -->
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Unity\UnityEngine.dll</HintPath>
+      <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
     </Reference>
 
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Unity\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\Libs\Unity\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
 
     <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Unity\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\Libs\Unity\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
 
     <!-- Injector -->

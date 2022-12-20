@@ -10,6 +10,17 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.4" /> <!-- Mono.Cecil --> 
+    <!-- Mono.Cecil --> 
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" /> 
+
+    <!-- Software -->
+    <Reference Include="Software, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Software\bin\Release\Gui.dll</HintPath>
+    </Reference>
+
+    <Content Include="..\Software\bin\Release\*.*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>  
   </ItemGroup>
 </Project>

@@ -10,11 +10,12 @@ using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 using System.Linq;
 
+using Software;
 using Injection.Utilities;
 
 namespace Injection.Library {
     
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \\
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ General Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \\
 
     public static class Tools {
         /// <summary>
@@ -36,29 +37,48 @@ namespace Injection.Library {
             return method.Body.GetILProcessor();
         }
 
+        /// <summary>
+        /// Determine needed opcode for operation
+        /// </summary>
         public static Mono.Cecil.Cil.OpCode? DetermineOpcode<T>(T x){
             if (x.GetType() == typeof(int)){
-                return (Mono.Cecil.Cil.OpCode?) OpCodes.Ldc_I4;
+                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
+                return OpCodes.Ldc_I4;
+
             } else if (x.GetType() == typeof(float)){
-                return (Mono.Cecil.Cil.OpCode?) OpCodes.Ldc_R4;
+                // Pushes a supplied value of type float32 onto the evaluation stack as type F (float)
+                return OpCodes.Ldc_R4;
+
             } else if (x.GetType() == typeof(string)){
-                return (Mono.Cecil.Cil.OpCode?) OpCodes.Ldstr;
+                // Pushes a new object reference to a string literal stored in the metadata.
+                return OpCodes.Ldstr;
+
             } else if (x.GetType() == typeof(bool)){
-                return (Mono.Cecil.Cil.OpCode?) OpCodes.Ldc_I4;
+                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
+                return OpCodes.Ldc_I4;
+
             } else {
                 return null;
             }
         }
 
+        /// <summary>
+        /// Change a defined field (variable)
+        /// </summary>
         public static void ChangeField<T>(string className, string methodName, string fieldName, T x){
-            Mono.Cecil.Cil.OpCode opcode = (Mono.Cecil.Cil.OpCode) DetermineOpcode<T>(x);
+            // Opcode
+            Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) DetermineOpcode<T>(x);
 
+            // Resolve of type
             var a = AssemblyDefinition.ReadAssembly(typeof(InjectionUtils).Assembly.Location);
             var type = x.GetType();
             var tr = a.MainModule.ImportReference(type);
-            var td = tr.Resolve();
+            Mono.Cecil.TypeReference td = tr.Resolve();
 
-            if (opcode != null){
+            Logger.Log(td.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+            Logger.Log(op.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+
+            if (op != null){
                 var method = InjectionUtils.GetMethodDefinition(className, methodName);
                 var field = InjectionUtils.GetFieldDefinition(className, fieldName);
                 var il = Tools.GetIL(method);
@@ -72,11 +92,15 @@ namespace Injection.Library {
                     )
                 );    
 
-                il.InsertBefore( // Push x to stack
-                    first, Instruction.Create(
-                        opcode, td // x
-                    )
-                );    
+                try {
+                    il.InsertBefore( // Push x to stack
+                        first, Instruction.Create(
+                            op, td // x
+                        )
+                    );    
+                } catch (ArgumentException ex) {
+                    Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+                }
 
                 il.InsertBefore( // Apply x to field
                     first, Instruction.Create(
@@ -86,18 +110,6 @@ namespace Injection.Library {
             } else {
                 System.Console.WriteLine("FIELD COULDN'T BE CHANGED! " + className + @"\" + methodName + @"\" + fieldName);
             }
-        }
-    }
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Library ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \\
-    
-    /// <summary>
-    /// ~~@ Testing
-    /// </summary>
-    public static class Player {
-        public static void canWallClimb(bool x){
-            // RID: 10554
-            Tools.ChangeField<bool>("TestVanDammeAnim", "Awake", "canWallClimb", x);
         }
     }
 }
