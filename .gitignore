@@ -2,6 +2,6 @@
 *.vs/
 *.vscode/
 *obj/
-BroforceModSoftware/bin/Debug/netcoreapp3.1/Storage
-BroforceModSoftware/bin/Debug/netcoreapp3.1/Levels
-BroforceModSoftware/bin/Debug/netcoreapp3.1/Saves
+Software/bin/Debug/netcoreapp3.1/Storage
+Software/bin/Debug/netcoreapp3.1/Levels
+Software/bin/Debug/netcoreapp3.1/Saves

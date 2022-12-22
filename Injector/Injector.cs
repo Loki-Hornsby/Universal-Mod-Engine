@@ -1,0 +1,115 @@
+/// <summary>
+/// Copyright 2022, Loki Alexander Button Hornsby (Loki Hornsby), All rights reserved.
+/// Licensed under the BSD 3-Clause "New" or "Revised" License
+/// </summary>
+
+using System;
+using System.IO;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
+using System.Linq;
+
+using Software;
+
+namespace Injection {
+    // This is the INJECTOR2000.
+    public static class Injector {
+        public static CustomAssemblyDefinition ChosenAssembly = null;
+
+        public static int Main(string[] Args){
+            System.Console.WriteLine("Injector Compiled.");
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Get backup file naming convention
+        /// </summary>
+        static string GetBackup(string file){
+            return Path.GetDirectoryName(file) + @"\..\..\BACKUP\" + Path.GetFileName(file);
+        }
+
+        /// <summary>
+        /// Move a file into a BACKUP folder
+        /// </summary>
+        static void CreateBackup(string file){
+            /// Todo: Uninstaller should move original assembly-csharp back into correct place
+            
+            string BackupFilePath = GetBackup(file);
+            string BackupFolder = Path.GetDirectoryName(BackupFilePath);
+
+            // Create Backup Folder
+            if (!Directory.Exists(BackupFolder)){
+                Directory.CreateDirectory(BackupFolder);
+            }
+
+            // Move original file to generated backup path
+            if (!File.Exists(BackupFilePath)){
+                File.Move(file, BackupFilePath);
+
+            // If a backup already exists then we can safely delete the original file
+            } else {
+                File.Delete(file);
+            }
+        }
+
+        /// <summary>
+        /// Initialize our file backup
+        /// </summary>
+        static bool InitializeBackup(string origin){
+            string backup = GetBackup(origin);
+
+            // If a backup of our original (origin) file exists
+            if (File.Exists(backup)){
+                // Delete the origin
+                File.Delete(origin);
+
+                // Replace the origin with the backup file
+                File.Copy(backup, origin);
+
+                return true;
+
+            // Create a backup if it doesn't exist
+            } else {
+                if (File.Exists(origin)){
+                    CreateBackup(origin);
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        public static int Inject(string DLL) {
+            // Initialize Backup Procedure for the file
+            if (InitializeBackup(DLL)) {
+                // Load our chosen assembly (Assembly-CSharp.dll)
+                ChosenAssembly = new CustomAssemblyDefinition(GetBackup(DLL));
+
+                // ~~@ Testing
+                Library.Type type = new Library.Type(ChosenAssembly, "TestVanDammeAnim");
+                Library.Method method = new Library.Method(type, "Awake");
+                Library.Field field = new Library.Field(type, "canAirdash");
+
+                field.Change<bool>(method, true);
+
+                /*Library.Field.ChangeField<bool>(
+                    ChosenAssembly, 
+                    "TestVanDammeAnim", 
+                    "Awake", 
+                    "canAirdash", 
+                    true
+                );*/
+
+                // Write to the assembly
+                ChosenAssembly.GetDefinition().Write(DLL);
+            } else {
+                Logger.Log("DLL DOESN'T EXIST!", Logger.LogType.Error, Logger.VerboseType.Low);
+            }
+
+            return 0;
+        }
+    }
+}

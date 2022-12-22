@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk" version="v3.1">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- Consistent settings -->
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Mono.Cecil --> 
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" /> 
+
+    <!-- Software -->
+    <Reference Include="Software, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Software\bin\Release\Gui.dll</HintPath>
+    </Reference>
+
+    <Content Include="..\Software\bin\Release\*.*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>  
+  </ItemGroup>
+</Project>
