@@ -11,15 +11,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Media;
-using System;
 
 namespace Software {
     public partial class GUI : Form {
         /// <summary>
         /// Setup The GUI
         /// </summary>
-        public bool Setup(){
+        public GUI(){
             try {
+                // Setup
+                //this.IsMdiContainer = true;
+
                 // Window
                 Window.Setup(this);
 
@@ -29,11 +31,10 @@ namespace Software {
                 // Toolbar
                 Toolbar.Setup(this); 
 
-                return true;
+                // Start GUI
+                Application.Run(this);
             } catch (Exception ex) {
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-
-                return false;
             }
         }
     }

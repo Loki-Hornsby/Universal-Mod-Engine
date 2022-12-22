@@ -16,9 +16,6 @@ using System.Security.Principal;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using Software.Interaction.Front;
-using Software.Interaction.Back;
-
 namespace Software {
     public static class Window {
         /// <summary>
@@ -61,7 +58,7 @@ namespace Software {
             form.AutoSize = false;
 
             // Show form
-            form.Shown += (sender, e) => ForceShow(sender, e);
+            //form.Shown += (sender, e) => ForceShow(sender, e);
         }
     }
 }

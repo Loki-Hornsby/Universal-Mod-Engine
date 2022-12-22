@@ -97,7 +97,7 @@ namespace Injection {
         /// <summary>
         /// Initialize our file backup
         /// </summary>
-        static void InitializeBackup(string origin){
+        static bool InitializeBackup(string origin){
             string backup = GetBackup(origin);
 
             // If a backup of our original (origin) file exists
@@ -108,23 +108,34 @@ namespace Injection {
                 // Replace the origin with the backup file
                 File.Copy(backup, origin);
 
+                return true;
+
             // Create a backup if it doesn't exist
             } else {
-                CreateBackup(origin);
+                if (File.Exists(origin)){
+                    CreateBackup(origin);
+
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
 
         public static int Inject(string DLL) {
-            // If our DLL exists
-            if (File.Exists(DLL)){
-                // Initialize Backup Procedure for the file
-                InitializeBackup(DLL);
-
+            // Initialize Backup Procedure for the file
+            if (InitializeBackup(DLL)) {
                 // Load our chosen assembly (Assembly-CSharp.dll)
                 ChosenAssembly = new LoadedAssembly(GetBackup(DLL));
 
                 // ~~@ Testing
-                Tools.ChangeField<bool>("TestVanDammeAnim", "Awake", "canAirdash", true);
+                Tools.ChangeField<bool>(
+                    ChosenAssembly, 
+                    "TestVanDammeAnim", 
+                    "Awake", 
+                    "canAirdash", 
+                    true
+                );
 
                 // Write to the assembly
                 ChosenAssembly.GetDefinition().Write(DLL);

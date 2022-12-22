@@ -88,6 +88,7 @@ namespace Software {
             textbox.Dock = DockStyle.Fill;
             textbox.ReadOnly = true;
             textbox.BackColor = Color.Green;
+            textbox.Enabled = true;
 
             // Set output to textbox
             Console.SetOut(new ConsoleLogger(textbox));

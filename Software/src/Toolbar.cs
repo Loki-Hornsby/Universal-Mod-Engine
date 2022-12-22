@@ -66,9 +66,6 @@ namespace Software {
         /// Toolbar Setup
         /// </summary>
         public static void Setup(Form form){
-            // Tool Menu
-            form.IsMdiContainer = true;
-
             // Menu Strip
             MenuStrip ms = new MenuStrip();
 

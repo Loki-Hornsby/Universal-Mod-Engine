@@ -14,9 +14,6 @@ using Software;
 using Injection.Utilities;
 
 namespace Injection.Library {
-    
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ General Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \\
-
     public static class Tools {
         /// <summary>
         /// Wipes a function clean
@@ -38,74 +35,68 @@ namespace Injection.Library {
         }
 
         /// <summary>
-        /// Determine needed opcode for operation
-        /// </summary>
-        public static Mono.Cecil.Cil.OpCode? DetermineOpcode<T>(T x){
-            if (x.GetType() == typeof(int)){
-                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
-                return OpCodes.Ldc_I4;
-
-            } else if (x.GetType() == typeof(float)){
-                // Pushes a supplied value of type float32 onto the evaluation stack as type F (float)
-                return OpCodes.Ldc_R4;
-
-            } else if (x.GetType() == typeof(string)){
-                // Pushes a new object reference to a string literal stored in the metadata.
-                return OpCodes.Ldstr;
-
-            } else if (x.GetType() == typeof(bool)){
-                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
-                return OpCodes.Ldc_I4;
-
-            } else {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Change a defined field (variable)
         /// </summary>
-        public static void ChangeField<T>(string className, string methodName, string fieldName, T x){
+        public static void ChangeField<T>(LoadedAssembly assembly, string className, string methodName, string fieldName, T x){
             // Opcode
-            Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) DetermineOpcode<T>(x);
+            Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) InjectionUtils.DetermineOpcode<T>(x);
 
-            // Resolve of type
-            var a = AssemblyDefinition.ReadAssembly(typeof(InjectionUtils).Assembly.Location);
-            var type = x.GetType();
-            var tr = a.MainModule.ImportReference(type);
-            Mono.Cecil.TypeReference td = tr.Resolve();
-
-            Logger.Log(td.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-            Logger.Log(op.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-
+            // If the opcode isn't empty
             if (op != null){
+                // Main
+                var main = assembly.GetMainModule();
+
+                // Define inputs
                 var method = InjectionUtils.GetMethodDefinition(className, methodName);
                 var field = InjectionUtils.GetFieldDefinition(className, fieldName);
                 var il = Tools.GetIL(method);
 
-                // RID: 10554
-                Instruction first = method.Body.Instructions[0];
+                // last instruction
+                Instruction last = method.Body.Instructions[method.Body.Instructions.Count - 1];
 
-                il.InsertBefore( // Load arg 0
-                    first, Instruction.Create(
-                        OpCodes.Ldarg_0
-                    )
+                //// Load 
+                
+                // Define Instruction
+                Instruction in1 = Instruction.Create(
+                    OpCodes.Ldarg_0
+                );
+
+                // Insert Instruction
+                il.InsertAfter( // Load arg 0
+                    last, 
+                    InjectionUtils.ImportInstruction(in1, main)
                 );    
 
-                try {
-                    il.InsertBefore( // Push x to stack
-                        first, Instruction.Create(
-                            op, td // x
-                        )
-                    );    
-                } catch (ArgumentException ex) {
-                    Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-                }
+                //// Push
+                
+                // Import and resolve type reference
+                var type = assembly.GetType();
+                var td = main.ImportReference(type).Resolve();
 
-                il.InsertBefore( // Apply x to field
-                    first, Instruction.Create(
-                        OpCodes.Stfld, field
-                    )
+                // Define Instruction
+                Instruction in2 = Instruction.Create(
+                    op, 
+                    td
+                );
+
+                // Insert Instruction
+                il.InsertAfter( // Push x to stack
+                    last, 
+                    InjectionUtils.ImportInstruction(in2, main)
+                );    
+                
+                //// Finish
+                
+                // Define Instruction
+                Instruction in3 = Instruction.Create(
+                    OpCodes.Stfld, 
+                    field
+                );
+
+                // Insert Instruction
+                il.InsertAfter( // Apply x to field
+                    last, 
+                    InjectionUtils.ImportInstruction(in3, main)
                 );    
             } else {
                 System.Console.WriteLine("FIELD COULDN'T BE CHANGED! " + className + @"\" + methodName + @"\" + fieldName);

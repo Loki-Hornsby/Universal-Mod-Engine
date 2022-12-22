@@ -58,14 +58,10 @@ namespace Engine {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
 
-            // Create GUI
-            gui = new GUI();
-            bool setup = gui.Setup();
-
-            // Launch
+            // Create GUI on a separate thread
             new Thread(
                 delegate(){
-                    Application.Run(gui);
+                    gui = new GUI();
                 }
             ).Start();
         }
@@ -109,6 +105,8 @@ namespace Engine {
                 //InterfaceLoader.Setup();
 
                 Logger.Log("Engine Loaded!", Logger.LogType.Success, Logger.VerboseType.Low);
+
+                Logger.Log("CHEESE", Logger.LogType.Warning, Logger.VerboseType.Low);
             } catch(Exception ex){
                 Logger.Log("Engine Failed to Load!", Logger.LogType.Error, Logger.VerboseType.Low);
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);

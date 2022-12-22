@@ -15,6 +15,53 @@ using Injection;
 namespace Injection.Utilities {
     public static class InjectionUtils {
         /// <summary>
+        /// Determine needed opcode for operation
+        /// </summary>
+        public static Mono.Cecil.Cil.OpCode? DetermineOpcode<T>(T x){
+            if (x.GetType() == typeof(int)){
+                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
+                return OpCodes.Ldc_I4;
+
+            } else if (x.GetType() == typeof(float)){
+                // Pushes a supplied value of type float32 onto the evaluation stack as type F (float)
+                return OpCodes.Ldc_R4;
+
+            } else if (x.GetType() == typeof(string)){
+                // Pushes a new object reference to a string literal stored in the metadata.
+                return OpCodes.Ldstr;
+
+            } else if (x.GetType() == typeof(bool)){
+                // Pushes a supplied value of type int32 onto the evaluation stack as an int32
+                return OpCodes.Ldc_I4;
+
+            } else {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Imports an instruction as 1 of 3 types
+        /// https://stackoverflow.com/questions/38038517/argumentexception-in-mono-cecil-while-saving-assembly
+        /// </summary>
+        public static Instruction ImportInstruction(Instruction instruction, ModuleDefinition module){
+            object operand = instruction.Operand;
+
+            var fieldOperand = operand as FieldReference;
+            if (fieldOperand != null)
+                return Instruction.Create(instruction.OpCode, module.ImportReference(fieldOperand));
+
+            var methodOperand = operand as MethodReference;
+            if (methodOperand != null)
+                return Instruction.Create(instruction.OpCode, module.ImportReference(methodOperand));
+
+            var typeOperand = operand as TypeReference;
+            if (typeOperand != null)
+                return Instruction.Create(instruction.OpCode, module.ImportReference(typeOperand));
+
+            return instruction;
+        }
+
+        /// <summary>
         /// Gets a type definition from the new [Game] executable.
         /// Self Explainer: We access the public types available from our loaded assembly and then we return the one matching [typeName]
         /// Linkie: https://github.com/jbevain/cecil/blob/master/Mono.Cecil/TypeDefinition.cs
