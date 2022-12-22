@@ -12,38 +12,79 @@ using System.Linq;
         
 namespace Injection {
     public static class Utilities {
-
-        public static class Create {
+        /// <summary>
+        /// Inserts Values
+        /// </summary>
+        public static class Insert {
             public enum Modes {
                 Before,
                 After
             }
 
+            /// <summary>
+            /// Inserts a new instruction at the desired location
+            /// </summary>
             public static void NewInstruction(
-                    Utilities.Create.Modes mode, Instruction target,
-                    Mono.Cecil.Cil.OpCode opcode, Mono.Cecil.Cil.ILProcessor il, Mono.Cecil.ModuleDefinition main) {
-
-                // Define Instruction
-                Instruction instruction = Instruction.Create(
-                    opcode
-                ); 
-
+                Mono.Cecil.Cil.ILProcessor il, // The ILProcessor
+                Instruction instruction, // inserts X (instruction)
+                Utilities.Insert.Modes mode, // AFTER or BEFORE
+                Instruction target // Y (target)
+                ){
+                
                 switch (mode) {
-                    case Utilities.Create.Modes.Before:
+                    case Utilities.Insert.Modes.Before:
                         il.InsertBefore(
                             target, 
-                            Utilities.Import.DefinedInstruction(instruction, main)
+                            instruction
                         );  
 
                         break;
-                    case Utilities.Create.Modes.After:
+                    case Utilities.Insert.Modes.After:
                         il.InsertAfter(
-                            target, 
-                            Utilities.Import.DefinedInstruction(instruction, main)
+                            target,
+                            instruction
                         );    
 
                         break;
-                } 
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates Values
+        /// </summary>
+        public static class Create {
+            /// <summary>
+            /// Creates a new instruction
+            /// </summary>
+            public static Instruction? NewInstruction(
+                Mono.Cecil.Cil.OpCode opcode, object operand, ModuleDefinition module) {
+                
+                if (operand != null) {
+                    // Define Operand
+                    var fieldOperand = operand as FieldReference;
+                    if (fieldOperand != null)
+                        // Return Instruction
+                        return Instruction.Create(opcode, module.ImportReference(fieldOperand));
+
+                    // Define Operand
+                    var methodOperand = operand as MethodReference;
+                    if (methodOperand != null)
+                        // Return Instruction
+                        return Instruction.Create(opcode, module.ImportReference(methodOperand));
+
+                    // Define Operand
+                    var typeOperand = operand as TypeReference;
+                    if (typeOperand != null)
+                        // Return Instruction
+                        return Instruction.Create(opcode, module.ImportReference(typeOperand));
+                } else {
+                    // Return opcode only instruction
+                    return Instruction.Create(opcode);
+                }
+
+                // Return nothing
+                return null;
             }
         }
 
@@ -74,33 +115,6 @@ namespace Injection {
                 } else {
                     return null;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Import Values
-        /// </summary>
-        public static class Import {
-            /// <summary>
-            /// Imports an instruction as 1 of 3 types
-            /// https://stackoverflow.com/questions/38038517/argumentexception-in-mono-cecil-while-saving-assembly
-            /// </summary>
-            public static Instruction DefinedInstruction(Instruction instruction, ModuleDefinition module){
-                object operand = instruction.Operand;
-
-                var fieldOperand = operand as FieldReference;
-                if (fieldOperand != null)
-                    return Instruction.Create(instruction.OpCode, module.ImportReference(fieldOperand));
-
-                var methodOperand = operand as MethodReference;
-                if (methodOperand != null)
-                    return Instruction.Create(instruction.OpCode, module.ImportReference(methodOperand));
-
-                var typeOperand = operand as TypeReference;
-                if (typeOperand != null)
-                    return Instruction.Create(instruction.OpCode, module.ImportReference(typeOperand));
-
-                return instruction;
             }
         }
     }
