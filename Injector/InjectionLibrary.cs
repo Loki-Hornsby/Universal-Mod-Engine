@@ -11,10 +11,9 @@ using Mono.Cecil.Rocks;
 using System.Linq;
 
 using Software;
-using Injection.Utilities;
 
-namespace Injection.Library {
-    public static class Tools {
+namespace Injection {
+    public static class Library {
         /// <summary>
         /// Wipes a function clean
         /// </summary>
@@ -24,51 +23,51 @@ namespace Injection.Library {
         }
 
         /// <summary>
-        /// Gets the IL processor
-        /// </summary>
-        public static Mono.Cecil.Cil.ILProcessor GetIL(MethodDefinition method){
-            // Get the IL processor (Only needed for methods)
-            // CIL and IL are synonymous https://stackoverflow.com/questions/293800/what-is-the-difference-between-cil-and-msil-il 
-            // https://en.wikipedia.org/wiki/Common_Intermediate_Language
-                // https://en.wikipedia.org/wiki/List_of_CIL_instructions 
-            return method.Body.GetILProcessor();
-        }
-
-        /// <summary>
         /// Change a defined field (variable)
         /// </summary>
         public static void ChangeField<T>(LoadedAssembly assembly, string className, string methodName, string fieldName, T x){
             // Opcode
-            Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) InjectionUtils.DetermineOpcode<T>(x);
+            Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) Utilities.Determine.Opcode<T>(x);
 
             // If the opcode isn't empty
             if (op != null){
-                // Main
+                // Main module
                 var main = assembly.GetMainModule();
 
-                // Define inputs
-                var method = InjectionUtils.GetMethodDefinition(className, methodName);
-                var field = InjectionUtils.GetFieldDefinition(className, fieldName);
-                var il = Tools.GetIL(method);
+                // Method name
+                var method = assembly.GetMethodDefinition(className, methodName);
 
-                // last instruction
+                // Field (variable) name
+                var field = assembly.GetFieldDefinition(className, fieldName);
+
+                // IL processor
+                var il = assembly.GetIL(method);
+                
+                // Second to last instruction
                 Instruction last = method.Body.Instructions[method.Body.Instructions.Count - 1];
 
                 //// Load 
-                
-                // Define Instruction
-                Instruction in1 = Instruction.Create(
-                    OpCodes.Ldarg_0
+                Utilities.Create.NewInstruction(
+                    Utilities.Create.Modes.Before, last,
+                    OpCodes.Ldarg_0, 
+                    il, main
                 );
 
-                // Insert Instruction
-                il.InsertAfter( // Load arg 0
-                    last, 
-                    InjectionUtils.ImportInstruction(in1, main)
-                );    
+                Utilities.Create.NewInstruction(
+                    Utilities.Create.Modes.Before, last,
+                    OpCodes.Ldarg_0, 
+                    il, main
+                );
 
-                //// Push
+                Utilities.Create.NewInstruction(
+                    Utilities.Create.Modes.Before, last,
+                    OpCodes.Ldarg_0, 
+                    il, main
+                );
+
+                //// Push // Wacky error happens here
                 
+                /*
                 // Import and resolve type reference
                 var type = assembly.GetType();
                 var td = main.ImportReference(type).Resolve();
@@ -77,12 +76,14 @@ namespace Injection.Library {
                 Instruction in2 = Instruction.Create(
                     op, 
                     td
-                );
+                ); */
+
+                /*
 
                 // Insert Instruction
                 il.InsertAfter( // Push x to stack
                     last, 
-                    InjectionUtils.ImportInstruction(in2, main)
+                    Utilities.ImportInstruction(in2, main)
                 );    
                 
                 //// Finish
@@ -96,8 +97,9 @@ namespace Injection.Library {
                 // Insert Instruction
                 il.InsertAfter( // Apply x to field
                     last, 
-                    InjectionUtils.ImportInstruction(in3, main)
-                );    
+                    Utilities.ImportInstruction(in3, main)
+                );   
+                */
             } else {
                 System.Console.WriteLine("FIELD COULDN'T BE CHANGED! " + className + @"\" + methodName + @"\" + fieldName);
             }

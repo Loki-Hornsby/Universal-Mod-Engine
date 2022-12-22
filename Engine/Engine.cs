@@ -105,8 +105,6 @@ namespace Engine {
                 //InterfaceLoader.Setup();
 
                 Logger.Log("Engine Loaded!", Logger.LogType.Success, Logger.VerboseType.Low);
-
-                Logger.Log("CHEESE", Logger.LogType.Warning, Logger.VerboseType.Low);
             } catch(Exception ex){
                 Logger.Log("Engine Failed to Load!", Logger.LogType.Error, Logger.VerboseType.Low);
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
