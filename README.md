@@ -7,7 +7,7 @@ Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools
 - [Dependencies](#dependencies)
 
 # Usage
-Use the releases tab to get the latest standalone EXE or [build from source](#build)
+[Download the latest standalone EXE](https://github.com/Loki-Hornsby/Universal-Mod-Engine/releases) or [build from source](#build).
 
 # Build
 - Build using `dotnet build -c:Release`
