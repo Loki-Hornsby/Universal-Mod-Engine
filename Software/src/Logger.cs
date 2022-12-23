@@ -89,6 +89,7 @@ namespace Software {
             textbox.ReadOnly = true;
             textbox.BackColor = Color.Green;
             textbox.Enabled = true;
+            textbox.AllowDrop = false;
 
             // Set output to textbox
             Console.SetOut(new ConsoleLogger(textbox));
@@ -187,13 +188,6 @@ namespace Software {
         /// </summary>
         public static void AddNewLine(){
             textbox.AppendText(Environment.NewLine);
-        }
-
-        /// <summary>
-        /// Allows upload of files to log
-        /// </summary>
-        public static void AllowDragAndDrop(bool x){
-            textbox.AllowDrop = x;
         }
 
         /// <summary>

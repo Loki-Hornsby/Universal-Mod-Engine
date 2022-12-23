@@ -18,24 +18,17 @@ namespace Software {
         /// Setup The GUI
         /// </summary>
         public GUI(){
-            try {
-                // Setup
-                //this.IsMdiContainer = true;
+            // Window
+            Window.Setup(this);
 
-                // Window
-                Window.Setup(this);
+            // Logger
+            Logger.Setup(this);
 
-                // Logger
-                Logger.Setup(this);
+            // Toolbar
+            Toolbar.Setup(this); 
 
-                // Toolbar
-                Toolbar.Setup(this); 
-
-                // Start GUI
-                Application.Run(this);
-            } catch (Exception ex) {
-                Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-            }
+            // Start GUI
+            Application.Run(this);
         }
     }
 }

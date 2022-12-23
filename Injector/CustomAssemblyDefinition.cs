@@ -13,7 +13,7 @@ using System.Linq;
 namespace Injection {
     // This is the class for the assembly we load
     public class CustomAssemblyDefinition {
-        Mono.Cecil.AssemblyDefinition definition = null;
+        Mono.Cecil.AssemblyDefinition definition;
 
         /// <summary>
         /// Constructor for our assembly class

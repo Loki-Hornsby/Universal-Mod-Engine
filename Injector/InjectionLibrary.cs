@@ -239,7 +239,7 @@ namespace Injection {
             /// </summary>
             public void Change<T>(Library.Method method, T x){
                 // Opcode
-                Mono.Cecil.Cil.OpCode op = (Mono.Cecil.Cil.OpCode) Utilities.Determine.Opcode<T>(x);
+                Mono.Cecil.Cil.OpCode op = Utilities.Determine.Opcode<T>(x) ?? default(Mono.Cecil.Cil.OpCode);
 
                 // If the opcode isn't empty
                 if (op != null){
@@ -255,34 +255,20 @@ namespace Injection {
                     // IL processor
                     var il = this.GetParent().GetParent().GetIL(method_definition);
                     
-                    // Last Instruction
-                    Instruction last = method_definition.Body.Instructions[method_definition.Body.Instructions.Count - 1];
+                    // Second to Last Instruction
+                    Instruction last = method_definition.Body.Instructions[method_definition.Body.Instructions.Count - 2];
 
-                    //// This
-                    Instruction? i_this = Utilities.Create.NewInstruction(
-                        OpCodes.Ldarg_0, null, main
+                    //// Instruction
+                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 3, 
+                        Instruction.Create(OpCodes.Ldarg_0)
                     );
 
-                    if (i_this != null) Utilities.Insert.NewInstruction(
-                        il, i_this, Utilities.Insert.Modes.Before, last
+                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 2, 
+                        Instruction.Create(OpCodes.Ldc_I4, 1)
                     );
 
-                    //// Variable = X
-                    Instruction? i_var = Utilities.Create.NewInstruction(
-                        OpCodes.Ldarg_0, null, main
-                    );
-
-                    if (i_this != null) Utilities.Insert.NewInstruction(
-                        il, i_var, Utilities.Insert.Modes.Before, last
-                    );
-
-                    //// End
-                    Instruction? i_end = Utilities.Create.NewInstruction(
-                        OpCodes.Ldarg_0, null, main
-                    );
-
-                    if (i_this != null) Utilities.Insert.NewInstruction(
-                        il, i_end, Utilities.Insert.Modes.Before, last
+                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 1, 
+                        Instruction.Create(OpCodes.Stfld, field_definition)
                     );
                 } else {
                     //System.Console.WriteLine("FIELD COULDN'T BE CHANGED! " + className + @"\" + methodName + @"\" + fieldName);

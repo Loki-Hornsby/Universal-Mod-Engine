@@ -104,7 +104,11 @@ namespace Engine {
                 // Load Interface
                 //InterfaceLoader.Setup();
 
-                Logger.Log("Engine Loaded!", Logger.LogType.Success, Logger.VerboseType.Low);
+                // Cowboy bebop baby!
+                Logger.Log("I think it's time we blow this scene,", Logger.LogType.Warning, Logger.VerboseType.Low);
+                Logger.Log("Get everybody and the stuff together,", Logger.LogType.Warning, Logger.VerboseType.Low);
+                Logger.Log("Okay, three, two, one, let's jam...", Logger.LogType.Warning, Logger.VerboseType.Low);
+                Logger.Log("Engine Started!", Logger.LogType.Success, Logger.VerboseType.Low);
             } catch(Exception ex){
                 Logger.Log("Engine Failed to Load!", Logger.LogType.Error, Logger.VerboseType.Low);
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
