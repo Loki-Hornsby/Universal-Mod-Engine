@@ -93,15 +93,7 @@ namespace Injection {
                 Library.Method method = new Library.Method(type, "Awake");
                 Library.Field field = new Library.Field(type, "canAirdash");
 
-                field.Change<bool>(method, true);
-
-                /*Library.Field.ChangeField<bool>(
-                    ChosenAssembly, 
-                    "TestVanDammeAnim", 
-                    "Awake", 
-                    "canAirdash", 
-                    true
-                );*/
+                field.Set<bool>(method, true, -1);
 
                 // Write to the assembly
                 ChosenAssembly.GetDefinition().Write(DLL);

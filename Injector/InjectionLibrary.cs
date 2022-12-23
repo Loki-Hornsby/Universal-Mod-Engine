@@ -23,7 +23,6 @@ using Software;
 
 namespace Injection {
     public static class Library {
-
         // *************************************** TYPE *************************************** \\
         public class Type {
             
@@ -235,17 +234,16 @@ namespace Injection {
             // *************************************** MODIFY *************************************** \\
 
             /// <summary>
-            /// Change the field
+            /// Set a field
             /// </summary>
-            public void Change<T>(Library.Method method, dynamic x){
+            public void Set<T>(Library.Method method, T x, int position = 0){
                 // Opcode
                 Mono.Cecil.Cil.OpCode op = Utilities.Determine.Opcode<T>() ?? default(Mono.Cecil.Cil.OpCode);
-
+                
                 // If the opcode isn't empty
                 if (op != null){
-
-                    //Logger.Log(op.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
-
+                    //// Definitions
+                    
                     // Main module
                     var main = this.GetParent().GetParent().GetMainModule();
                     
@@ -257,50 +255,64 @@ namespace Injection {
 
                     // IL processor
                     var il = this.GetParent().GetParent().GetIL(method_definition);
+
+                    //// Resolves
                     
-                    // Second to Last Instruction
-                    Instruction last = method_definition.Body.Instructions[method_definition.Body.Instructions.Count - 2];
+                    // Resolve X
+                    dynamic value = (dynamic) x;
 
-                    //// Instruction
-                    //var type = x.GetType();
-                    //var tr = main.ImportReference(type);
-                    //var td = tr.Resolve();
+                    if (typeof(T) == typeof(bool)){
+                        if (value == true){
+                            value = 1;
+                        } else {
+                            value = 0;
+                        }
+                    }
 
+                    // Resolve position
+                    if (position < 0){
+                        // Starts from the end of the instruction instead of the start
+                        position = method_definition.Body.Instructions.Count + position;
+                    }
+
+                    if (position > method_definition.Body.Instructions.Count - 1 || position < 0){
+                        Logger.Log(
+                            "Invalid Index present when setting a field - defaulted to 0", 
+                            Logger.LogType.Error, 
+                            Logger.VerboseType.Low
+                        );
+
+                        position = 0;
+                    }
+
+                    //// Instructions
+                    
                     // Push
                     Utilities.Insert.NewInstruction(
-                        0,
+                        position,
                         Instruction.Create(OpCodes.Ldarg_0),
                         method_definition
                     );
-    
+
                     // Add
                     Utilities.Insert.NewInstruction(
-                        1,
-                        Instruction.Create(op, 1),//x),//x),
+                        position + 1,
+                        Instruction.Create(op, value), 
                         method_definition
                     );
 
                     // Commit
                     Utilities.Insert.NewInstruction(
-                        2,
+                        position + 2,
                         Instruction.Create(OpCodes.Stfld, field_definition),
                         method_definition
                     );
 
                     // Next challenge is to 
-                        // allow for any input in Change<>()
                         // Fix insert before and after (i think the instructions inserted are overwriting others)
                         // Make new instruction insertion dynamic
                         // try and call TestVanDammeAnim::SetAirdashAvailable() using a dynamic function
-
                 }
-            }
-
-            /// <summary>
-            /// Remove the field
-            /// </summary>
-            public void Remove(){
-                
             }
         }
     }
