@@ -237,12 +237,15 @@ namespace Injection {
             /// <summary>
             /// Change the field
             /// </summary>
-            public void Change<T>(Library.Method method, T x){
+            public void Change<T>(Library.Method method, dynamic x){
                 // Opcode
-                Mono.Cecil.Cil.OpCode op = Utilities.Determine.Opcode<T>(x) ?? default(Mono.Cecil.Cil.OpCode);
+                Mono.Cecil.Cil.OpCode op = Utilities.Determine.Opcode<T>() ?? default(Mono.Cecil.Cil.OpCode);
 
                 // If the opcode isn't empty
                 if (op != null){
+
+                    //Logger.Log(op.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
+
                     // Main module
                     var main = this.GetParent().GetParent().GetMainModule();
                     
@@ -259,19 +262,37 @@ namespace Injection {
                     Instruction last = method_definition.Body.Instructions[method_definition.Body.Instructions.Count - 2];
 
                     //// Instruction
-                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 3, 
-                        Instruction.Create(OpCodes.Ldarg_0)
+                    //var type = x.GetType();
+                    //var tr = main.ImportReference(type);
+                    //var td = tr.Resolve();
+
+                    // Push
+                    Utilities.Insert.NewInstruction(
+                        0,
+                        Instruction.Create(OpCodes.Ldarg_0),
+                        method_definition
+                    );
+    
+                    // Add
+                    Utilities.Insert.NewInstruction(
+                        1,
+                        Instruction.Create(op, 1),//x),//x),
+                        method_definition
                     );
 
-                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 2, 
-                        Instruction.Create(OpCodes.Ldc_I4, 1)
+                    // Commit
+                    Utilities.Insert.NewInstruction(
+                        2,
+                        Instruction.Create(OpCodes.Stfld, field_definition),
+                        method_definition
                     );
 
-                    method_definition.Body.Instructions.Insert(method_definition.Body.Instructions.Count - 1, 
-                        Instruction.Create(OpCodes.Stfld, field_definition)
-                    );
-                } else {
-                    //System.Console.WriteLine("FIELD COULDN'T BE CHANGED! " + className + @"\" + methodName + @"\" + fieldName);
+                    // Next challenge is to 
+                        // allow for any input in Change<>()
+                        // Fix insert before and after (i think the instructions inserted are overwriting others)
+                        // Make new instruction insertion dynamic
+                        // try and call TestVanDammeAnim::SetAirdashAvailable() using a dynamic function
+
                 }
             }
 
