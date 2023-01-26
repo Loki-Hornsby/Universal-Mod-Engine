@@ -16,8 +16,14 @@ using System.Security.Principal;
 using System.IO;
 using System.Runtime.CompilerServices;
 
+using Interfaces;
+
 namespace Software {
     public static class Toolbar {
+        // Events
+        public delegate void ToolbarEvent(CustomInterface i);
+        public static event ToolbarEvent InterfaceChanged;
+
         /// <summary>
         /// https://stackoverflow.com/questions/13603654/check-only-one-toolstripmenuitem
         /// </summary>
@@ -54,12 +60,25 @@ namespace Software {
         /// Change loaded interface
         /// </summary>
         static void ChangeInterface(object sender, EventArgs? e){
-            // Get interfaces
-            /*List<CustomModInterface> interfaces = InterfaceLoader.PollInterfaces();
-            Logger.Log(interfaces.Count().ToString(), Logger.LogType.Success, Logger.VerboseType.Low);*/
-
             // Uncheck unneeded items
             UncheckOtherToolStripMenuItems((ToolStripMenuItem)sender);
+
+            // Trigger Event
+            string DLL = @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
+            CustomInterface inter = new CustomInterface("Dummy", DLL);
+            
+            // The selected Interface has been changed
+            InterfaceChanged(inter);
+        }
+
+        /// <summary>
+        /// Add a new interface
+        /// </summary>
+        static void AddInterface(object sender, EventArgs? e, Form form){
+            // Configuration menu
+            Form other = new InterfaceGUI();
+            other.textBox.Text = "Hi!";
+            form.ShowDialogue(other);
         }
 
         /// <summary>
@@ -72,11 +91,23 @@ namespace Software {
             // Options
             ToolStripMenuItem options = new ToolStripMenuItem("Interfaces");
 
-            for (int i = 0; i < 200; i++){
-                ToolStripMenuItem change = new ToolStripMenuItem(i.ToString(), null, new EventHandler(ChangeInterface));
-                options.DropDownItems.Add(change);
+            // Get interfaces
+            List<CustomInterface> interfaces = Loader.GetInterfaces();
+
+            // Interface(s) found!
+            if (interfaces != null && interfaces.Count > 0){
+                // Load interfaces into the toolbar
+                for (int i = 0; i < interfaces.Count; i++){
+                    ToolStripMenuItem change = new ToolStripMenuItem(interfaces[i].GetName(), null, new EventHandler(ChangeInterface));
+                    options.DropDownItems.Add(change);
+                }
             }
 
+            // New interface button
+            ToolStripMenuItem New = new ToolStripMenuItem("Add new interface", null, new EventHandler((sender, e) => AddInterface(form)));
+            options.DropDownItems.Add(New);
+
+            // Append options
             ms.Items.Add(options);
 
             // Verbosity

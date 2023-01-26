@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <!-- Setup -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -13,14 +13,6 @@
 
   <!-- Build Inclusions -->
   <ItemGroup>
-    <!-- Interfaces --> 
-    <Reference Include="Interfaces, Version=0.0.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Interfaces\bin\Release\Interfaces.dll</HintPath>
-    </Reference>
-
-    <Content Include="..\Interfaces\bin\Release\*.*">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>  
+    
   </ItemGroup>
 </Project>

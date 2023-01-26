@@ -11,6 +11,7 @@ using Mono.Cecil.Rocks;
 using System.Linq;
 
 using Software;
+using Interfaces;
 
 namespace Injection {
     // This is the INJECTOR2000.
@@ -82,11 +83,14 @@ namespace Injection {
             }
         }
 
-        public static int Inject(string DLL) {
+        public static int Inject(DLLDefinitions Defs) {
+            // Unpack Dll Definitions
+            string AssemblyCSharp = Defs.Assembly_CSharp;
+
             // Initialize Backup Procedure for the file
-            if (InitializeBackup(DLL)) {
+            if (InitializeBackup(AssemblyCSharp)) {
                 // Load our chosen assembly (Assembly-CSharp.dll)
-                ChosenAssembly = new CustomAssemblyDefinition(GetBackup(DLL));
+                ChosenAssembly = new CustomAssemblyDefinition(GetBackup(AssemblyCSharp));
 
                 // ~~@ Testing
                 Library.Type type = new Library.Type(ChosenAssembly, "TestVanDammeAnim");
@@ -96,7 +100,7 @@ namespace Injection {
                 field.Set<bool>(method, true, -1);
 
                 // Write to the assembly
-                ChosenAssembly.GetDefinition().Write(DLL);
+                ChosenAssembly.GetDefinition().Write(AssemblyCSharp);
             } else {
                 Logger.Log("DLL DOESN'T EXIST!", Logger.LogType.Error, Logger.VerboseType.Low);
             }

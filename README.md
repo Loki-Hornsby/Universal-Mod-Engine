@@ -12,6 +12,7 @@ Thank you [Gorzon](https://github.com/Gorzon38), [Atom0s](https://forum.exetools
 # Build
 - Build using `dotnet build -c:Release`
 - `.csproj` files (in build order) are;
+  - `..\UniversalModEngine\Interfaces\Interfaces.csproj` (Interfaces)
   - `..\UniversalModEngine\Software\Gui.csproj` (Software)
   - `..\UniversalModEngine\Injector\Injector.csproj` (Injector)
   - `..\UniversalModEngine\Engine\Engine.csproj` (Engine)

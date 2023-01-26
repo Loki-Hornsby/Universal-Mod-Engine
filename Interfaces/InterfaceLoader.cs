@@ -7,16 +7,42 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ModInterface {
-    public static class InterfaceLoader {
-        static List<CustomModInterface> interfaces;
+namespace Interfaces {
+    public static class Loader {
+        // Has our data been fetched?
+        static bool fetched;
 
-        public static void Setup(){
-            interfaces = new List<CustomModInterface>();
+        // Our stored interfaces
+        static List<CustomInterface> interfaces;
+
+        /// <summary>
+        /// Fetch our interfaces
+        /// </summary>
+        static bool Fetch(){
+            try {
+                interfaces = new List<CustomInterface>();
+
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
         }
 
-        public static List<CustomModInterface> PollInterfaces(){
-            return interfaces;
+        /// <summary>
+        /// Get the stored list of our interfaces
+        /// </summary>
+        public static List<CustomInterface> GetInterfaces(){
+            // Try fetch
+            if (!fetched){
+                fetched = Fetch();
+            }
+
+            // Return our data
+            if (fetched){
+                return interfaces;
+            } else {
+                return null;
+            }
         }
     }
 }

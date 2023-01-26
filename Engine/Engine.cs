@@ -21,6 +21,7 @@ using System.Threading;
 
 using Software;
 using Injection;
+using Interfaces;
 
 /// <summary>
 /// The mod engine
@@ -64,6 +65,9 @@ namespace Engine {
                     gui = new GUI();
                 }
             ).Start();
+
+            // Subscribe to interface event
+            Toolbar.InterfaceChanged += (x) => StartEngine(x.GetDefs());
         }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace Engine {
             if (args.Name.Contains("Injector")) {
                 return Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Injector.dll"));
             } else {
-                Logger.Log("Skipped", Logger.LogType.Warning, Logger.VerboseType.Low);
+                Logger.Log("Skipped resolving a dll...", Logger.LogType.Warning, Logger.VerboseType.Low);
                 return null;
             }
         }
@@ -83,7 +87,7 @@ namespace Engine {
         /// <summary>
         /// Start the Engine
         /// </summary>
-        public static void StartEngine() {
+        public static void StartEngine(DLLDefinitions Defs) {
             try {
                 // Resolve DLLs
                 AppDomain.CurrentDomain.AssemblyResolve += (x, y) => ResolveDLL(x, y); 
@@ -98,17 +102,13 @@ namespace Engine {
                 }
 
                 // Load Injector
-                string DLL = @"C:\Program Files (x86)\Steam\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll";
-                Injector.Inject(DLL);
-
-                // Load Interface
-                //InterfaceLoader.Setup();
+                Injector.Inject(Defs);
 
                 // Cowboy bebop baby!
                 Logger.Log("I think it's time we blow this scene,", Logger.LogType.Warning, Logger.VerboseType.Low);
                 Logger.Log("Get everybody and the stuff together,", Logger.LogType.Warning, Logger.VerboseType.Low);
                 Logger.Log("Okay, three, two, one, let's jam...", Logger.LogType.Warning, Logger.VerboseType.Low);
-                Logger.Log("Engine Started!", Logger.LogType.Success, Logger.VerboseType.Low);
+                Logger.Log("Engine and interface loaded successfully!", Logger.LogType.Success, Logger.VerboseType.Low);
             } catch(Exception ex){
                 Logger.Log("Engine Failed to Load!", Logger.LogType.Error, Logger.VerboseType.Low);
                 Logger.Log(ex.ToString(), Logger.LogType.Error, Logger.VerboseType.Low);
@@ -133,9 +133,6 @@ namespace Engine {
 
                 // Start the GUI
                 StartGUI();
-
-                // Start the Engine
-                StartEngine();
             } else {
                 MessageBox.Show(
                     "An instance of the UME is already running! Please close it and try again.", 

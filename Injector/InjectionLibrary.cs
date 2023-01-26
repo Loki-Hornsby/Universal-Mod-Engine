@@ -275,6 +275,7 @@ namespace Injection {
                         position = method_definition.Body.Instructions.Count + position;
                     }
 
+                    // Invalid position
                     if (position > method_definition.Body.Instructions.Count - 1 || position < 0){
                         Logger.Log(
                             "Invalid Index present when setting a field - defaulted to 0", 

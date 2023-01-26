@@ -10,6 +10,7 @@
         "dependencies": {
           "Gui": "0.0.0.0",
           "Injector": "1.0.0.0",
+          "Interfaces": "0.0.0.0",
           "UnityEngine.CoreModule": "0.0.0.0",
           "UnityEngine": "0.0.0.0",
           "UnityEngine.IMGUIModule": "0.0.0.0"
@@ -31,6 +32,14 @@
           "Injector.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Interfaces/0.0.0.0": {
+        "runtime": {
+          "Interfaces.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -80,6 +89,11 @@
       "sha512": ""
     },
     "Injector/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Interfaces/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
